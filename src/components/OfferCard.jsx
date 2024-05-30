@@ -1,20 +1,34 @@
-import React from 'react';
-import { Card } from 'antd';
-const { Meta } = Card;
-const OfferCard = ({ id, productName, image, storeName, actualPrice, previousPrice }) => (
+import React from "react";
+import { Card } from "antd";
+const OfferCard = ({
+  id,
+  productName,
+  image,
+  storeName,
+  actualPrice,
+  previousPrice,
+}) => (
   <Card
-  id={id}
+    id={id}
     hoverable
     style={{
       width: 240,
-      height: 325
+      height: 315,
     }}
-    cover={<img className='object-scale-down h-48 w-24' alt={productName} src={image} />}
+    className="shadow-md"
+    cover={
+      <img
+        className="object-scale-down h-48 w-24"
+        alt={productName}
+        src={image}
+      />
+    }
   >
-    <Meta title={productName} description={storeName} />
-    <div className='flex justify-between'>
-      <p className='text-red-600'>${actualPrice}</p>
-      <p className='line-through'>${previousPrice}</p>
+    <p className="text-lg ">{productName}</p>
+    <p className="-mt-2 font-thin">{storeName}</p>
+    <div className="flex justify-between pt-2">
+      <p className="font-bold text-lg text-red-600">${actualPrice}</p>
+      <p className="font-bold text-lg line-through">${previousPrice}</p>
     </div>
   </Card>
 );
