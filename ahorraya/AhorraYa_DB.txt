@@ -1,0 +1,90 @@
+-- docker run --name AhorraYa -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=root -e POSTGRES_DB=ahorraya -p 5432:5432 -d postgis/postgis
+
+
+-- Creación de la extensión PostGIS
+CREATE EXTENSION IF NOT EXISTS postgis;
+
+-- Creación de la tabla Usuario
+CREATE TABLE USUARIO(
+    id_user UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    email VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR null,
+    state BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+-- Creación de la tabla Token
+CREATE TABLE Token (
+    id_token UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    token VARCHAR NOT NULL,
+    fecha_creación VARCHAR(10) NOT NULL,
+    activo BOOLEAN NOT NULL DEFAULT TRUE,
+    id_usuario UUID REFERENCES Usuario(id_usuario)
+);
+
+-- Creación de la tabla Departamento
+CREATE TABLE Departamento (
+    id_departamento UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL
+);
+
+-- Creación de la tabla Municipio
+CREATE TABLE Municipio (
+    id_municipio UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    id_departamento UUID NOT NULL REFERENCES Departamento(id_departamento)
+);
+
+-- Creación de la tabla Tienda
+CREATE TABLE Tienda (
+    id_tienda UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripción VARCHAR(255) NOT NULL,
+    geom GEOMETRY NOT NULL,
+    id_departamento UUID NOT NULL REFERENCES Departamento(id_departamento),
+    id_municipio UUID NOT NULL REFERENCES Municipio(id_municipio),
+    dirección VARCHAR(255) NOT NULL,
+    nombre_propietario VARCHAR(100),
+    sitio_web VARCHAR(255),
+    teléfono VARCHAR(20),
+    correo_electrónico VARCHAR(60)
+);
+
+-- Creación de la tabla Oferta
+CREATE TABLE Oferta (
+    id_oferta UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    nombre VARCHAR(200) NOT NULL,
+    descripción VARCHAR(255) NOT NULL,
+    precio_anterior FLOAT,
+    precio_actual FLOAT NOT NULL,
+    duración_oferta VARCHAR(100) NOT NULL,
+    activo BOOLEAN NOT NULL DEFAULT TRUE,
+    id_tienda UUID NOT NULL REFERENCES Tienda(id_tienda)
+);
+
+-- Creación de la tabla Favorito
+CREATE TABLE Favorito (
+    id_favorito UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    id_usuario UUID NOT NULL REFERENCES Usuario(id_usuario),
+    id_tienda UUID NOT NULL REFERENCES Tienda(id_tienda)
+);
+
+-- Creación de la tabla Imagen
+CREATE TABLE Imagen (
+    id_imagen UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    url VARCHAR NOT NULL,
+    id_tienda UUID REFERENCES Tienda(id_tienda),
+    id_oferta UUID REFERENCES Oferta(id_oferta)
+);
+
+-- Creación de la tabla Categoría
+CREATE TABLE Categoría (
+    id_categoría UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL
+);
+
+-- Creación de la tabla Tienda_Categoría
+CREATE TABLE Tienda_Categoría (
+    id_tienda_categoria UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    id_tienda UUID NOT NULL REFERENCES Tienda(id_tienda),
+    id_categoría UUID NOT NULL REFERENCES Categoría(id_categoría)
+);
