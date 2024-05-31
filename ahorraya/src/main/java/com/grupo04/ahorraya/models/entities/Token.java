@@ -21,7 +21,7 @@ public class Token {
     @Column(name = "token")
     private String token;
 
-    @Column(name = "fecha_creación",insertable = false, updatable = false)
+    @Column(name = "fecha_creacion",insertable = false, updatable = false)
     private Date creationDate;
 
     @Column(name = "activo", insertable = false)

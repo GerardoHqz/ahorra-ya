@@ -38,6 +38,10 @@ public class User implements UserDetails {
     @JsonIgnore
     private List<Token> tokens;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Favorite> favorites;
+
     public User(String username, String password) {
         super();
         this.username = username;
