@@ -2,6 +2,7 @@ package com.grupo04.ahorraya.services.servicesImpl;
 
 import com.grupo04.ahorraya.Repository.TokenRepository;
 import com.grupo04.ahorraya.Repository.UserRepository;
+import com.grupo04.ahorraya.models.dtos.ChangePasswordDTO;
 import com.grupo04.ahorraya.models.dtos.LoginDTO;
 import com.grupo04.ahorraya.models.dtos.RegisterDTO;
 import com.grupo04.ahorraya.models.entities.Token;
@@ -134,5 +135,17 @@ public class UserServicesImpl implements UserServices {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public void changePassword(ChangePasswordDTO info) throws Exception {
+        User user = findUserAuthenticated();
+
+        if (!comparePass(info.getOldPassword(), user.getPassword())) {
+            throw new Exception("Invalid password");
+        }
+
+        user.setPassword(passwordEncoder.encode(info.getNewPassword()));
+        userRepository.save(user);
     }
 }

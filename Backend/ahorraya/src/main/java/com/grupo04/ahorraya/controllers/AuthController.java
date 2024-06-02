@@ -1,10 +1,7 @@
 package com.grupo04.ahorraya.controllers;
 
 import com.grupo04.ahorraya.Repository.UserRepository;
-import com.grupo04.ahorraya.models.dtos.LoginDTO;
-import com.grupo04.ahorraya.models.dtos.MessageDTO;
-import com.grupo04.ahorraya.models.dtos.RegisterDTO;
-import com.grupo04.ahorraya.models.dtos.TokenDTO;
+import com.grupo04.ahorraya.models.dtos.*;
 import com.grupo04.ahorraya.models.entities.Token;
 import com.grupo04.ahorraya.models.entities.User;
 import com.grupo04.ahorraya.services.UserServices;
@@ -80,6 +77,42 @@ public class AuthController {
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logoutUser(@RequestBody TokenDTO token) {
+        try {
+            User user = userService.getUserFromToken(token.getToken());
+            userService.cleanTokens(user);
+            return new ResponseEntity<>(new MessageDTO("User logged out"), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody @Valid ChangePasswordDTO info, BindingResult validations) {
+        if (validations.hasErrors()) {
+            return new ResponseEntity<>(errorHandler.mapErrors(validations.getFieldErrors()), HttpStatus.BAD_REQUEST);
+        }
+
+        User user = userService.findByUsername(info.getEmail());
+        if (user == null)
+            return new ResponseEntity<>(new MessageDTO("User not found"), HttpStatus.UNAUTHORIZED);
+
+        try {
+            userService.changePassword(info);
+            return new ResponseEntity<>(new MessageDTO("Password changed"), HttpStatus.OK);
+
+        } catch (Exception e) {
+            if (e.getMessage().equals("Invalid credentials")) {
+                return new ResponseEntity<>(new MessageDTO(e.getMessage()), HttpStatus.UNAUTHORIZED);
+            } else {
+                e.printStackTrace();
+                return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
     }
 }
