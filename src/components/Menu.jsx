@@ -2,11 +2,17 @@ import React, { useState } from "react";
 import { FaUserCircle, FaHome, FaMapMarkedAlt } from "react-icons/fa";
 import { MdOutlineLogout, MdLightMode, MdDarkMode } from "react-icons/md";
 import { Layout, Menu } from "antd";
+import { useNavigate } from "react-router-dom";
 const { Sider } = Layout;
 
 const SideMenu = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [dark, setDark] = useState(false);
+  const navigate = useNavigate();
+
+  const handleNavigation = (url)=> {
+    navigate(`${url}`)
+  }
 
   const items = [
     {
@@ -63,7 +69,10 @@ const SideMenu = () => {
         ))}
       </Menu>
       <div className="flex flex-col h-4/6 mt-12 justify-end m-4 gap-6">
-        <div className={`flex gap-3 ${collapsed ? "justify-center" : ""}`}>
+        <div 
+          className={`flex gap-3 ${collapsed ? "justify-center" : ""}`}
+          onClick={()=>{handleNavigation("/login")}}  
+        >
           <MdOutlineLogout size={20} />
           <p className={`${collapsed ? "hidden" : "block"}`}>Cerrar sesión</p>
         </div>
