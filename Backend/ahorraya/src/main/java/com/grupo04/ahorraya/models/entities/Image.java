@@ -17,6 +17,9 @@ public class Image {
     @Column(name = "id_imagen")
     private UUID idImage;
 
+    @Column(name = "nombre")
+    private String name;
+
     @Column(name = "url")
     private String url;
 
@@ -28,8 +31,9 @@ public class Image {
     @JoinColumn(name = "id_oferta")
     private Offer offer;
 
-    public Image(String url, Store store, Offer offer) {
+    public Image(String name, String url, Store store, Offer offer) {
         super();
+        this.name = name;
         this.url = url;
         this.store = store;
         this.offer = offer;

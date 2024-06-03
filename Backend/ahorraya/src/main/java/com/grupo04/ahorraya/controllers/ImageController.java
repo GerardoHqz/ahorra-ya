@@ -1,0 +1,135 @@
+package com.grupo04.ahorraya.controllers;
+
+import com.grupo04.ahorraya.models.dtos.AddImageDTO;
+import com.grupo04.ahorraya.models.dtos.MessageDTO;
+import com.grupo04.ahorraya.models.entities.Image;
+import com.grupo04.ahorraya.models.entities.Offer;
+import com.grupo04.ahorraya.models.entities.Store;
+import com.grupo04.ahorraya.models.entities.User;
+import com.grupo04.ahorraya.services.ImageServices;
+import com.grupo04.ahorraya.services.OfferServices;
+import com.grupo04.ahorraya.services.StoreServices;
+import com.grupo04.ahorraya.services.UserServices;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/image")
+public class ImageController {
+
+    @Autowired
+    private ImageServices imageServices;
+
+    @Autowired
+    private UserServices userServices;
+
+    @Autowired
+    private StoreServices storeServices;
+
+    @Autowired
+    private OfferServices offerServices;
+
+    @PostMapping("/")
+    public ResponseEntity<?> saveImage(@RequestBody @Valid AddImageDTO info, BindingResult validations) throws Exception{
+        User userFound = userServices.findUserAuthenticated();
+        if (userFound == null)
+            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
+        try{
+            imageServices.save(info.getFile(),info.getStore(),info.getOffer());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteImage(@PathVariable UUID id){
+
+        User userFound = userServices.findUserAuthenticated();
+        if (userFound == null)
+            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
+        try{
+            imageServices.delete(id);
+            return ResponseEntity.ok("Image deleted successfully");
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete image");
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getImageById(@PathVariable UUID id){
+        Image image = imageServices.findById(id);
+
+        if (image != null) {
+            Resource resource = imageServices.getImage(image.getName());
+            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
+        } else {
+            return new ResponseEntity<>(new MessageDTO("image not found"), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/{name}")
+    public ResponseEntity<?> getImageByName(@PathVariable String name){
+        User userFound = userServices.findUserAuthenticated();
+        if (userFound == null)
+            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
+        Image image = imageServices.findByName(name);
+        if (image != null) {
+            Resource resource = imageServices.getImage(image.getName());
+            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
+        } else {
+            return new ResponseEntity<>(new MessageDTO("image not found"), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/store/{id}")
+    public ResponseEntity<?> getAllImagesByStore(@PathVariable UUID id){
+        User userFound = userServices.findUserAuthenticated();
+        if (userFound == null)
+            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
+        Store store = storeServices.getStoreById(id);
+        if (store == null){
+            return new ResponseEntity<>(new MessageDTO("Store not found"), HttpStatus.NOT_FOUND);
+        }
+
+        try{
+            return new ResponseEntity<>(imageServices.getImageByStore(store), HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/offer/{id}")
+    public ResponseEntity<?> getAllImagesByOffer(@PathVariable UUID id){
+        User userFound = userServices.findUserAuthenticated();
+        if (userFound == null)
+            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
+        Offer offer = offerServices.getOfferById(id);
+        if (offer == null){
+            return new ResponseEntity<>(new MessageDTO("Offer not found"), HttpStatus.NOT_FOUND);
+        }
+
+        try{
+            return new ResponseEntity<>(imageServices.getImageByOffer(offer), HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+}

@@ -69,6 +69,7 @@ CREATE TABLE Favorito (
 -- Creación de la tabla Imagen
 CREATE TABLE Imagen (
     id_imagen UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    nombre VARCHAR(200) NOT NULL,
     url VARCHAR NOT NULL,
     id_tienda UUID REFERENCES Tienda(id_tienda),
     id_oferta UUID REFERENCES Oferta(id_oferta)
