@@ -1,11 +1,9 @@
 package com.grupo04.ahorraya.controllers;
 
-import com.grupo04.ahorraya.Repository.CategoryRepository;
-import com.grupo04.ahorraya.models.dtos.CategoryDTO;
 import com.grupo04.ahorraya.models.dtos.MessageDTO;
-import com.grupo04.ahorraya.models.dtos.TokenDTO;
+import com.grupo04.ahorraya.models.dtos.OfferCategoryDTO;
 import com.grupo04.ahorraya.models.entities.User;
-import com.grupo04.ahorraya.services.CategoryServices;
+import com.grupo04.ahorraya.services.OfferCategoryServices;
 import com.grupo04.ahorraya.services.UserServices;
 import com.grupo04.ahorraya.utils.RequestErrorHandler;
 import jakarta.validation.Valid;
@@ -18,128 +16,119 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/category")
-public class CategoryController {
+@RequestMapping("/offer-category")
+public class OfferCategoryController {
     @Autowired
-    private CategoryServices categoryService;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private OfferCategoryServices offerCategoryServices;
 
     @Autowired
     private UserServices userService;
 
     @Autowired
-    private RequestErrorHandler errorHandler;
+    RequestErrorHandler errorHandler;
 
     @PostMapping("/")
-    public ResponseEntity<?> createCategory(@RequestBody @Valid CategoryDTO categoryDTO, BindingResult validations)throws Exception {
-        if (validations.hasErrors()) {
+    public ResponseEntity<?> createOfferCategory(@RequestBody @Valid OfferCategoryDTO info, BindingResult validations)throws Exception {
+        if (validations.hasErrors())
             return ResponseEntity.badRequest().body(errorHandler.mapErrors(validations.getFieldErrors()));
-        }
 
         User userFound = userService.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
 
         try {
-            categoryService.saveCategory(categoryDTO);
-            return new ResponseEntity<>(new MessageDTO("Category Created!"), HttpStatus.OK);
+            offerCategoryServices.createOfferCategory(info);
+            return ResponseEntity.ok("Offer-Category created successfully");
         } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @PostMapping("/update")
-    public ResponseEntity<?> updateCategory(@RequestBody @Valid CategoryDTO categoryDTO, BindingResult validations) throws Exception {
-        if (validations.hasErrors()) {
+    @PutMapping("/")
+    public ResponseEntity<?> updateOfferCategory(@RequestBody @Valid OfferCategoryDTO info, BindingResult validations) throws Exception {
+        if (validations.hasErrors())
             return ResponseEntity.badRequest().body(errorHandler.mapErrors(validations.getFieldErrors()));
-        }
+
         User userFound = userService.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
 
         try {
-            categoryService.updateCategory(categoryDTO);
-            return new ResponseEntity<>(new MessageDTO("Category Updated!"), HttpStatus.OK);
+            offerCategoryServices.updateOfferCategory(info);
+            return new ResponseEntity<>(new MessageDTO("Offer-Category Created!"), HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
             return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("/")
-    public ResponseEntity<?> deleteCategory(@RequestBody @Valid CategoryDTO categoryDTO, BindingResult validations) throws Exception {
-        if (validations.hasErrors()) {
+    public ResponseEntity<?> deleteOfferCategory(@RequestBody @Valid OfferCategoryDTO info, BindingResult validations) throws Exception {
+        if (validations.hasErrors())
             return ResponseEntity.badRequest().body(errorHandler.mapErrors(validations.getFieldErrors()));
-        }
+
         User userFound = userService.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
         try {
-            UUID idCategory =  categoryRepository.findByName(categoryDTO.getName()).getIdCategory();
-            categoryService.deleteCategory(idCategory);
-            return new ResponseEntity<>(new MessageDTO("Category Deleted!"), HttpStatus.OK);
+            offerCategoryServices.deleteOfferCategory(info);
+            return new ResponseEntity<>(new MessageDTO("Offer-Category deleted successfully"), HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
+            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteOfferCategoryById(@PathVariable UUID id) throws Exception {
+        User userFound = userService.findUserAuthenticated();
+        if (userFound == null)
+            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
+        try {
+            offerCategoryServices.deleteOfferCategoryById(id);
+            return new ResponseEntity<>(new MessageDTO("Offer-Category deleted successfully!"), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/all")
+    public ResponseEntity<?> deleteAllOfferCategories() throws Exception {
+        User userFound = userService.findUserAuthenticated();
+        if (userFound == null)
+            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
+        try {
+            offerCategoryServices.deleteAllOfferCategories();
+            return new ResponseEntity<>(new MessageDTO("All Offer-Categories deleted successfully!"), HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/")
-    public ResponseEntity<?> getAllCategories() {
+    public ResponseEntity<?> getAllOfferCategories() {
         User userFound = userService.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
         try {
-            return new ResponseEntity<>(categoryService.getAllCategories(), HttpStatus.OK);
+            return new ResponseEntity<>(offerCategoryServices.getAllOfferCategories(), HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
             return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCategoryById(@PathVariable UUID id) {
+    public ResponseEntity<?> getOfferCategoryById(@PathVariable UUID id) {
         User userFound = userService.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
         try {
-            return new ResponseEntity<>(categoryService.getCategoryById(id), HttpStatus.OK);
+            return new ResponseEntity<>(offerCategoryServices.getOfferCategoryById(id), HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
             return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    //All offers by category
-    @GetMapping("/offer/{id}")
-    public ResponseEntity<?> getOfferByCategoryId(@PathVariable UUID id) {
-        User userFound = userService.findUserAuthenticated();
-        if (userFound == null)
-            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
-        try {
-            return new ResponseEntity<>(categoryService.findOfferByIdCategory(id), HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    //All offers by category and active
-    @GetMapping("/offer/active/{id}")
-    public ResponseEntity<?> getStoreByCategoryId(@PathVariable UUID id) {
-        User userFound = userService.findUserAuthenticated();
-        if (userFound == null)
-            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
-        try {
-            return new ResponseEntity<>(categoryService.findOfferByActiveAndCategoryId(true,id), HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-
 }

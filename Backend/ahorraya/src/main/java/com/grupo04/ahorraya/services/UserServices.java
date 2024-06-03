@@ -6,6 +6,8 @@ import com.grupo04.ahorraya.models.dtos.RegisterDTO;
 import com.grupo04.ahorraya.models.entities.Token;
 import com.grupo04.ahorraya.models.entities.User;
 
+import java.util.List;
+
 public interface UserServices {
     void save(RegisterDTO info) throws Exception;
     void login(LoginDTO info) throws Exception;
