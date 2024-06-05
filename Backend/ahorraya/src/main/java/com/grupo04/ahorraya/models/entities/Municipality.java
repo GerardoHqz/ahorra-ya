@@ -1,5 +1,7 @@
 package com.grupo04.ahorraya.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +22,7 @@ public class Municipality {
     @Column(name = "nombre")
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_departamento")
     private Departament departament;
 

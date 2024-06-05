@@ -1,6 +1,7 @@
 package com.grupo04.ahorraya.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,11 +22,11 @@ public class Departament {
     @Column(name = "nombre")
     private String name;
 
-    @OneToMany(mappedBy = "departament")
+    @OneToMany(mappedBy = "departament", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Municipality> municipalities;
 
-    @OneToMany(mappedBy = "departament")
+    @OneToMany(mappedBy = "departament" , fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Store> storesDepartament;
 

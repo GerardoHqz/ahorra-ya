@@ -34,8 +34,13 @@ public class DepartamentServicesImpl implements DepartamentServices {
     }
 
     @Override
-    public List<Store> getStoresByDepartament(Departament departament) {
-        return storeRepository.findAllByDepartament(departament);
+    public List<Store> getStoresByDepartament(String departament) {
+        return storeRepository.findAll().stream().map(store -> {
+            if (store.getDepartament().getName().equals(departament)){
+                return store;
+            }
+            return null;
+        }).toList();
     }
 
     @Override

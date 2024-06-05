@@ -10,8 +10,7 @@ import java.util.UUID;
 public interface MunicipalityServices {
     void save(MunicipalityDTO info) throws Exception;
     List<Municipality> findALL();
-    List<Store> getStoresByMunicipality(Municipality municipality);
-    void update(MunicipalityDTO info, UUID municipalityID) throws Exception;
+    List<Store> getStoresByMunicipality(String municipality);
     Municipality findByID(UUID municipalityID);
     Municipality findByName(String name);
     void deleteByName(String name) throws Exception;

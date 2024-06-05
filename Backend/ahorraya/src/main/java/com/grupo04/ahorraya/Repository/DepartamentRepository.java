@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface DepartamentRepository extends JpaRepository<Departament, UUID> {
     Departament findByName(String name);
+    Departament findByIdDepartamento(UUID idDepartamento);
 }

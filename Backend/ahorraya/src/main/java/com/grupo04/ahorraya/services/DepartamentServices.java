@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface DepartamentServices {
     void save(DepartamentDTO info) throws Exception;
     List<Departament> findAll();
-    List<Store> getStoresByDepartament(Departament departament);
+    List<Store> getStoresByDepartament(String departament);
     void update(DepartamentDTO info, UUID id) throws Exception;
     Departament findByID(UUID id);
     Departament findByName(String name);

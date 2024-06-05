@@ -1,7 +1,5 @@
 package com.grupo04.ahorraya.models.dtos;
 
-import com.grupo04.ahorraya.models.entities.Category;
-import com.grupo04.ahorraya.models.entities.Store;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -13,7 +11,10 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-public class OfferDTO {
+public class OfferUpdateDTO {
+    @NotNull(message = "El id de la oferta es obligatorio")
+    private UUID idOffer;
+
     @NotBlank(message = "El nombre es obligatorio")
     @Size(max = 100, message = "El nombre no debe superar los 100 caracteres")
     private String name;

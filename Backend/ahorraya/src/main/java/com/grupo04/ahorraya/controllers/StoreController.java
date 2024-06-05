@@ -2,6 +2,7 @@ package com.grupo04.ahorraya.controllers;
 
 import com.grupo04.ahorraya.models.dtos.MessageDTO;
 import com.grupo04.ahorraya.models.dtos.StoreDTO;
+import com.grupo04.ahorraya.models.dtos.StoreUpdateDTO;
 import com.grupo04.ahorraya.models.entities.User;
 import com.grupo04.ahorraya.services.StoreServices;
 import com.grupo04.ahorraya.services.UserServices;
@@ -28,7 +29,7 @@ public class StoreController {
     private RequestErrorHandler errorHandler;
 
     @PostMapping("/")
-    public ResponseEntity<?> create(@RequestBody @Valid StoreDTO storeDTO, BindingResult validations) {
+    public ResponseEntity<?> create(@RequestBody @Valid StoreDTO storeDTO, BindingResult validations) throws Exception {
         User userFound = userService.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
@@ -45,8 +46,8 @@ public class StoreController {
         }
     }
 
-    @DeleteMapping("/")
-    public ResponseEntity<?> delete(@RequestParam("id") UUID idStore) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") UUID idStore) {
         User userFound = userService.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
@@ -60,7 +61,7 @@ public class StoreController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<?> update(@RequestBody @Valid StoreDTO storeDTO, BindingResult validations) {
+    public ResponseEntity<?> update(@RequestBody @Valid StoreUpdateDTO info, BindingResult validations) {
         User userFound = userService.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
@@ -69,7 +70,7 @@ public class StoreController {
             return new ResponseEntity<>(errorHandler.mapErrors(validations.getFieldErrors()), HttpStatus.BAD_REQUEST);
         }
         try {
-            storeService.updateStore(storeDTO);
+            storeService.updateStore(info);
             return new ResponseEntity<>(new MessageDTO("Store updated"), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

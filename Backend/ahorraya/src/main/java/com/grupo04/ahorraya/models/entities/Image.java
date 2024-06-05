@@ -23,11 +23,11 @@ public class Image {
     @Column(name = "url")
     private String url;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tienda")
     private Store store;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_oferta")
     private Offer offer;
 

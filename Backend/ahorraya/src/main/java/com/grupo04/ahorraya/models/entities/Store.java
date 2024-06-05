@@ -53,15 +53,15 @@ public class Store {
     @Column(name = "correo_electronico", length = 60)
     private String email;
 
-    @OneToMany(mappedBy = "store")
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Offer> offers;
 
-    @OneToMany(mappedBy = "store")
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Favorite> favorites;
 
-    @OneToMany(mappedBy = "store")
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Image> images;
 

@@ -77,9 +77,8 @@ public class MunicipalityController {
     @GetMapping("/{name}")
     public ResponseEntity<?> getMunicipalityByName(@PathVariable String name){
         User userFound = userServices.findUserAuthenticated();
-        if (userFound == null) {
+        if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
-        }
 
         Municipality municipalityFound = municipalityServices.findByName(name);
         if (municipalityFound == null){
@@ -88,20 +87,20 @@ public class MunicipalityController {
         return new ResponseEntity<>(municipalityFound, HttpStatus.OK);
     }
 
-    @GetMapping("/stores/{id}")
-    public ResponseEntity<?> getStoresByMunicipality(@PathVariable UUID id){
+    @GetMapping("/stores/{name}")
+    public ResponseEntity<?> getStoresByMunicipality(@PathVariable String name){
 
         User userFound = userServices.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
 
-        Municipality municipality = municipalityServices.findByID(id);
+        Municipality municipality = municipalityServices.findByName(name);
         if (municipality == null){
             return new ResponseEntity<>(new MessageDTO("Municipality not found"), HttpStatus.NOT_FOUND);
         }
 
         try{
-            return new ResponseEntity<>(municipalityServices.getStoresByMunicipality(municipality), HttpStatus.OK);
+            return new ResponseEntity<>(municipalityServices.getStoresByMunicipality(municipality.getName()), HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);

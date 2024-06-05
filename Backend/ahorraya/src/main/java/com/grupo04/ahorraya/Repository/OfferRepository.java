@@ -9,5 +9,6 @@ import java.util.UUID;
 
 public interface OfferRepository extends JpaRepository<Offer, UUID> {
     Offer getByIdOffer(UUID idOffer);
+    Offer getByName(String name);
     List<Offer> findOfferByActive(Boolean active);
 }

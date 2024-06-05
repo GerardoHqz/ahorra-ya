@@ -17,12 +17,12 @@ public class Favorite {
     @Column(name = "id_favorito", updatable = false, nullable = false)
     private UUID idFavorite;
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_user", nullable = true)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "id_tienda", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_tienda", nullable = true)
     private Store store;
 
     public Favorite(User user, Store store) {

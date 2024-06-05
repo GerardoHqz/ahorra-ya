@@ -90,19 +90,19 @@ public class DepartamentController {
     }
 
     @GetMapping("/stores/{id}")
-    public ResponseEntity<?> getStoresByDepartament(@PathVariable UUID id){
+    public ResponseEntity<?> getStoresByDepartament(@PathVariable String name){
 
         User userFound = userServices.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
 
-        Departament departament = departamentServices.findByID(id);
+        Departament departament = departamentServices.findByName(name);
         if (departament == null){
             return new ResponseEntity<>(new MessageDTO("Departament not found"), HttpStatus.NOT_FOUND);
         }
 
         try{
-            return new ResponseEntity<>(departamentServices.getStoresByDepartament(departament), HttpStatus.OK);
+            return new ResponseEntity<>(departamentServices.getStoresByDepartament(departament.getName()), HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);

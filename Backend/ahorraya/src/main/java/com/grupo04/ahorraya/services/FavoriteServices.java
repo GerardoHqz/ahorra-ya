@@ -8,6 +8,6 @@ import java.util.UUID;
 
 public interface FavoriteServices {
     public void addFavorite(FavoriteDTO info) throws Exception;
-    public void removeFavorite(FavoriteDTO info) throws Exception;
+    public void removeFavorite(UUID idFavorite) throws Exception;
     public List<Store> getFavorites(UUID userId);
 }

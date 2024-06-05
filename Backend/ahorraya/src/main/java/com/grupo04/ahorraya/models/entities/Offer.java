@@ -40,16 +40,15 @@ public class Offer {
     @Column(name = "activo")
     private Boolean active = true;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tienda")
-    @JsonIgnore
     private Store store;
 
-    @OneToMany(mappedBy = "offer")
+    @OneToMany(mappedBy = "offer", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Image> images;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_categoria")
     private Category category;
 

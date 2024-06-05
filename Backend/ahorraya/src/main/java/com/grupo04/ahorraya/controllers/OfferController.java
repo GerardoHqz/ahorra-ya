@@ -2,6 +2,7 @@ package com.grupo04.ahorraya.controllers;
 
 import com.grupo04.ahorraya.models.dtos.MessageDTO;
 import com.grupo04.ahorraya.models.dtos.OfferDTO;
+import com.grupo04.ahorraya.models.dtos.OfferUpdateDTO;
 import com.grupo04.ahorraya.models.entities.User;
 import com.grupo04.ahorraya.services.OfferServices;
 import com.grupo04.ahorraya.services.UserServices;
@@ -50,7 +51,7 @@ public class OfferController {
 
     @PutMapping("/")
     @Transactional(rollbackOn = Exception.class)
-    public ResponseEntity<?> updateOffer(@RequestBody @Valid OfferDTO info, BindingResult validations) throws Exception {
+    public ResponseEntity<?> updateOffer(@RequestBody @Valid OfferUpdateDTO info, BindingResult validations) throws Exception {
         if (validations.hasErrors()) {
             return ResponseEntity.badRequest().body(errorHandler.mapErrors(validations.getFieldErrors()));
         }

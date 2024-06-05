@@ -45,18 +45,15 @@ public class FavoriteController {
         }
     }
 
-    @DeleteMapping("/")
-    public ResponseEntity<?> removeFavorite(@RequestBody @Valid FavoriteDTO inf0, BindingResult validations) throws Exception {
-        if (validations.hasErrors()) {
-            return ResponseEntity.badRequest().body(errorHandler.mapErrors(validations.getFieldErrors()));
-        }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> removeFavorite(@PathVariable("id") UUID idFavorite)  {
 
         User userFound = userService.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
 
         try {
-            favoriteServices.removeFavorite(inf0);
+            favoriteServices.removeFavorite(idFavorite);
             return new ResponseEntity<>(new MessageDTO("Favorite removed successfully!"), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);

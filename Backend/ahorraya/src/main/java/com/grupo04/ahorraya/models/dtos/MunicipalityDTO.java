@@ -1,17 +1,19 @@
 package com.grupo04.ahorraya.models.dtos;
 
-import com.grupo04.ahorraya.models.entities.Departament;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class MunicipalityDTO {
-    @NotEmpty(message = "Municipality cant be empty")
+    @NotBlank(message = "Municipality cant be empty")
     private String nameMunicipality;
-    @NotEmpty(message = "Departament cant be empty")
-    private Departament nameDepartament;
+    @NotNull(message = "Departament cant be empty")
+    private UUID departament;
 }

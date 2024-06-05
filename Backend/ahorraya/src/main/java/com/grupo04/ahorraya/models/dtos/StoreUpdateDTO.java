@@ -1,16 +1,19 @@
 package com.grupo04.ahorraya.models.dtos;
 
-import com.grupo04.ahorraya.models.entities.Departament;
-import com.grupo04.ahorraya.models.entities.Municipality;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StoreDTO {
+public class StoreUpdateDTO {
+    @NotNull(message = "El id de la tienda es obligatorio")
+    private UUID idStore;
+
     @NotBlank(message = "El nombre es obligatorio")
     @Size(max = 100, message = "El nombre no debe superar los 100 caracteres")
     private String name;

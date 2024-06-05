@@ -1,8 +1,10 @@
 package com.grupo04.ahorraya.services.servicesImpl;
 
+import com.grupo04.ahorraya.Repository.DepartamentRepository;
 import com.grupo04.ahorraya.Repository.MunicipalityRepository;
 import com.grupo04.ahorraya.Repository.StoreRepository;
 import com.grupo04.ahorraya.models.dtos.MunicipalityDTO;
+import com.grupo04.ahorraya.models.entities.Departament;
 import com.grupo04.ahorraya.models.entities.Municipality;
 import com.grupo04.ahorraya.models.entities.Store;
 import com.grupo04.ahorraya.services.MunicipalityServices;
@@ -22,9 +24,19 @@ public class MunicipalityServicesImpl implements MunicipalityServices {
     @Autowired
     StoreRepository storeRepository;
 
+    @Autowired
+    DepartamentRepository departamentRepository;
     @Override
     public void save(MunicipalityDTO info) throws Exception {
-        Municipality newMunicipality = new Municipality(info.getNameMunicipality(), info.getNameDepartament());
+        if (municipalityRepository.findByName(info.getNameMunicipality()) != null){
+            throw new Exception("Municipality already exists");
+        }
+
+        Departament departament = departamentRepository.findByIdDepartamento(info.getDepartament());
+        if (departament == null){
+            throw new Exception("Departament not found");
+        }
+        Municipality newMunicipality = new Municipality(info.getNameMunicipality(), departament);
 
         municipalityRepository.save(newMunicipality);
     }
@@ -35,18 +47,14 @@ public class MunicipalityServicesImpl implements MunicipalityServices {
     }
 
     @Override
-    public List<Store> getStoresByMunicipality(Municipality municipality) {
-        return storeRepository.findAllByMunicipality(municipality);
-    }
-
-    @Override
-    public void update(MunicipalityDTO municipality, UUID municipalityID) throws Exception {
-        Municipality municipalityFind = findByID(municipalityID);
-
-        municipalityFind.setName(municipality.getNameMunicipality());
-        municipalityFind.setDepartament(municipality.getNameDepartament());
-
-        municipalityRepository.save(municipalityFind);
+    public List<Store> getStoresByMunicipality(String municipality) {
+        return storeRepository.findAll()
+                .stream().map(store -> {
+                    if (store.getMunicipality().getName().equals(municipality)){
+                        return store;
+                    }
+                    return null;
+                }).toList();
     }
 
     @Override

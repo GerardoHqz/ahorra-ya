@@ -93,7 +93,7 @@ public class UserServicesImpl implements UserServices {
         }
     }
 
-    @Override
+    /*@Override
     public void cleanTokens(User user) throws Exception {
         List<Token> tokens = tokenRepository.findByUserAndActive(user, true);
 
@@ -103,7 +103,26 @@ public class UserServicesImpl implements UserServices {
                 tokenRepository.save(token);
             }
         });
+    }*/
+
+    @Transactional
+    @Override
+    public void cleanTokens(User user) throws Exception {
+        List<Token> tokens = tokenRepository.findByUserAndActive(user, true);
+
+        for (Token token : tokens) {
+            try {
+                if (!jwtTools.verifyToken(token.getToken())) {
+                    token.setActive(false);
+                    tokenRepository.save(token);
+                }
+            } catch (Exception e) {
+                // Manejar la excepción según sea necesario
+                throw new RuntimeException("Error al desactivar el token: " + token.getIdToken(), e);
+            }
+        }
     }
+
 
     @Override
     public User getUserFromToken(String info) {

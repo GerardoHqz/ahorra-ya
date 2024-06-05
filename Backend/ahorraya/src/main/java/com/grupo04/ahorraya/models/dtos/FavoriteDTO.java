@@ -1,10 +1,10 @@
 package com.grupo04.ahorraya.models.dtos;
 
-import com.grupo04.ahorraya.models.entities.Store;
-import com.grupo04.ahorraya.models.entities.User;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.UUID;
 
 
 @Data
@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 public class FavoriteDTO {
 
     @NotNull(message = "El usuario es obligatorio")
-    private User user;
+    private UUID user;
 
     @NotNull(message = "La tienda es obligatoria")
-    private Store store;
+    private UUID store;
 }

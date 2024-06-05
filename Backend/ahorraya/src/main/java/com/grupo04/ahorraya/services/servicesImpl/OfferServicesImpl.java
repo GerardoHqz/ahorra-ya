@@ -1,8 +1,13 @@
 package com.grupo04.ahorraya.services.servicesImpl;
 
+import com.grupo04.ahorraya.Repository.CategoryRepository;
 import com.grupo04.ahorraya.Repository.OfferRepository;
+import com.grupo04.ahorraya.Repository.StoreRepository;
 import com.grupo04.ahorraya.models.dtos.OfferDTO;
+import com.grupo04.ahorraya.models.dtos.OfferUpdateDTO;
+import com.grupo04.ahorraya.models.entities.Category;
 import com.grupo04.ahorraya.models.entities.Offer;
+import com.grupo04.ahorraya.models.entities.Store;
 import com.grupo04.ahorraya.services.OfferServices;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +21,26 @@ public class OfferServicesImpl implements OfferServices {
     @Autowired
     private OfferRepository offerRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private StoreRepository storeRepository;
+
     @Override
     @Transactional(rollbackOn = Exception.class)
     public void createOffer(OfferDTO offer) throws Exception {
         try{
+            Category category = categoryRepository.getByIdCategory(offer.getCategory());
+            Store store = storeRepository.findByIdStore(offer.getStore());
+
+            if(category == null)
+                throw new Exception("La categoria no existe");
+            if(store == null)
+                throw new Exception("La tienda no existe");
+
             Offer newOffer = new Offer(offer.getName(), offer.getDescription(), offer.getPriceBefore(), offer.getPriceNow(),
-                    offer.getInitDate(), offer.getEndDate(), offer.getActive(), offer.getStore(), offer.getCategory());
+                    offer.getInitDate(), offer.getEndDate(), offer.getActive(), store, category);
             offerRepository.save(newOffer);
         }
         catch (Exception e){
@@ -32,15 +51,32 @@ public class OfferServicesImpl implements OfferServices {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public void updateOffer(OfferDTO info) throws Exception{
-        try{
-            Offer offer = new Offer(info.getName(), info.getDescription(), info.getPriceBefore(), info.getPriceNow(),
-                    info.getInitDate(), info.getEndDate(), info.getActive(), info.getStore(), info.getCategory());
+    public void updateOffer(OfferUpdateDTO info) throws Exception{
+        Offer offer = offerRepository.getByIdOffer(info.getIdOffer());
+        if (offer == null)
+            throw new Exception("La oferta no existe");
+
+        Category category = categoryRepository.getByIdCategory(info.getCategory());
+        Store store = storeRepository.findByIdStore(info.getStore());
+
+        if(category == null)
+            throw new Exception("La categoria no existe");
+        if(store == null)
+            throw new Exception("La tienda no existe");
+
+
+            offer.setIdOffer(info.getIdOffer());
+            offer.setName(info.getName());
+            offer.setDescription(info.getDescription());
+            offer.setPriceBefore(info.getPriceBefore());
+            offer.setPriceNow(info.getPriceNow());
+            offer.setInitDate(info.getInitDate());
+            offer.setEndDate(info.getEndDate());
+            offer.setActive(info.getActive());
+            offer.setCategory(category);
+            offer.setStore(store);
+
             offerRepository.save(offer);
-        }
-        catch (Exception e){
-            throw new Exception("Error al actualizar la oferta");
-        }
     }
 
     @Override

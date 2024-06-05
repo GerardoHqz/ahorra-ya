@@ -10,7 +10,6 @@ import java.util.UUID;
 
 public interface StoreRepository extends JpaRepository<Store, UUID> {
     Store findByName(String name);
-    Store getByIdStore(UUID id);
+    Store findByIdStore(UUID id);
     List<Store> findAllByDepartament(Departament departament);
-    List<Store> findAllByMunicipality(Municipality municipality);
 }

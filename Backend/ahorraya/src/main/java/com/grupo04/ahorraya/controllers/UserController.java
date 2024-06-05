@@ -42,7 +42,7 @@ public class UserController {
 
         try {
             User user = userService.getUserFromToken(token.getToken());
-            userService.cleanTokens(user);
+            userService.toggleToken(user);
             return new ResponseEntity<>(new MessageDTO("User logged out"), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
