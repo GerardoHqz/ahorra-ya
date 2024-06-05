@@ -80,11 +80,3 @@ CREATE TABLE Imagen (
     id_tienda UUID REFERENCES Tienda(id_tienda),
     id_oferta UUID REFERENCES Oferta(id_oferta)
 );
-
-
--- Creación de la tabla Tienda_Categoría
-CREATE TABLE Oferta_Categoria (
-    id_oferta_categoria UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    id_oferta UUID NOT NULL REFERENCES Tienda(id_tienda),
-    id_categoria UUID NOT NULL REFERENCES Categoria(id_categoria)
-);
