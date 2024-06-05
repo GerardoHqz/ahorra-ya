@@ -162,10 +162,10 @@ const AddStoreForm = ({
             prefix={<AiOutlineMail size={20} color="#808080" />}
           />
         </Form.Item>
-        <Form.Item label="Sitio web" name="website">
+        <Form.Item label="Sitio web" name="webSite">
           <Input
             type="text"
-            name="website"
+            name="webSite"
             className="border border-secondary-text border-opacity-25 p-2 mt-2 rounded-md "
             prefix={<IoIosLink size={20} color="#808080" />}
           />

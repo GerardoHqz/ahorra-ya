@@ -8,6 +8,7 @@ import BluePin from "../assets/BluePin.png";
 import { useState, useEffect } from "react";
 import AddStoreForm from "../components/AddStoreForm";
 import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const icon = new Icon ({
   iconUrl: OrangePin,
