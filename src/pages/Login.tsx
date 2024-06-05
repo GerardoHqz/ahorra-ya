@@ -3,6 +3,7 @@ import logo from "../assets/img/logo.png";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import { LoginFormData } from "../interfaces/LoginFormData";
+import { useGoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -22,6 +23,11 @@ const Login = () => {
         console.log('Password:', formData.password);
         navigate("/");
     };
+
+    const login = useGoogleLogin({
+        onSuccess: (tokenResponse) =>
+          console.log(tokenResponse.access_token)
+      });
 
     return (
         <div className="relative bg-gradient-to-b from-[#FF8E9D] to-[#FFA48B] h-screen flex flex-col justify-center items-center overflow-hidden">
@@ -56,7 +62,7 @@ const Login = () => {
                         <button type="submit" className="bg-[#FF8E9D] py-3 rounded-lg mb-3">
                             Iniciar Sesión
                         </button>
-                        <button className="bg-white text-black p-3 rounded-lg relative" onClick={() => navigate("/")}>
+                        <button className="bg-white text-black p-3 rounded-lg relative" onClick={() => login()}>
                             <span className="absolute z-10 left-3">
                                 <FcGoogle size={25} />
                             </span>
