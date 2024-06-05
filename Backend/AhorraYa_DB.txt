@@ -20,26 +20,26 @@ CREATE TABLE Token (
 -- Creación de la tabla Departamento
 CREATE TABLE Departamento (
     id_departamento UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL
+    nombre VARCHAR(100) UNIQUE NOT NULL
 );
 
 -- Creación de la tabla Municipio
 CREATE TABLE Municipio (
     id_municipio UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
+    nombre VARCHAR(100) UNIQUE NOT NULL,
     id_departamento UUID NOT NULL REFERENCES Departamento(id_departamento)
 );
 
 -- Creación de la tabla Categoría
 CREATE TABLE Categoria (
     id_categoria UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL
+    nombre VARCHAR(50) UNIQUE NOT NULL
 );
 
 -- Creación de la tabla Tienda
 CREATE TABLE Tienda (
     id_tienda UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
+    nombre VARCHAR(100) UNIQUE NOT NULL,
     descripcion VARCHAR(255) NOT NULL,
     latitud DOUBLE PRECISION NOT NULL,
     longuitud DOUBLE PRECISION NOT NULL,
