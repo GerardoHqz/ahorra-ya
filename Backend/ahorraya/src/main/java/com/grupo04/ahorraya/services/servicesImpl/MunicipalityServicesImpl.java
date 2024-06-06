@@ -78,4 +78,9 @@ public class MunicipalityServicesImpl implements MunicipalityServices {
 
         municipalityRepository.delete(municipality);
     }
+
+    @Override
+    public List<Municipality> findByDepartment(String department) {
+        return municipalityRepository.findMunicipalitiesByDepartament_Name(department);
+    }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ImageServices {
-    void save(MultipartFile info, Store store, Offer offer) throws Exception;
+    void save(MultipartFile info, UUID store, UUID offer) throws Exception;
     void delete(UUID id);
     Image findById(UUID id);
     Image findByName(String name);

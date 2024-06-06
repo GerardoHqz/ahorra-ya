@@ -5,6 +5,7 @@ import com.grupo04.ahorraya.models.dtos.MessageDTO;
 import com.grupo04.ahorraya.models.entities.Departament;
 import com.grupo04.ahorraya.models.entities.User;
 import com.grupo04.ahorraya.services.DepartamentServices;
+import com.grupo04.ahorraya.services.MunicipalityServices;
 import com.grupo04.ahorraya.services.UserServices;
 import com.grupo04.ahorraya.utils.RequestErrorHandler;
 import jakarta.validation.Valid;
@@ -26,6 +27,9 @@ public class DepartamentController {
 
     @Autowired
     private DepartamentServices departamentServices;
+
+    @Autowired
+    private MunicipalityServices municipalityServices;
 
     @Autowired
     private RequestErrorHandler errorHandler;
@@ -103,6 +107,20 @@ public class DepartamentController {
 
         try{
             return new ResponseEntity<>(departamentServices.getStoresByDepartament(departament.getName()), HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/municipalities/{name}")
+    public ResponseEntity<?> getMunicipalitiesByDepartament(@PathVariable String name){
+        User userFound = userServices.findUserAuthenticated();
+        if (userFound == null)
+            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
+        try{
+            return new ResponseEntity<>(municipalityServices.findByDepartment(name), HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);

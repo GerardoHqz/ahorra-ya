@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,7 +17,7 @@ public class AddImageDTO {
     @NotNull(message = "File can't be empty")
     private MultipartFile file;
     @NotNull(message = "Store can't be empty")
-    private Store store;
+    private UUID store;
     @NotNull(message = "Offer can't be empty")
-    private Offer offer;
+    private UUID offer;
 }

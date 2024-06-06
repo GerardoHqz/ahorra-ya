@@ -106,4 +106,6 @@ public class MunicipalityController {
             return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 }

@@ -14,4 +14,5 @@ public interface MunicipalityServices {
     Municipality findByID(UUID municipalityID);
     Municipality findByName(String name);
     void deleteByName(String name) throws Exception;
+    List<Municipality> findByDepartment(String department);
 }

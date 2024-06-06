@@ -1,6 +1,8 @@
 package com.grupo04.ahorraya.services.servicesImpl;
 
 import com.grupo04.ahorraya.Repository.ImageRepository;
+import com.grupo04.ahorraya.Repository.OfferRepository;
+import com.grupo04.ahorraya.Repository.StoreRepository;
 import com.grupo04.ahorraya.models.entities.Image;
 import com.grupo04.ahorraya.models.entities.Offer;
 import com.grupo04.ahorraya.models.entities.Store;
@@ -26,16 +28,24 @@ public class ImageServicesImpl implements ImageServices {
     @Autowired
     ImageRepository imageRepository;
 
+    @Autowired
+    StoreRepository storeRepository;
+
+    @Autowired
+    OfferRepository offerRepository;
+
     @Value("$upload.directory")
     private String uploadDirectory;
 
     @Override
-    public void save(MultipartFile info, Store store, Offer offer) throws Exception {
+    public void save(MultipartFile info, UUID idStore, UUID idOffer) throws Exception {
         String imageName = UUID.randomUUID().toString() + info.getOriginalFilename();
 
         Path imagePath = Paths.get(uploadDirectory).resolve(imageName).normalize();
         Files.copy(info.getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
 
+        Store store = storeRepository.findByIdStore(idStore);
+        Offer offer = offerRepository.getByIdOffer(idOffer);
         Image image = new Image(imageName, imagePath.toString(), store, offer);
         imageRepository.save(image);
     }
