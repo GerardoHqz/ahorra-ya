@@ -1,95 +1,206 @@
-import React, { useState } from 'react';
-import { Store } from '../interfaces/Stores';
-import { Input } from 'antd';
+import React, { useEffect, useState } from "react";
+import { Store } from "../interfaces/Stores";
+import { Button, Form, Input, Modal, Select } from "antd";
 import { IoIosLink } from "react-icons/io";
 import { FiPhone, FiUser } from "react-icons/fi";
 import { AiOutlineMail } from "react-icons/ai";
+import { getAllDepartmentsService } from "../api/departments";
+import { getAllMunicipalitiesService } from "../api/municipalities";
+import { Department } from "../interfaces/Departments";
+import { Municipality } from "../interfaces/Municipalities";
+import { createStoreService } from "../api/stores";
+import { ToastContainer } from "react-toastify";
 
+type AddStoreFormProps = {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  latitude: number;
+  longitude: number;
+};
 
-const AddStoreForm: React.FC = () => {
-  const [formData, setFormData] = useState<Store>({
-    id: '',
-    name: '',
-    description: '',
-    department: '',
-    town: '',
-    address: '',
-    owner_name: '',
-    website: '',
-    phone: '',
-    email: '',
-  });
+const AddStoreForm = ({
+  open,
+  setOpen,
+  latitude,
+  longitude,
+}: AddStoreFormProps) => {
+  const [departments, setDepartments] = useState<Department[]>([]);
+  const [municipalities, setMunicipalities] = useState<Municipality[]>([]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  useEffect(() => {
+    getAllDepartmentsService(
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTc1NjM5MTAsImV4cCI6MTcxODg1OTkxMH0.oSJa6e8I6DLqmqAYVmLlu-RKM7921Wzv3DmjSYWMoGbxcpCODQEhWhuwykGGs2yi"
+    ).then((data) => setDepartments(data));
+    getAllMunicipalitiesService(
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTc1NjM5MTAsImV4cCI6MTcxODg1OTkxMH0.oSJa6e8I6DLqmqAYVmLlu-RKM7921Wzv3DmjSYWMoGbxcpCODQEhWhuwykGGs2yi"
+    ).then((data) => setMunicipalities(data));
+  }, []);
+
+  const filterOption = (
+    input: string,
+    option?: { label: string; value: string }
+  ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
+  const handleSubmit = async (values: Store) => {
+    values.latitude = latitude;
+    values.longitude = longitude;
+    console.log(values);
+    try {
+      await createStoreService(
+        "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTc1NjM5MTAsImV4cCI6MTcxODg1OTkxMH0.oSJa6e8I6DLqmqAYVmLlu-RKM7921Wzv3DmjSYWMoGbxcpCODQEhWhuwykGGs2yi",
+        values
+      );
+      setOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  
-    const { id, name, description, department, town, address, owner_name, website, phone, email } = formData;
-  
-    console.log("Form data:", { id, name, description, department, town, address, owner_name, website, phone, email });
-    setFormData({
-      id: '',
-      name: '',
-      description: '',
-      department: '',
-      town: '',
-      address: '',
-      owner_name: '',
-      website: '',
-      phone: '',
-      email: '',
-    });
-  };
-  
 
   return (
-    <form onSubmit={handleSubmit} className='flex flex-col'>
-      <label className='flex flex-col pb-8'>
-        Nombre:
-        <input type="text" name="name" value={formData.name} onChange={handleChange} className='border border-secondary-text border-opacity-25 p-2 mt-2 rounded-md '/>
-      </label>
-      <label className='flex flex-col pb-8'>
-        Descripción:
-        <textarea name="description" value={formData.description} onChange={handleChange} className='border border-secondary-text border-opacity-25 p-2 mt-2 rounded-md '/>
-      </label>
-      <span className='flex justify-between'>
-        <label className='flex flex-col pb-8'>
-          Departamento:
-          <input type="text" name="department" value={formData.department} onChange={handleChange} className='w-full border border-secondary-text border-opacity-25 p-2 mt-2 rounded-md '/>
-        </label>
-        <label className='flex flex-col pb-8'>
-          Municipio:
-          <input type="text" name="town" value={formData.town} onChange={handleChange} className='w-full border border-secondary-text border-opacity-25 p-2 mt-2 rounded-md '/>
-        </label>
-      </span>
-      <label className='flex flex-col pb-8'>
-        Dirección:
-        <input type="text" name="address" value={formData.address} onChange={handleChange} className='border border-secondary-text border-opacity-25 p-2 mt-2 rounded-md '/>
-      </label>
-      <hr />
-      <h1 className='text-sm text-secondary-text py-3 mb-5'>Información de contacto</h1>
-      <label className='flex flex-col pb-8'>
-        Propiertario:
-        <Input type="text" name="owner_name" value={formData.owner_name} onChange={handleChange} className='border border-secondary-text border-opacity-25 p-2 mt-2 rounded-md ' prefix={<FiUser size={21} color='#808080'/>} />
-      </label>
-      <label className='flex flex-col pb-8'>
-        Sitio web:
-        <Input type="text" name="website" value={formData.website} onChange={handleChange} className='border border-secondary-text border-opacity-25 p-2 mt-2 rounded-md ' prefix={<IoIosLink size={25} color='#808080'/>} />
-      </label>
-      <label className='flex flex-col pb-8'>
-        Número de teléfono:
-        <Input type="text" name="phone" value={formData.phone} onChange={handleChange} className='border border-secondary-text border-opacity-25 p-2 mt-2 rounded-md ' prefix={<FiPhone size={20} color='#808080'/>} />
-      </label>
-      <label className='flex flex-col pb-8'>
-        Correo electronico:
-        <Input type="text" name="email" value={formData.email} onChange={handleChange} className='border border-secondary-text border-opacity-25 p-2 mt-2 rounded-md ' prefix={<AiOutlineMail size={20} color='#808080'/>} />
-      </label>
-      <button type="submit" className='bg-gradient-to-r from-pink to-orange text-white py-3 rounded-md'>Submit</button>
-    </form>
+    <Modal
+      title="Agregar tienda"
+      style={{ top: 80 }}
+      width={800}
+      open={open}
+      closable={false}
+      footer={[]}
+    >
+      <Form
+        onFinish={handleSubmit}
+        className="flex flex-col gap-3"
+        layout="vertical"
+      >
+        <div className="flex justify-between gap-8">
+          <div className="w-1/2">
+            <Form.Item
+              label="Nombre"
+              name="name"
+              rules={[
+                { required: true, message: "Por favor ingrese un nombre" },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="Descripción"
+              name="description"
+              rules={[
+                {
+                  required: true,
+                  message: "Por favor ingrese una descripción",
+                },
+              ]}
+            >
+              <Input.TextArea autoSize={{ minRows: 3, maxRows: 5 }} />
+            </Form.Item>
+            <span className="flex justify-between gap-4">
+              <Form.Item
+                label="Departamento"
+                name="departament"
+                className="w-1/2"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor seleccione un departamento",
+                  },
+                ]}
+              >
+                <Select
+                  showSearch
+                  placeholder="Seleccione un departamento"
+                  optionFilterProp="children"
+                  filterOption={filterOption}
+                  options={departments.map((department) => ({
+                    value: department.name,
+                    label: department.name,
+                  }))}
+                />
+              </Form.Item>
+              <Form.Item
+                label="Municipio"
+                name="municipality"
+                className="w-1/2"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor seleccione un municipio",
+                  },
+                ]}
+              >
+                <Select
+                  showSearch
+                  placeholder="Seleccione un municipio"
+                  optionFilterProp="children"
+                  filterOption={filterOption}
+                  options={municipalities.map((municipality) => ({
+                    value: municipality.name,
+                    label: municipality.name,
+                  }))}
+                />
+              </Form.Item>
+            </span>
+            <Form.Item
+              label="Dirección"
+              name="direction"
+              rules={[
+                { required: true, message: "Por favor ingrese una dirección" },
+              ]}
+            >
+              <Input.TextArea autoSize={{ minRows: 3, maxRows: 5 }} />
+            </Form.Item>
+          </div>
+          <div className="w-1/2">
+            <Form.Item label="Nombre del contacto" name="ownerName">
+              <Input
+                type="text"
+                name="ownerName"
+                className="border border-secondary-text border-opacity-25 p-2 mt-2 rounded-md "
+                prefix={<FiUser size={20} color="#808080" />}
+              />
+            </Form.Item>
+            <Form.Item label="Número de teléfono" name="phone">
+              <Input
+                type="text"
+                name="phone"
+                className="border border-secondary-text border-opacity-25 p-2 mt-2 rounded-md "
+                prefix={<FiPhone size={20} color="#808080" />}
+              />
+            </Form.Item>
+            <Form.Item label="Correo electrónico" name="email">
+              <Input
+                type="text"
+                name="email"
+                className="border border-secondary-text border-opacity-25 p-2 mt-2 rounded-md "
+                prefix={<AiOutlineMail size={20} color="#808080" />}
+              />
+            </Form.Item>
+            <Form.Item label="Sitio web" name="webSite">
+              <Input
+                type="text"
+                name="webSite"
+                className="border border-secondary-text border-opacity-25 p-2 mt-2 rounded-md "
+                prefix={<IoIosLink size={20} color="#808080" />}
+              />
+            </Form.Item>
+          </div>
+        </div>
+        <div className="flex justify-between">
+          <button
+            type="reset"
+            onClick={() => setOpen(false)}
+            className="py-2 px-4 rounded-md border-2"
+          >
+            Regresar
+          </button>
+          <button
+            type="submit"
+            className="bg-orange-400 py-2 px-4 text-white rounded-md"
+          >
+            Guardar
+          </button>
+        </div>
+      </Form>
+    </Modal>
   );
 };
 
