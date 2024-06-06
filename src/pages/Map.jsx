@@ -52,7 +52,7 @@ const Map = () => {
   }, []);
 
   return (
-    <Layout className="min-h-screen text-bg-dark-blue dark:text-white">
+    <Layout className="min-h-screen flex flex-row text-bg-dark-blue dark:text-white">
       <ToastContainer />
       <AddStoreForm open={openStoreForm} setOpen={setOpenStoreForm} latitude={selectedPosition.lat} longitude={selectedPosition.lng}/>
       <SideMenu />

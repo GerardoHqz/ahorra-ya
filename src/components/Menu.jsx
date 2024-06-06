@@ -1,35 +1,10 @@
 import React, { useState } from "react";
 import { FaUserCircle, FaHome, FaMapMarkedAlt } from "react-icons/fa";
-import { MdOutlineLogout, MdLightMode, MdDarkMode } from "react-icons/md";
-import { Layout, Menu } from "antd";
-import { useNavigate } from "react-router-dom";
-const { Sider } = Layout;
+import { MdOutlineLogout, MdLightMode } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const SideMenu = () => {
-  const [collapsed, setCollapsed] = useState(false);
   const [dark, setDark] = useState(false);
-  const navigate = useNavigate();
-
-  const handleNavigation = (url)=> {
-    navigate(`${url}`)
-  }
-
-  const items = [
-    {
-      key: "inicio",
-      icon: <FaHome />,
-      label: "Inicio",
-      textColor: dark ? "text-white" : "text-black",
-      iconColor: dark ? "white" : "black",
-    },
-    {
-      key: "mapa",
-      icon: <FaMapMarkedAlt />,
-      label: "Mapa",
-      textColor: dark ? "text-white" : "text-black",
-      iconColor: dark ? "white" : "black",
-    },
-  ];
 
   const darkModeHandler = () => {
     setDark(!dark);
@@ -37,63 +12,45 @@ const SideMenu = () => {
   };
 
   return (
-    <Sider
-      className="flex flex-col"
-      theme={dark ? "dark" : "light"}
-      collapsible
-      collapsed={collapsed}
-      onCollapse={(value) => setCollapsed(value)}
-    >
-      <div className="flex m-4 gap-3 items-center justify-center">
-        <FaUserCircle size={20} />
-        <div className={`${collapsed ? "hidden" : "block"}`}>
-          <h1 className="font-bold">Nombre usuario</h1>
+    <div className="w-max h-screen bg-gradient-to-br from-orange-400 to bg-pink-500 dark:from-gray-800 dark:to-gray-800 dark:text-white">
+      <div className="flex items-center p-4 gap-3">
+        <FaUserCircle size={30} />
+        <div>
+          <p className="font-bold">Nombre usuario</p>
           <p>correo@usuario.com</p>
         </div>
       </div>
       <hr />
-      <Menu
-        className="bg-white dark:bg-dark-blue"
-        defaultSelectedKeys={["inicio"]}
-        mode="inline"
-        theme={dark ? "dark" : "light"}
-      >
-        {items.map((item) => (
-          <Menu.Item
-            key={item.key}
-            icon={item.icon}
-            className={`${item.textColor}`}
-          >
-            {item.label}
-          </Menu.Item>
-        ))}
-      </Menu>
-      <div className="flex flex-col h-4/6 mt-12 justify-end m-4 gap-6">
-        <div 
-          className={`flex gap-3 ${collapsed ? "justify-center" : ""}`}
-          onClick={()=>{handleNavigation("/login")}}  
-        >
-          <MdOutlineLogout size={20} />
-          <p className={`${collapsed ? "hidden" : "block"}`}>Cerrar sesión</p>
+      <div className="flex flex-col justify-between h-5/6">
+        <div>
+          <Link to={"/home"}>
+            <div className="flex items-center p-4 gap-3 cursor-pointer hover:bg-orange-300 dark:hover:bg-gray-700">
+              <FaHome size={20} />
+              Inicio
+            </div>
+          </Link>
+          <Link to={"/map"}>
+            <div className="flex items-center p-4 gap-3 cursor-pointer hover:bg-orange-300 dark:hover:bg-gray-700">
+              <FaMapMarkedAlt size={20} />
+              Mapa
+            </div>
+          </Link>
         </div>
-        <button
-          onClick={() => darkModeHandler()}
-          className={`flex gap-3 ${collapsed ? "justify-center" : ""}`}
-        >
-          {dark ? (
-            <div className={`flex gap-3 ${collapsed ? "justify-center" : ""}`}>
-              <MdLightMode size={20} />{" "}
-              <p className={`${collapsed ? "hidden" : "block"}`}>Modo claro</p>
-            </div>
-          ) : (
-            <div className="flex gap-3">
-              <MdDarkMode size={20} />{" "}
-              <p className={`${collapsed ? "hidden" : "block"}`}>Modo oscuro</p>
-            </div>
-          )}
-        </button>
+        <div>
+          <div className="flex items-center p-4 gap-3 cursor-pointer hover:bg-pink-400 dark:hover:bg-gray-700">
+            <MdOutlineLogout size={20} />
+            Cerrar sesión
+          </div>
+          <div
+            className="flex items-center p-4 gap-3 cursor-pointer hover:bg-pink-400 dark:hover:bg-gray-700"
+            onClick={darkModeHandler}
+          >
+            <MdLightMode size={20} />
+            Modo claro/oscuro
+          </div>
+        </div>
       </div>
-    </Sider>
+    </div>
   );
 };
 
