@@ -14,7 +14,7 @@ const createStoreService = (token, data) => {
       .post(baseURL + "/store/", data, config)
       .then((response) => {
         resolve(response.data.message);
-        toast.success(response.data.message);
+        toast.success("Tienda agregada!");
       })
       .catch((error) => {
         reject(error.response.data.message);
