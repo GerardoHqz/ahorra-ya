@@ -1,32 +1,39 @@
 import React from "react";
 import { Card } from "antd";
-const OfferCardStore = ({id, productName, description, duration, image, actualPrice, previousPrice }) => (
+import '../assets/style/AntDesignCustom.css'
+
+const OfferCardStore = ({ id, productName, description, duration, image, actualPrice, previousPrice }) => (
   <Card
     id={id}
     hoverable
     style={{
-      width: "100%",
       display: "flex",
+      marginTop: "5%",
+      padding: "0px !important",
+
     }}
     className="shadow-md grid grid-cols-2"
     cover={
       <img
-        className="object-scale-down h-48 w-24"
+        className="h-48 w-24 object-cover"
         alt={productName}
         src={image}
       />
     }
   >
-    <p className="text-lg font-bold">{productName}</p>
-    <div className=" ">
+
+    <div className="">
+      <p className="text-lg font-bold">{productName}</p>
       <span className="flex">
-        <p className="font-bold text-lg text-red-600 pr-3">${actualPrice}</p>
-        <p className="font-bold text-lg text-secondary-text line-through">${previousPrice}</p>
+
+        <p className="font-bold text-xl text-pink pr-3">${actualPrice}</p>
+        <p className="text-lg text-secondary-text line-through">${previousPrice}</p>
       </span>
-      <p className="py-2 text-base">{description}</p>
-      <p className="text-sm">Valido hasta: {duration}</p>
     </div>
-    
+    <p className="py-2 text-sm">{description}</p>
+    <p className="text-sm ">Valido hasta: {duration}</p>
+
+
   </Card>
 );
 export default OfferCardStore;

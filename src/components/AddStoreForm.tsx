@@ -29,10 +29,10 @@ const AddStoreForm = ({
 
   useEffect(() => {
     getAllDepartmentsService(
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJKb2huRG9lMTIzIUBleGFtcGxlLmNvbSIsImlhdCI6MTcxNzY4MjE4MiwiZXhwIjoxNzE4OTc4MTgyfQ.NOCFEluWldWu3uDVr9vxdU3rNJ1lajBbVGN8mnJyZ2PHSPSvaSpvZX28qKw7fSCc"
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJrYXJlbkBleGFtcGxlLmNvbSIsImlhdCI6MTcxNzgwNzAzMywiZXhwIjoxNzE5MTAzMDMzfQ.FYLsnU2FMmIX1cNwv-ZtYc6mGEBQHl50xapyCZ3tlQShL0hVk0Boay1IqZG9jc5K"
     ).then((data) => setDepartments(data));
     getAllMunicipalitiesService(
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJKb2huRG9lMTIzIUBleGFtcGxlLmNvbSIsImlhdCI6MTcxNzY4MjE4MiwiZXhwIjoxNzE4OTc4MTgyfQ.NOCFEluWldWu3uDVr9vxdU3rNJ1lajBbVGN8mnJyZ2PHSPSvaSpvZX28qKw7fSCc"
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJrYXJlbkBleGFtcGxlLmNvbSIsImlhdCI6MTcxNzgwNzAzMywiZXhwIjoxNzE5MTAzMDMzfQ.FYLsnU2FMmIX1cNwv-ZtYc6mGEBQHl50xapyCZ3tlQShL0hVk0Boay1IqZG9jc5K"
     ).then((data) => setMunicipalities(data));
   }, []);
 
@@ -47,7 +47,7 @@ const AddStoreForm = ({
     console.log(values);
     try {
       await createStoreService(
-        "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJKb2huRG9lMTIzIUBleGFtcGxlLmNvbSIsImlhdCI6MTcxNzY4MjE4MiwiZXhwIjoxNzE4OTc4MTgyfQ.NOCFEluWldWu3uDVr9vxdU3rNJ1lajBbVGN8mnJyZ2PHSPSvaSpvZX28qKw7fSCc",
+        "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJrYXJlbkBleGFtcGxlLmNvbSIsImlhdCI6MTcxNzgwNzAzMywiZXhwIjoxNzE5MTAzMDMzfQ.FYLsnU2FMmIX1cNwv-ZtYc6mGEBQHl50xapyCZ3tlQShL0hVk0Boay1IqZG9jc5K",
         values
       );
       setOpen(false);

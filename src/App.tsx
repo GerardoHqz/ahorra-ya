@@ -4,7 +4,6 @@ import Home from "./pages/Home";
 import { ConfigProvider } from "antd";
 import Login from "./pages/Login";
 import Map from "./pages/Map";
-import StoreOffers from "./components/StoreOffers";
 
 function App() {
   return (
@@ -21,7 +20,6 @@ function App() {
         <Route index element={<Home />} />
         <Route path="/login" element={<Login/>} />
         <Route path="/map" element={<Map/>} />
-        <Route path="/store" element={<StoreOffers/>} />
       </Routes>
     </ConfigProvider>
   );

@@ -1,4 +1,5 @@
 import "leaflet/dist/leaflet.css";
+import "../assets/style/AntDesignCustom.css"
 import { Layout } from "antd";
 import SideMenu from "../components/Menu";
 import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from "react-leaflet";
@@ -10,6 +11,7 @@ import AddStoreForm from "../components/AddStoreForm";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { getAllStoresService } from "../api/stores"
+import StoreOffers from "../components/StoreOffers";
 
 const icon = new Icon ({
   iconUrl: OrangePin,
@@ -22,13 +24,11 @@ const storeIcon = new Icon({
 });
 
 function AddStore({ setOpen, position, setPosition }) {
-
   useMapEvents({
     click(e) {
       setPosition(e.latlng);
     }
   });
-
   return position === null ? null : (
     <Marker position={position} icon={icon}>
       <Popup><button onClick={() => setOpen(true)} className="bg-green-500 p-3 rounded-md text-white shadow-md border-2 border-green-400">Agregar tienda</button></Popup>
@@ -51,9 +51,11 @@ const Map = () => {
   const [openStoreForm, setOpenStoreForm] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState(position);
   const [stores, setStores] = useState([]);
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const [selectedStore, setSelectedStore] = useState(null);
 
   useEffect(() => {
-    const token="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJKb2huRG9lMTIzIUBleGFtcGxlLmNvbSIsImlhdCI6MTcxNzY4MjE4MiwiZXhwIjoxNzE4OTc4MTgyfQ.NOCFEluWldWu3uDVr9vxdU3rNJ1lajBbVGN8mnJyZ2PHSPSvaSpvZX28qKw7fSCc"
+    const token="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJrYXJlbkBleGFtcGxlLmNvbSIsImlhdCI6MTcxNzgwNzAzMywiZXhwIjoxNzE5MTAzMDMzfQ.FYLsnU2FMmIX1cNwv-ZtYc6mGEBQHl50xapyCZ3tlQShL0hVk0Boay1IqZG9jc5K"
     getAllStoresService(token).then((data) => setStores(data));
   }, []);
 
@@ -62,6 +64,16 @@ const Map = () => {
       setPosition([position.coords.latitude, position.coords.longitude]);
     });
   }, []);
+
+  const handleMarkerClick = (store) => {
+    setSelectedStore(store);
+    setDrawerVisible(true);
+  };
+
+  const closeDrawer = () => {
+    setDrawerVisible(false);
+    setSelectedStore(null);
+  };
 
   return (
     <Layout className="min-h-screen text-bg-dark-blue dark:text-white">
@@ -77,21 +89,17 @@ const Map = () => {
           <MapComponent position={position} />
           <AddStore setOpen={setOpenStoreForm} setPosition={setSelectedPosition} position={selectedPosition}/>
 
-          {stores.map((store) => (
-            <Marker key={store.id} position={[store.latitude, store.longuitude]} icon={storeIcon}>
-              <Popup>
-                <div>
-                  <h2>{store.name}</h2>
-                  <p>{store.description}</p>
-                  <p>{store.direction}</p>
-                  <p>{store.ownerName}</p>
-                  <p>{store.website}</p>
-                  <p>{store.phone}</p>
-                  <p>{store.email}</p>
-                </div>
-              </Popup>
-            </Marker>
+         {stores.map((store) => (
+            <Marker 
+              key={store.id} 
+              position={[store.latitude, store.longuitude]} 
+              icon={storeIcon}
+              eventHandlers={{
+                click: () => handleMarkerClick(store),
+              }}
+            />
           ))}
+          <StoreOffers visible={drawerVisible} onClose={closeDrawer} store={selectedStore}/>
         </MapContainer>
       </Layout>
     </Layout>
