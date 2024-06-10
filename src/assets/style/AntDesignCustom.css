@@ -1,0 +1,16 @@
+.ant-drawer-header-title {
+    flex-direction: row-reverse;
+}
+
+.ant-collapse-header{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.ant-card-body {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0px !important; 
+    padding-bottom: 0px !important; 
+    justify-content: space-between !important;
+}
