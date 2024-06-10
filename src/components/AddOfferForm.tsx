@@ -10,7 +10,7 @@ type AddOfferFormProps = {
 };
 
 const AddOfferForm = ({ open, setOpen, id_store }: AddOfferFormProps) => {
-    const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   useEffect(() => {
     getAllCategoriesService(
       "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTc1NjM5MTAsImV4cCI6MTcxODg1OTkxMH0.oSJa6e8I6DLqmqAYVmLlu-RKM7921Wzv3DmjSYWMoGbxcpCODQEhWhuwykGGs2yi"
@@ -24,10 +24,13 @@ const AddOfferForm = ({ open, setOpen, id_store }: AddOfferFormProps) => {
 
   const handleSubmit = async (values: any) => {
     values.id_store = id_store;
-    console.log(values);
+    values.initDate = values.initDate.format("YYYY-MM-DD");
+    values.endDate = values.priceNow.format("YYYY-MM-DD");
+    //Si se le pone de un solo "priceNow" en el form se buguea xd
+    values.priceNow = values.priceAfter;
+    delete values.priceAfter;
     try {
       console.log(values);
-      setOpen(false);
     } catch (error) {
       console.log(error);
     }
@@ -37,7 +40,6 @@ const AddOfferForm = ({ open, setOpen, id_store }: AddOfferFormProps) => {
     <Modal
       title="Agregar oferta"
       style={{ top: 60 }}
-      
       open={open}
       closable={false}
       footer={[]}
@@ -77,7 +79,7 @@ const AddOfferForm = ({ open, setOpen, id_store }: AddOfferFormProps) => {
             </Form.Item>
             <Form.Item
               label="Precio actual"
-              name="priceNow"
+              name="priceAfter"
               className="w-1/2"
               rules={[
                 {
@@ -95,7 +97,10 @@ const AddOfferForm = ({ open, setOpen, id_store }: AddOfferFormProps) => {
               name="initDate"
               className="w-1/2"
             >
-              <DatePicker style={{ width: '100%' }} placeholder="Seleccione una fecha"/>
+              <DatePicker
+                style={{ width: "100%" }}
+                placeholder="Seleccione una fecha"
+              />
             </Form.Item>
             <Form.Item
               label="Fin de la oferta"
@@ -108,20 +113,23 @@ const AddOfferForm = ({ open, setOpen, id_store }: AddOfferFormProps) => {
                 },
               ]}
             >
-              <DatePicker style={{ width: '100%' }} placeholder="Seleccione una fecha"/>
+              <DatePicker
+                style={{ width: "100%" }}
+                placeholder="Seleccione una fecha"
+              />
             </Form.Item>
           </span>
           <Form.Item label="Categoría" name="category">
-          <Select
-                  showSearch
-                  placeholder="Seleccione un municipio"
-                  optionFilterProp="children"
-                  filterOption={filterOption}
-                  options={categories.map((category) => ({
-                    value: category.name,
-                    label: category.name,
-                  }))}
-                />
+            <Select
+              showSearch
+              placeholder="Seleccione un municipio"
+              optionFilterProp="children"
+              filterOption={filterOption}
+              options={categories.map((category) => ({
+                value: category.name,
+                label: category.name,
+              }))}
+            />
           </Form.Item>
         </div>
         <div className="flex justify-between">
@@ -134,7 +142,7 @@ const AddOfferForm = ({ open, setOpen, id_store }: AddOfferFormProps) => {
           </button>
           <button
             type="submit"
-            className="bg-orange-400 py-2 px-4 text-white rounded-md"
+            className="bg-gradient-to-br from-orange to-pink py-2 px-4 text-white rounded-md"
           >
             Guardar
           </button>

@@ -13,6 +13,7 @@ import { createStoreService } from "../api/stores";
 type AddStoreFormProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleUpdateStores: React.Dispatch<React.SetStateAction<boolean>>;
   latitude: number;
   longitude: number;
 };
@@ -20,6 +21,7 @@ type AddStoreFormProps = {
 const AddStoreForm = ({
   open,
   setOpen,
+  handleUpdateStores,
   latitude,
   longitude,
 }: AddStoreFormProps) => {
@@ -28,10 +30,10 @@ const AddStoreForm = ({
 
   useEffect(() => {
     getAllDepartmentsService(
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJrYXJlbkBleGFtcGxlLmNvbSIsImlhdCI6MTcxNzgwNzAzMywiZXhwIjoxNzE5MTAzMDMzfQ.FYLsnU2FMmIX1cNwv-ZtYc6mGEBQHl50xapyCZ3tlQShL0hVk0Boay1IqZG9jc5K"
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTc5OTA1MzEsImV4cCI6MTcxOTI4NjUzMX0.OiP1YZBUmulKfXYIH7Ld7RiDjxbfRCjTmtpWKl5GSmV3kOQNXUMJ-j5Nai42Clc6"
     ).then((data) => setDepartments(data));
     getAllMunicipalitiesService(
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJrYXJlbkBleGFtcGxlLmNvbSIsImlhdCI6MTcxNzgwNzAzMywiZXhwIjoxNzE5MTAzMDMzfQ.FYLsnU2FMmIX1cNwv-ZtYc6mGEBQHl50xapyCZ3tlQShL0hVk0Boay1IqZG9jc5K"
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTc5OTA1MzEsImV4cCI6MTcxOTI4NjUzMX0.OiP1YZBUmulKfXYIH7Ld7RiDjxbfRCjTmtpWKl5GSmV3kOQNXUMJ-j5Nai42Clc6"
     ).then((data) => setMunicipalities(data));
   }, []);
 
@@ -43,13 +45,13 @@ const AddStoreForm = ({
   const handleSubmit = async (values: Store) => {
     values.latitude = latitude;
     values.longitude = longitude;
-    console.log(values);
     try {
       await createStoreService(
-        "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJrYXJlbkBleGFtcGxlLmNvbSIsImlhdCI6MTcxNzgwNzAzMywiZXhwIjoxNzE5MTAzMDMzfQ.FYLsnU2FMmIX1cNwv-ZtYc6mGEBQHl50xapyCZ3tlQShL0hVk0Boay1IqZG9jc5K",
+        "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTc5OTA1MzEsImV4cCI6MTcxOTI4NjUzMX0.OiP1YZBUmulKfXYIH7Ld7RiDjxbfRCjTmtpWKl5GSmV3kOQNXUMJ-j5Nai42Clc6",
         values
       );
       setOpen(false);
+      handleUpdateStores(true);
     } catch (error) {
       console.log(error);
     }
@@ -193,7 +195,7 @@ const AddStoreForm = ({
           </button>
           <button
             type="submit"
-            className="bg-orange-400 py-2 px-4 text-white rounded-md"
+            className="bg-gradient-to-br from-orange to-pink py-2 px-4 text-white rounded-md"
           >
             Guardar
           </button>
