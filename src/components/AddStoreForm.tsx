@@ -27,6 +27,7 @@ const AddStoreForm = ({
 }: AddStoreFormProps) => {
   const [departments, setDepartments] = useState<Department[]>([]);
   const [municipalities, setMunicipalities] = useState<Municipality[]>([]);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     getAllDepartmentsService(
@@ -52,6 +53,7 @@ const AddStoreForm = ({
       );
       setOpen(false);
       handleUpdateStores(true);
+      form.resetFields();
     } catch (error) {
       console.log(error);
     }
@@ -67,6 +69,7 @@ const AddStoreForm = ({
       footer={[]}
     >
       <Form
+        form={form}
         onFinish={handleSubmit}
         className="flex flex-col gap-3"
         layout="vertical"

@@ -13,6 +13,8 @@ type AddOfferFormProps = {
 
 const AddOfferForm = ({ open, setOpen, handleUpdateOffers, idStore }: AddOfferFormProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [form] = Form.useForm();
+
   useEffect(() => {
     getAllCategoriesService(
       "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTgwNjc4NzcsImV4cCI6MTcxOTM2Mzg3N30.dbz7W9OTu1uI6QXKoBXc-eC11LMScugvP6O88rTWjIKVYO7JJsHxjR5af83cwTGj"
@@ -39,6 +41,7 @@ const AddOfferForm = ({ open, setOpen, handleUpdateOffers, idStore }: AddOfferFo
       );
       setOpen(false);
       handleUpdateOffers(true);
+      form.resetFields();
     } catch (error) {
       console.log(error);
     }
@@ -56,6 +59,7 @@ const AddOfferForm = ({ open, setOpen, handleUpdateOffers, idStore }: AddOfferFo
         onFinish={handleSubmit}
         className="flex flex-col gap-3"
         layout="vertical"
+        form={form}
       >
         <div className="flex flex-col justify-between">
           <Form.Item
