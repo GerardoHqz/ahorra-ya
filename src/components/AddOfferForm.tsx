@@ -2,18 +2,20 @@ import React, { useEffect, useState } from "react";
 import { DatePicker, Form, Input, Modal, Select } from "antd";
 import { getAllCategoriesService } from "../api/categories";
 import { Category } from "../interfaces/Categories";
+import { createOfferService } from "../api/offer";
 
 type AddOfferFormProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  id_store: number;
+  handleUpdateOffers: React.Dispatch<React.SetStateAction<boolean>>;
+  idStore: string;
 };
 
-const AddOfferForm = ({ open, setOpen, id_store }: AddOfferFormProps) => {
+const AddOfferForm = ({ open, setOpen, handleUpdateOffers, idStore }: AddOfferFormProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
   useEffect(() => {
     getAllCategoriesService(
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTc1NjM5MTAsImV4cCI6MTcxODg1OTkxMH0.oSJa6e8I6DLqmqAYVmLlu-RKM7921Wzv3DmjSYWMoGbxcpCODQEhWhuwykGGs2yi"
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTgwNjc4NzcsImV4cCI6MTcxOTM2Mzg3N30.dbz7W9OTu1uI6QXKoBXc-eC11LMScugvP6O88rTWjIKVYO7JJsHxjR5af83cwTGj"
     ).then((data) => setCategories(data));
   }, []);
 
@@ -23,14 +25,20 @@ const AddOfferForm = ({ open, setOpen, id_store }: AddOfferFormProps) => {
   ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
   const handleSubmit = async (values: any) => {
-    values.id_store = id_store;
+    values.store = idStore;
+    values.active = true;
     values.initDate = values.initDate.format("YYYY-MM-DD");
     values.endDate = values.priceNow.format("YYYY-MM-DD");
     //Si se le pone de un solo "priceNow" en el form se buguea xd
     values.priceNow = values.priceAfter;
     delete values.priceAfter;
     try {
-      console.log(values);
+      await createOfferService(
+        "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTgwNjc4NzcsImV4cCI6MTcxOTM2Mzg3N30.dbz7W9OTu1uI6QXKoBXc-eC11LMScugvP6O88rTWjIKVYO7JJsHxjR5af83cwTGj",
+        values
+      );
+      setOpen(false);
+      handleUpdateOffers(true);
     } catch (error) {
       console.log(error);
     }
@@ -126,7 +134,7 @@ const AddOfferForm = ({ open, setOpen, id_store }: AddOfferFormProps) => {
               optionFilterProp="children"
               filterOption={filterOption}
               options={categories.map((category) => ({
-                value: category.name,
+                value: category.idCategory,
                 label: category.name,
               }))}
             />

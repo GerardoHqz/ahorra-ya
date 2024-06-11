@@ -18,7 +18,7 @@ export const offers = [
       },
     ],
     store: {
-      id: "1",
+      idStore: "1",
       name: "Pastelería Francesa",
       description: "Venta de pasteles",
       latitude: 13,
@@ -47,7 +47,7 @@ export const offers = [
       },
     ],
     store: {
-      id: "2",
+      idStore: "2",
       name: "Fashion store",
       description: "Venta de ropa nueva",
       latitude: 12,

@@ -1,5 +1,5 @@
 export interface Store {
-  id: string;
+  idStore: string;
   name: string;
   description: string;
   latitude: number;

@@ -14,6 +14,10 @@ import AddOfferForm from "./AddOfferForm";
 
 const StoreOffers = ({ visible, onClose, store }) => {
   // const [offersData, setOffersData] = useState([]);
+
+  //Para actualizar la lista de ofertas automaticamente cada vez que se agrega una nueva
+  const [updateStores, setUpdateStores] = useState(false);
+
   const [openOfferForm, setOpenOfferForm] = useState(false);
   const offers = [
     {
@@ -65,7 +69,7 @@ const StoreOffers = ({ visible, onClose, store }) => {
   // useEffect(() => {
   //     if (store) {
   //         console.log(store.idStore)
-  //         const token = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTc5OTA1MzEsImV4cCI6MTcxOTI4NjUzMX0.OiP1YZBUmulKfXYIH7Ld7RiDjxbfRCjTmtpWKl5GSmV3kOQNXUMJ-j5Nai42Clc6";
+  //         const token = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTgwNjc4NzcsImV4cCI6MTcxOTM2Mzg3N30.dbz7W9OTu1uI6QXKoBXc-eC11LMScugvP6O88rTWjIKVYO7JJsHxjR5af83cwTGj";
   //         getOfferById(token, store.idStore).then((data) => setOffersData(data));
   //     }
   // }, [store]);
@@ -89,7 +93,8 @@ const StoreOffers = ({ visible, onClose, store }) => {
       <AddOfferForm
         open={openOfferForm}
         setOpen={setOpenOfferForm}
-        storeId={store?.idStore}
+        handleUpdateOffers={setUpdateStores}
+        idStore={store?.idStore}
       />
 
       <Drawer

@@ -57,7 +57,7 @@ const Map = () => {
   const [updateStores, setUpdateStores] = useState(false);
 
   useEffect(() => {
-    const token="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTc5OTA1MzEsImV4cCI6MTcxOTI4NjUzMX0.OiP1YZBUmulKfXYIH7Ld7RiDjxbfRCjTmtpWKl5GSmV3kOQNXUMJ-j5Nai42Clc6"
+    const token="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTgwNjc4NzcsImV4cCI6MTcxOTM2Mzg3N30.dbz7W9OTu1uI6QXKoBXc-eC11LMScugvP6O88rTWjIKVYO7JJsHxjR5af83cwTGj"
     getAllStoresService(token).then((data) => setStores(data));
     setUpdateStores(false);
   }, [updateStores]);
@@ -94,7 +94,7 @@ const Map = () => {
 
          {stores.map((store) => (
             <Marker 
-              key={store.id} 
+              key={store.storeId} 
               position={[store.latitude, store.longuitude]} 
               icon={storeIcon}
               eventHandlers={{

@@ -3,6 +3,26 @@ import axios from "axios";
 
 const baseURL = "http://localhost:8080/offer/";
 
+const createOfferService = (token, data) => {
+  return new Promise((resolve, reject) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios
+      .post(baseURL, data, config)
+      .then((response) => {
+        resolve(response.data.message);
+        toast.success("Oferta agregada!");
+      })
+      .catch((error) => {
+        reject(error.response.data.message);
+        toast.error(error.response.data.message);
+      });
+  });
+};
+
 const getOfferById = (token, idTienda) => {
     console.log(idTienda)
     return new Promise((resolve, reject) => {
@@ -48,4 +68,4 @@ const getOfferAll = (token) => {
       });
 };
 
-export { getOfferById, getOfferAll };
+export { createOfferService, getOfferById, getOfferAll };
