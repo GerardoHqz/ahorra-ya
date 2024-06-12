@@ -8,11 +8,10 @@ import logo from "../assets/img/logo.svg"
 import { Image } from 'antd';
 import OfferCard from './OfferCardStore';
 import { LuMapPin } from "react-icons/lu";
-import {getOfferById, getOfferAll} from "../api/offer"
-import { offers as offersData } from '../mock_data/offers';
+import {getOfferAll, getOfferByStore} from "../api/offer"
 
 const StoreOffers = ({ visible, onClose, store }) => {
-    // const [offersData, setOffersData] = useState([]);
+    const [offersData, setOffersData] = useState([]);
     const offers = [
         {
             key: store?.idStore,
@@ -55,13 +54,13 @@ const StoreOffers = ({ visible, onClose, store }) => {
         }
     ];
 
-    // useEffect(() => {
-    //     if (store) {
-    //         console.log(store.idStore)
-    //         const token = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJrYXJlbkBleGFtcGxlLmNvbSIsImlhdCI6MTcxNzgwNzAzMywiZXhwIjoxNzE5MTAzMDMzfQ.FYLsnU2FMmIX1cNwv-ZtYc6mGEBQHl50xapyCZ3tlQShL0hVk0Boay1IqZG9jc5K";
-    //         getOfferById(token, store.idStore).then((data) => setOffersData(data));
-    //     }
-    // }, [store]);
+    useEffect(() => {
+        if (store) {
+            console.log(store.idStore)
+            const token = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJrYXJlbkBleGFtcGxlLmNvbSIsImlhdCI6MTcxNzgwNzAzMywiZXhwIjoxNzE5MTAzMDMzfQ.FYLsnU2FMmIX1cNwv-ZtYc6mGEBQHl50xapyCZ3tlQShL0hVk0Boay1IqZG9jc5K";
+            getOfferByStore(token, store.idStore).then((data) => setOffersData(data));
+        }
+    }, [store]);
 
     const DrawerTitle = () => {
         return (
@@ -102,19 +101,18 @@ const StoreOffers = ({ visible, onClose, store }) => {
                 <Collapse defaultActiveKey={['1']} ghost items={offers} />
                 <hr />
 
-                {offersData.map((offer) => (
+                { offersData.map((offer) => (
                     <OfferCard
                         key={offer.id}
                         id={offer.id}
-                        productName={offer.product_name}
+                        productName={offer.name}
                         description={offer.description}
-                        image={offer.images[0].url}
-                        actualPrice={offer.actual_price}
-                        previousPrice={offer.previous_price}
-                        duration={offer.offer_duration}
+                        
+                        actualPrice={offer.priceNow}
+                        previousPrice={offer.priceBefore}
+                        duration={offer.endDate}
                     />
-                ))}
-
+                )) }
             </Drawer>
         </>
     );

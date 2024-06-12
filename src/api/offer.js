@@ -1,10 +1,10 @@
 import { toast } from "react-toastify";
 import axios from "axios";
 
-const baseURL = "http://localhost:8080/offer/";
+const baseURL = "http://localhost:8080/";
 
-const getOfferById = (token, idTienda) => {
-    console.log(idTienda)
+const getOfferByStore = (token, id) => {
+    console.log(id)
     return new Promise((resolve, reject) => {
         const config = {
           headers: {
@@ -12,17 +12,14 @@ const getOfferById = (token, idTienda) => {
           },
         };
         axios
-          .get(baseURL, {
-            params:{
-                id: idTienda
-            }
-          }, config)
+          .get(baseURL + `store/offers/${id}`, config)
           .then((response) => {
             resolve(response.data);
             console.log(response.data)
           })
           .catch((error) => {
             reject(error);
+            console.log("error",error)
             toast.error(error.response.data.message);
           });
       });
@@ -36,7 +33,7 @@ const getOfferAll = (token) => {
           },
         };
         axios
-          .get(baseURL, config)
+          .get(baseURL + "offer/", config)
           .then((response) => {
             resolve(response.data);
             console.log(response.data)
@@ -48,4 +45,4 @@ const getOfferAll = (token) => {
       });
 };
 
-export { getOfferById, getOfferAll };
+export { getOfferByStore, getOfferAll };
