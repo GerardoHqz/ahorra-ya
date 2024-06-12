@@ -11,13 +11,13 @@ function App() {
       theme={{
         components: {
           Layout: {
-            siderBg: "#023047",
+            siderBg: "linear-gradient(145deg, rgba(255,68,145,1) 0%, rgba(244,141,1,1) 100%)",
           },
         },
       }}
     >
       <Routes>
-        <Route index element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login/>} />
         <Route path="/map" element={<Map/>} />
       </Routes>

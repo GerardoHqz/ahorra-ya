@@ -10,7 +10,7 @@ module.exports = {
         "dark-blue": "#023047",
         "secondary-text":"#BABABA",
         "pink" : "#F9546B",
-        "orange":"FC7551"
+        "orange":"#FC7551"
       },
       boxShadow: {
         '3xl': '0 35px 60px -15px rgba(249, 84, 107, 1)',

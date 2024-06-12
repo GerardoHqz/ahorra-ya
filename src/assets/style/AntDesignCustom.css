@@ -10,7 +10,11 @@
 .ant-card-body {
     display: flex;
     flex-direction: column;
-    padding-top: 0px !important; 
-    padding-bottom: 0px !important; 
+    padding-top: 1% !important; 
+    padding-bottom: 1% !important; 
     justify-content: space-between !important;
+}
+
+.ant-card-cover img{
+    border-radius: 5% !important;
 }

@@ -54,10 +54,13 @@ const Map = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [selectedStore, setSelectedStore] = useState(null);
 
+  const [updateStores, setUpdateStores] = useState(false);
+
   useEffect(() => {
     const token="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJrYXJlbkBleGFtcGxlLmNvbSIsImlhdCI6MTcxNzgwNzAzMywiZXhwIjoxNzE5MTAzMDMzfQ.FYLsnU2FMmIX1cNwv-ZtYc6mGEBQHl50xapyCZ3tlQShL0hVk0Boay1IqZG9jc5K"
     getAllStoresService(token).then((data) => setStores(data));
-  }, []);
+    setUpdateStores(false);
+  }, [updateStores]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -76,9 +79,9 @@ const Map = () => {
   };
 
   return (
-    <Layout className="min-h-screen text-bg-dark-blue dark:text-white">
+    <Layout className="min-h-screen flex flex-row text-bg-dark-blue dark:text-white">
       <ToastContainer />
-      <AddStoreForm open={openStoreForm} setOpen={setOpenStoreForm} latitude={selectedPosition.lat} longitude={selectedPosition.lng}/>
+      <AddStoreForm open={openStoreForm} setOpen={setOpenStoreForm} handleUpdateStores={setUpdateStores} latitude={selectedPosition.lat} longitude={selectedPosition.lng}/>
       <SideMenu />
       <Layout>
         <MapContainer center={position} zoom={13} style={{ height: "100vh" }}>
