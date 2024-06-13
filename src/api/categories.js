@@ -13,6 +13,7 @@ const getAllCategoriesService = (token) => {
     axios
       .get(baseURL + "/category/", config)
       .then((response) => {
+        console.log("si funciona")
         resolve(response.data);
       })
       .catch((error) => {

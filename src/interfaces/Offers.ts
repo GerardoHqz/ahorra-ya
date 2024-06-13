@@ -2,13 +2,12 @@ import { Image } from "./Images";
 import { Store } from "./Stores";
 
 export interface Offer {
-  id: string;
-  product_name: string;
+  idOffer: string;
+  name: string;
   description: string;
-  actual_price: number;
-  previous_price: number;
-  offer_duration: string;
+  priceNow: number;
+  priceBefore: number;
+  endDate: string;
   active: boolean;
-  images: Image[],
   store: Store,
 }
