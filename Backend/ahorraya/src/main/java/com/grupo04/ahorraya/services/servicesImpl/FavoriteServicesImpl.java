@@ -27,16 +27,25 @@ public class FavoriteServicesImpl implements FavoriteServices {
     StoreRepository storeRepository;
 
     @Override
-    public void addFavorite(FavoriteDTO info) {
-        User user = userRepository.findByIdUser(info.getUser());
-        Store store = storeRepository.findByIdStore(info.getStore());
+    public void addFavorite(UUID storeId, UUID userId) {
+        User user = userRepository.findByIdUser(userId);
+        Store store = storeRepository.findByIdStore(storeId);
         Favorite favorite = new Favorite(user, store);
         favoriteRepository.save(favorite);
     }
 
     @Override
-    public void removeFavorite(UUID idFavorite) {
-        favoriteRepository.deleteById(idFavorite);
+    public void removeFavorite(UUID userId, UUID storeId) {
+        Favorite favorite = favoriteRepository.findAll().stream().map(fav -> {
+        	if (fav.getUser().getIdUser().equals(userId) && fav.getStore().getIdStore().equals(storeId)) {
+                return fav;
+            }
+        	return null;
+        }).toList().get(0);
+        		
+        if (favorite != null) {
+            favoriteRepository.delete(favorite);
+        }
     }
 
     @Override

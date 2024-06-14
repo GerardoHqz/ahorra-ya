@@ -11,9 +11,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class FavoriteDTO {
 
-    @NotNull(message = "El usuario es obligatorio")
-    private UUID user;
-
     @NotNull(message = "La tienda es obligatoria")
     private UUID store;
 }

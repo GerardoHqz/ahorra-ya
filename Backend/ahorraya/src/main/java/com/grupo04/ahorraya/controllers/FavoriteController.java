@@ -28,7 +28,7 @@ public class FavoriteController {
     private RequestErrorHandler errorHandler;
 
     @PostMapping("/")
-    public ResponseEntity<?> addFavorite(@RequestBody @Valid FavoriteDTO inf0, BindingResult validations) throws Exception {
+    public ResponseEntity<?> addFavorite(@RequestBody @Valid FavoriteDTO info, BindingResult validations) throws Exception {
         if (validations.hasErrors()) {
             return ResponseEntity.badRequest().body(errorHandler.mapErrors(validations.getFieldErrors()));
         }
@@ -38,27 +38,26 @@ public class FavoriteController {
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
 
         try {
-            favoriteServices.addFavorite(inf0);
+            favoriteServices.addFavorite(info.getStore(), userFound.getIdUser());
             return new ResponseEntity<>(new MessageDTO("Favorite added successfully!"), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> removeFavorite(@PathVariable("id") UUID idFavorite)  {
-
-        User userFound = userService.findUserAuthenticated();
-        if (userFound == null)
-            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
-
-        try {
-            favoriteServices.removeFavorite(idFavorite);
-            return new ResponseEntity<>(new MessageDTO("Favorite removed successfully!"), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @DeleteMapping("/")
+    public ResponseEntity<?> removeFavorite(@RequestBody @Valid FavoriteDTO info, BindingResult validations) {
+    	User userFound = userService.findUserAuthenticated();
+    	if (userFound == null)
+    		return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);		
+    	try {
+    		favoriteServices.removeFavorite(userFound.getIdUser(), info.getStore());
+    		return new ResponseEntity<>(new MessageDTO("Favorite removed successfully!"), HttpStatus.OK);
+    	} catch (Exception e) {
+    		return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
     }
+
 
     @GetMapping("/")
     public ResponseEntity<?> getFavorites() {
