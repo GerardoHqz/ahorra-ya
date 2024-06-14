@@ -11,15 +11,19 @@ type AddOfferFormProps = {
   idStore: string;
 };
 
-const AddOfferForm = ({ open, setOpen, handleUpdateOffers, idStore }: AddOfferFormProps) => {
+const AddOfferForm = ({
+  open,
+  setOpen,
+  handleUpdateOffers,
+  idStore,
+}: AddOfferFormProps) => {
+  const token = localStorage.getItem("token");
+  
   const [categories, setCategories] = useState<Category[]>([]);
   const [form] = Form.useForm();
 
   useEffect(() => {
-    getAllCategoriesService(
-      // "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTc1NjM5MTAsImV4cCI6MTcxODg1OTkxMH0.oSJa6e8I6DLqmqAYVmLlu-RKM7921Wzv3DmjSYWMoGbxcpCODQEhWhuwykGGs2yi"
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTgwNjc4NzcsImV4cCI6MTcxOTM2Mzg3N30.dbz7W9OTu1uI6QXKoBXc-eC11LMScugvP6O88rTWjIKVYO7JJsHxjR5af83cwTGj",
-    ).then((data) => setCategories(data));
+    getAllCategoriesService(token).then((data) => setCategories(data));
   }, []);
 
   const filterOption = (
@@ -36,10 +40,7 @@ const AddOfferForm = ({ open, setOpen, handleUpdateOffers, idStore }: AddOfferFo
     values.priceNow = values.priceAfter;
     delete values.priceAfter;
     try {
-      await createOfferService(
-        "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTgwNjc4NzcsImV4cCI6MTcxOTM2Mzg3N30.dbz7W9OTu1uI6QXKoBXc-eC11LMScugvP6O88rTWjIKVYO7JJsHxjR5af83cwTGj",
-        values
-      );
+      await createOfferService(token, values);
       setOpen(false);
       handleUpdateOffers(true);
       form.resetFields();

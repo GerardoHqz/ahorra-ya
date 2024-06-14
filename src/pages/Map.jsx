@@ -62,6 +62,8 @@ const MapComponent = ({ position, zoom }) => {
 };
 
 const Map = () => {
+  const token = localStorage.getItem("token");
+
   const [position, setPosition] = useState([13.7035233, -89.2116845]);
   const [openStoreForm, setOpenStoreForm] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState(position);
@@ -74,8 +76,6 @@ const Map = () => {
   const [updateStores, setUpdateStores] = useState(false);
 
   useEffect(() => {
-    const token =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTgwNjc4NzcsImV4cCI6MTcxOTM2Mzg3N30.dbz7W9OTu1uI6QXKoBXc-eC11LMScugvP6O88rTWjIKVYO7JJsHxjR5af83cwTGj";
     getAllStoresService(token).then((data) => setStores(data));
     setUpdateStores(false);
   }, [updateStores]);

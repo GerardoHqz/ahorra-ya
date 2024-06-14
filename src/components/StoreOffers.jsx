@@ -13,6 +13,8 @@ import AddOfferForm from "./AddOfferForm";
 import { getOfferAll, getOfferByStore } from "../api/offer"
 
 const StoreOffers = ({ visible, onClose, store }) => {
+    const token = localStorage.getItem("token");
+    
     const [offersData, setOffersData] = useState([]);
     const [openOfferForm, setOpenOfferForm] = useState(false);
     const [updateOffers, setUpdateOffers] = useState();
@@ -66,7 +68,6 @@ const StoreOffers = ({ visible, onClose, store }) => {
 
     useEffect(() => {
         if (store) {
-            const token = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTgwNjc4NzcsImV4cCI6MTcxOTM2Mzg3N30.dbz7W9OTu1uI6QXKoBXc-eC11LMScugvP6O88rTWjIKVYO7JJsHxjR5af83cwTGj";
             getOfferByStore(token, store.idStore).then((data) => setOffersData(data));
             setUpdateOffers(false);
         }

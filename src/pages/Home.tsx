@@ -10,6 +10,7 @@ import StoreOffers from "../components/StoreOffers";
 import { Store } from "../interfaces/Stores";
 
 const Home = () => {
+  const token = localStorage.getItem("token");
   const [recentOffers, setRecentOffers] = useState<Offer[]>([]);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
@@ -25,9 +26,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getOfferAll(
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTgwNjc4NzcsImV4cCI6MTcxOTM2Mzg3N30.dbz7W9OTu1uI6QXKoBXc-eC11LMScugvP6O88rTWjIKVYO7JJsHxjR5af83cwTGj"
-    ).then((data) => setRecentOffers(data));
+    getOfferAll(token).then((data) => setRecentOffers(data));
   }, []);
 
   return (

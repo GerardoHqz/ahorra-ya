@@ -25,19 +25,15 @@ const AddStoreForm = ({
   latitude,
   longitude,
 }: AddStoreFormProps) => {
+  const token = localStorage.getItem("token");
+
   const [departments, setDepartments] = useState<Department[]>([]);
   const [municipalities, setMunicipalities] = useState<Municipality[]>([]);
   const [form] = Form.useForm();
 
   useEffect(() => {
-    getAllDepartmentsService(
-      // "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTc5OTA1MzEsImV4cCI6MTcxOTI4NjUzMX0.OiP1YZBUmulKfXYIH7Ld7RiDjxbfRCjTmtpWKl5GSmV3kOQNXUMJ-j5Nai42Clc6"
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTgwNjc4NzcsImV4cCI6MTcxOTM2Mzg3N30.dbz7W9OTu1uI6QXKoBXc-eC11LMScugvP6O88rTWjIKVYO7JJsHxjR5af83cwTGj",
-    ).then((data) => setDepartments(data));
-    getAllMunicipalitiesService(
-      // "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTc5OTA1MzEsImV4cCI6MTcxOTI4NjUzMX0.OiP1YZBUmulKfXYIH7Ld7RiDjxbfRCjTmtpWKl5GSmV3kOQNXUMJ-j5Nai42Clc6"
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTgwNjc4NzcsImV4cCI6MTcxOTM2Mzg3N30.dbz7W9OTu1uI6QXKoBXc-eC11LMScugvP6O88rTWjIKVYO7JJsHxjR5af83cwTGj",
-    ).then((data) => setMunicipalities(data));
+    getAllDepartmentsService(token).then((data) => setDepartments(data));
+    getAllMunicipalitiesService(token).then((data) => setMunicipalities(data));
   }, []);
 
   const filterOption = (
@@ -49,11 +45,7 @@ const AddStoreForm = ({
     values.latitude = latitude;
     values.longitude = longitude;
     try {
-      await createStoreService(
-        "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTgwNjc4NzcsImV4cCI6MTcxOTM2Mzg3N30.dbz7W9OTu1uI6QXKoBXc-eC11LMScugvP6O88rTWjIKVYO7JJsHxjR5af83cwTGj",
-        // "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGVAdGVzdC5jb20iLCJpYXQiOjE3MTc5OTA1MzEsImV4cCI6MTcxOTI4NjUzMX0.OiP1YZBUmulKfXYIH7Ld7RiDjxbfRCjTmtpWKl5GSmV3kOQNXUMJ-j5Nai42Clc6",
-        values
-      );
+      await createStoreService(token);
       setOpen(false);
       handleUpdateStores(true);
       form.resetFields();
