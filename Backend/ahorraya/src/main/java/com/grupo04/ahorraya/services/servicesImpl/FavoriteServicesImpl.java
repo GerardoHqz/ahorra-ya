@@ -57,4 +57,16 @@ public class FavoriteServicesImpl implements FavoriteServices {
             return null;
         }).toList();
     }
+    
+    @Override
+    public Boolean getOneFavorite(UUID userId, UUID storeId) {
+    	List<Store> fav = favoriteRepository.findAll().stream().map(favorite -> {
+        	if (favorite.getUser().getIdUser().equals(userId) && favorite.getStore().getIdStore().equals(storeId)) {
+                return favorite.getStore();
+            }
+        	return null;
+        }).toList();
+    	
+    	return fav.isEmpty() ? false : true;
+	}
 }

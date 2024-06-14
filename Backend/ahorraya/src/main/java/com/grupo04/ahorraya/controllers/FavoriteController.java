@@ -71,5 +71,17 @@ public class FavoriteController {
             return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    @GetMapping("/{storeId}")
+    public ResponseEntity<?> getOneFavorite(@PathVariable("storeId") UUID storeId) throws Exception {
+    	User userFound = userService.findUserAuthenticated();
+    	if (userFound == null)
+    		return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);		
+    	try {
+    		return new ResponseEntity<>(favoriteServices.getOneFavorite(userFound.getIdUser(), storeId), HttpStatus.OK);
+    	} catch (Exception e) {
+    		return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
+    }
 
 }

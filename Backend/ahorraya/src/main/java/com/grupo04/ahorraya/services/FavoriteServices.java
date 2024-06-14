@@ -10,4 +10,5 @@ public interface FavoriteServices {
     public void addFavorite(UUID userId, UUID storeId) throws Exception;
     public void removeFavorite(UUID userId, UUID storeId) throws Exception;
     public List<Store> getFavorites(UUID userId);
+    public Boolean getOneFavorite(UUID userId, UUID storeId) throws Exception;
 }
