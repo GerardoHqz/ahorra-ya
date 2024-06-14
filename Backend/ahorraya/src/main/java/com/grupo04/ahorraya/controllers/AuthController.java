@@ -71,6 +71,26 @@ public class AuthController {
             }
         }
     }
+    
+    @PostMapping("/login-google")
+    public ResponseEntity<?> loginUser(@RequestBody @Valid EmailDTO email, BindingResult validations) throws Exception{
+    	if (validations.hasErrors()) {
+            return new ResponseEntity<>(errorHandler.mapErrors(validations.getFieldErrors()), HttpStatus.BAD_REQUEST);
+        };
+    	try {
+        	User user = userService.findByUsername(email.getEmail());
+            if (user == null)
+                return new ResponseEntity<>(new MessageDTO("User not found"), HttpStatus.UNAUTHORIZED);
+            else {
+            	Token token = userService.registerToken(user);
+            	return new ResponseEntity<>(new TokenDTO(token), HttpStatus.OK);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> saveUser(@RequestBody @Valid RegisterDTO info, BindingResult validations) throws Exception {

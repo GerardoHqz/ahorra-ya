@@ -21,14 +21,13 @@ public class UserController {
 
     //REVISION
     @PostMapping("/logout")
-    public ResponseEntity<?> logoutUser(@RequestBody TokenDTO token) {
+    public ResponseEntity<?> logoutUser() {
         User userFound = userService.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
 
         try {
-            User user = userService.getUserFromToken(token.getToken());
-            userService.toggleToken(user);
+            userService.cleanTokens(userFound);
             return new ResponseEntity<>(new MessageDTO("User logged out"), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
