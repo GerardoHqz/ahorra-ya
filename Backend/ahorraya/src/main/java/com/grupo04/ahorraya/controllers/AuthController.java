@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +32,17 @@ public class AuthController {
 
     @Autowired
     private RequestErrorHandler errorHandler;
+    
+
+    @GetMapping("/{email}")
+    public ResponseEntity<?> getUserByEmail(@PathVariable("email") String email) {
+        try {
+            User user = userService.findByUsername(email);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody @Valid LoginDTO info, BindingResult validations) throws Exception {

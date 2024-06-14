@@ -19,20 +19,6 @@ public class UserController {
     @Autowired
     private RequestErrorHandler errorHandler;
 
-    @GetMapping("/{email}")
-    public ResponseEntity<?> getUserByEmail(@PathVariable String email) {
-        User userFound = userService.findUserAuthenticated();
-        if (userFound == null)
-            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
-
-        try {
-            User user = userService.findByUsername(email);
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     //REVISION
     @PostMapping("/logout")
     public ResponseEntity<?> logoutUser(@RequestBody TokenDTO token) {
