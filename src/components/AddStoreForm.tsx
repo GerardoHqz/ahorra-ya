@@ -31,9 +31,26 @@ const AddStoreForm = ({
   const [municipalities, setMunicipalities] = useState<Municipality[]>([]);
   const [form] = Form.useForm();
 
+  const handleGetAllDepartments = async () => {
+    try {
+      const data = await getAllDepartmentsService(token);
+      setDepartments(data);
+    } catch (error) {
+    }
+  };
+
+  const handleGetAllMunicipalities = async () => {
+    try {
+      const data = await getAllMunicipalitiesService(token);
+      setMunicipalities(data);
+    } catch (error) {
+    }
+  };
+
   useEffect(() => {
-    getAllDepartmentsService(token).then((data) => setDepartments(data));
-    getAllMunicipalitiesService(token).then((data) => setMunicipalities(data));
+    handleGetAllDepartments();
+    handleGetAllMunicipalities();
+    // eslint-disable-next-line
   }, []);
 
   const filterOption = (
@@ -50,7 +67,6 @@ const AddStoreForm = ({
       handleUpdateStores(true);
       form.resetFields();
     } catch (error) {
-      console.log(error);
     }
   };
 

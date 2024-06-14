@@ -8,7 +8,6 @@ const getUserByEmail = (email) => {
     axios
       .get(baseURL + `/auth/${email}`)
       .then((response) => {
-        console.log(response.data);
         resolve(response.data);
       })
       .catch((error) => {
@@ -51,4 +50,39 @@ const login = (data) => {
   });
 };
 
-export { getUserByEmail, signup, login };
+const loginWithGoogle = (data) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(baseURL + "/auth/login-google", data)
+      .then((response) => {
+        resolve(response.data.token);
+      })
+      .catch((error) => {
+        reject(error.response.data.message);
+        toast.error("Usuario o contraseña incorrectos");
+      });
+  });
+};
+
+const logout = (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  return new Promise((resolve, reject) => {
+    axios
+      .post(baseURL + "/user/logout", null, config)
+      .then((response) => {
+        resolve(response.data);
+        localStorage.removeItem("token");
+        localStorage.removeItem("email");
+      })
+      .catch((error) => {
+        reject(error.response.data.message);
+        toast.error(error.response.data.message);
+      });
+  });
+};
+
+export { getUserByEmail, signup, login, loginWithGoogle, logout };

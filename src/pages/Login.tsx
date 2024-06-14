@@ -4,7 +4,7 @@ import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import { LoginFormData } from "../interfaces/LoginFormData";
 import { useGoogleLogin } from "@react-oauth/google";
-import { getUserByEmail, login } from "../api/auth";
+import { getUserByEmail, login, loginWithGoogle } from "../api/auth";
 import { ToastContainer } from "react-toastify";
 
 const Login = () => {
@@ -30,7 +30,6 @@ const Login = () => {
       localStorage.setItem("email", formData.email);
       navigate("/home");
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -44,11 +43,14 @@ const Login = () => {
           },
         }
       ).then((res) => res.json());
+
       const user = await getUserByEmail(userData.email);
       if (user) {
-        console.log("Usuario registrado");
+        const token = await loginWithGoogle({ email: userData.email });
+        localStorage.setItem("token", token);
+        localStorage.setItem("email", userData.email);
+        navigate("/home");
       } else {
-        console.log("Usuario no registrado");
         navigate("/signin", { state: { email: userData.email } });
       }
     },

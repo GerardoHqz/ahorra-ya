@@ -75,9 +75,17 @@ const Map = () => {
 
   const [updateStores, setUpdateStores] = useState(false);
 
+  const handleGetAllStores = async () => {
+    try {
+      const data = await getAllStoresService(token);
+      setStores(data);
+    } catch (error) {}
+  };
+
   useEffect(() => {
-    getAllStoresService(token).then((data) => setStores(data));
+    handleGetAllStores();
     setUpdateStores(false);
+    // eslint-disable-next-line
   }, [updateStores]);
 
   useEffect(() => {
@@ -105,7 +113,7 @@ const Map = () => {
       setPosition([data[0].lat, data[0].lon]);
       setZoom(16);
     }
-  }
+  };
 
   return (
     <Layout className="min-h-screen flex flex-row text-bg-dark-blue dark:text-white">
@@ -121,7 +129,10 @@ const Map = () => {
       <Layout>
         <MapContainer center={position} zoom={zoom} style={{ height: "100vh" }}>
           <div className="absolute z-[500] mt-5 ml-20 w-10/12 flex gap-4">
-            <Input placeholder="Ingrese una dirección" onChange={(e) => setAddress(e.target.value)} />
+            <Input
+              placeholder="Ingrese una dirección"
+              onChange={(e) => setAddress(e.target.value)}
+            />
             <button
               className="rounded-full bg-gradient-to-br from-orange to-pink text-white p-2 shadow-md"
               onClick={onSearch}

@@ -22,8 +22,16 @@ const AddOfferForm = ({
   const [categories, setCategories] = useState<Category[]>([]);
   const [form] = Form.useForm();
 
+  const handleGetAllCategories = async () => {
+    try {
+      const data = await getAllCategoriesService(token);
+      setCategories(data);
+    } catch (error) {}
+  };
+
   useEffect(() => {
-    getAllCategoriesService(token).then((data) => setCategories(data));
+    handleGetAllCategories();
+    // eslint-disable-next-line
   }, []);
 
   const filterOption = (
@@ -45,7 +53,6 @@ const AddOfferForm = ({
       handleUpdateOffers(true);
       form.resetFields();
     } catch (error) {
-      console.log(error);
     }
   };
 

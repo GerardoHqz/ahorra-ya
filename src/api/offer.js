@@ -35,11 +35,9 @@ const getOfferByStore = (token, id) => {
       .get(baseURL + `store/offers/${id}`, config)
       .then((response) => {
         resolve(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         reject(error);
-        console.log("error", error);
         toast.error(error.response.data.message);
       });
   });
