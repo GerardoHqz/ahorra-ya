@@ -62,4 +62,23 @@ const getOfferAll = (token) => {
   });
 };
 
-export { createOfferService, getOfferByStore, getOfferAll };
+const getOffersByName = (token, name) => {
+  return new Promise((resolve, reject) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios
+      .get(baseURL + `offer/name/${name}`, config)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error.response.data.message);
+        toast.error(error.response.data.message);
+      });
+  });
+};
+
+export { createOfferService, getOfferByStore, getOfferAll, getOffersByName };

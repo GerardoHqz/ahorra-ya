@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { FaUserCircle, FaHome, FaMapMarkedAlt, FaHeart } from "react-icons/fa";
+import { FaUserCircle, FaMapMarkedAlt, FaHeart } from "react-icons/fa";
+import { IoStorefront } from "react-icons/io5";
 import { MdOutlineLogout, MdLightMode } from "react-icons/md";
+import { BiSolidOffer } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../api/auth";
 
@@ -20,7 +22,7 @@ const SideMenu = () => {
       await logout(token);
       navigate("/");
     } catch (error) {}
-  }
+  };
 
   return (
     <div className="w-max h-screen bg-gradient-to-br from-orange to-pink dark:from-gray-800 dark:to-gray-800 dark:text-white">
@@ -33,12 +35,6 @@ const SideMenu = () => {
       <hr />
       <div className="flex flex-col justify-between h-5/6">
         <div>
-          <Link to={"/home"}>
-            <div className="flex items-center p-4 gap-3 cursor-pointer hover:bg-orange-300 dark:hover:bg-gray-700">
-              <FaHome size={20} />
-              Inicio
-            </div>
-          </Link>
           <Link to={"/map"}>
             <div className="flex items-center p-4 gap-3 cursor-pointer hover:bg-orange-300 dark:hover:bg-gray-700">
               <FaMapMarkedAlt size={20} />
@@ -51,9 +47,24 @@ const SideMenu = () => {
               Favoritos
             </div>
           </Link>
+          <Link to={"/offers"}>
+            <div className="flex items-center p-4 gap-3 cursor-pointer hover:bg-orange-300 dark:hover:bg-gray-700">
+              <BiSolidOffer size={20} />
+              Inicio
+            </div>
+          </Link>
+          <Link to={"/stores"}>
+            <div className="flex items-center p-4 gap-3 cursor-pointer hover:bg-orange-300 dark:hover:bg-gray-700">
+              <IoStorefront size={20} />
+              Tiendas
+            </div>
+          </Link>
         </div>
         <div>
-          <div onClick={handleLogout} className="flex items-center p-4 gap-3 cursor-pointer hover:bg-pink-400 dark:hover:bg-gray-700">
+          <div
+            onClick={handleLogout}
+            className="flex items-center p-4 gap-3 cursor-pointer hover:bg-pink-400 dark:hover:bg-gray-700"
+          >
             <MdOutlineLogout size={20} />
             Cerrar sesión
           </div>

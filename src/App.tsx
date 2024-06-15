@@ -1,11 +1,12 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
 import { ConfigProvider } from "antd";
 import Login from "./pages/Login";
 import Map from "./pages/Map";
 import SetPassword from "./pages/SetPassword";
 import Favorites from "./pages/Favorites";
+import Stores from "./pages/Stores";
+import Offers from "./pages/Offers";
 
 function App() {
   return (
@@ -22,9 +23,10 @@ function App() {
       <Routes>
         <Route index element={<Login />} />
         <Route path="/signin" element={<SetPassword />} />
-        <Route path="/home" element={<Home />} />
         <Route path="/map" element={<Map />} />
         <Route path="/favorites" element={<Favorites />} />
+        <Route path="stores" element={<Stores />} />
+        <Route path="/offers" element={<Offers />} />
       </Routes>
     </ConfigProvider>
   );
