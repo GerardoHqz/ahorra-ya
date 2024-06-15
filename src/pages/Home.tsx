@@ -1,42 +1,30 @@
 import { useEffect, useState } from "react";
 import { Layout } from "antd";
 import SideMenu from "../components/Menu";
-import { offers } from "../mock_data/offers";
 import { Offer } from "../interfaces/Offers";
 import { Content } from "antd/es/layout/layout";
 import OfferCard from "../components/OfferCard";
 import { getOfferAll } from "../api/offer";
-import StoreOffers from "../components/StoreOffers";
-import { Store } from "../interfaces/Stores";
 
 const Home = () => {
   const token = localStorage.getItem("token");
   const [recentOffers, setRecentOffers] = useState<Offer[]>([]);
-  const [drawerVisible, setDrawerVisible] = useState(false);
-  const [selectedStore, setSelectedStore] = useState<Store | null>(null);
 
-  const closeDrawer = () => {
-    setDrawerVisible(false);
-    setSelectedStore(null);
-  };
-
-  const handleOfferClick = (store: Store) => {
-    setSelectedStore(store);
-    setDrawerVisible(true);
+  const handleGetAllOffers = async () => {
+    try {
+      const response = await getOfferAll(token);
+      setRecentOffers(response);
+    } catch (error) {}
   };
 
   useEffect(() => {
-    getOfferAll(token).then((data) => setRecentOffers(data));
+    handleGetAllOffers();
+    // eslint-disable-next-line
   }, []);
 
   return (
     <Layout className="min-h-screen flex flex-row text-bg-dark-blue dark:text-white">
       <SideMenu />
-      <StoreOffers
-        visible={drawerVisible}
-        onClose={closeDrawer}
-        store={selectedStore}
-      />
       <Layout>
         <div className="bg-white dark:bg-gray-800 p-6">
           <p className="text-xl">Últimas ofertas</p>
@@ -44,6 +32,7 @@ const Home = () => {
         <Content className="flex gap-8 p-8">
           {recentOffers.map((offer) => (
             <OfferCard
+              key={offer.idOffer}
               id={offer.idOffer}
               productName={offer.name}
               image={/*offer.images[0].url*/ ""}

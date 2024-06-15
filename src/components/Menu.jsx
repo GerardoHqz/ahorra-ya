@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaUserCircle, FaHome, FaMapMarkedAlt } from "react-icons/fa";
+import { FaUserCircle, FaHome, FaMapMarkedAlt, FaHeart } from "react-icons/fa";
 import { MdOutlineLogout, MdLightMode } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../api/auth";
@@ -43,6 +43,12 @@ const SideMenu = () => {
             <div className="flex items-center p-4 gap-3 cursor-pointer hover:bg-orange-300 dark:hover:bg-gray-700">
               <FaMapMarkedAlt size={20} />
               Mapa
+            </div>
+          </Link>
+          <Link to={"/favorites"}>
+            <div className="flex items-center p-4 gap-3 cursor-pointer hover:bg-orange-300 dark:hover:bg-gray-700">
+              <FaHeart size={20} />
+              Favoritos
             </div>
           </Link>
         </div>

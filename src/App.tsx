@@ -5,6 +5,7 @@ import { ConfigProvider } from "antd";
 import Login from "./pages/Login";
 import Map from "./pages/Map";
 import SetPassword from "./pages/SetPassword";
+import Favorites from "./pages/Favorites";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/signin" element={<SetPassword />} />
         <Route path="/home" element={<Home />} />
         <Route path="/map" element={<Map />} />
+        <Route path="/favorites" element={<Favorites />} />
       </Routes>
     </ConfigProvider>
   );
