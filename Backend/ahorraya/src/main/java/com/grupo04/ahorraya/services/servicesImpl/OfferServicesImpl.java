@@ -94,6 +94,12 @@ public class OfferServicesImpl implements OfferServices {
     public List<Offer> getAllOffers() {
         return offerRepository.findAll();
     }
+    
+    @Override
+    public List<Offer> getOffersByName(String name) {
+        return offerRepository.findAll().stream()
+        		.filter(store -> store.getName().toLowerCase().contains(name.toLowerCase())).toList();
+    }
 
     @Override
     public Offer getOfferById(UUID idOffer) {

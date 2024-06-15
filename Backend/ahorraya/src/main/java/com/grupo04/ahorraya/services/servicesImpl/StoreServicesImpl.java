@@ -101,8 +101,21 @@ public class StoreServicesImpl implements StoreServices {
     }
 
     @Override
-    public Store getStoreByName(String name) {
-        return storeRepository.findByName(name);
+    public List<Store> getStoreByName(String name) {
+        return storeRepository.findAll().stream()
+        		.filter(store -> store.getName().toLowerCase().contains(name.toLowerCase())).toList();
+    }
+    
+    @Override
+    public List<Store> getStoreByDepartment(String department) {
+        return storeRepository.findAll().stream()
+        		.filter(store -> store.getDepartament().getName().toLowerCase().contains(department.toLowerCase())).toList();
+    }
+    
+    @Override
+    public List<Store> getStoreByMunicipality(String municipality) {
+        return storeRepository.findAll().stream()
+        		.filter(store -> store.getMunicipality().getName().toLowerCase().contains(municipality.toLowerCase())).toList();
     }
 
     @Override

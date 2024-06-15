@@ -16,7 +16,9 @@ public interface StoreServices {
     void deleteStore(UUID idStore) throws Exception;
     void updateStore(StoreUpdateDTO store) throws Exception;
     Store getStoreById(UUID id);
-    Store getStoreByName(String name);
+    List<Store> getStoreByName(String name);
+    List<Store> getStoreByDepartment(String department);
+    List<Store> getStoreByMunicipality(String municipality);
     List<Store> getAllStores();
     List<Offer> getOffersByStore(UUID idStore);
     List<Offer> getOffersActiveAndByStore(UUID idStore, Boolean active);

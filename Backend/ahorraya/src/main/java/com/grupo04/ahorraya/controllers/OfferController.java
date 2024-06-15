@@ -87,6 +87,20 @@ public class OfferController {
     public ResponseEntity<?> getAllOffers() {
         return new ResponseEntity<>(offerService.getAllOffers(), HttpStatus.OK);
     }
+    
+    @GetMapping("/name/{name}")
+    public ResponseEntity<?> getByName(@PathVariable("name") String name) {
+        User userFound = userService.findUserAuthenticated();
+        if (userFound == null)
+            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
+        try {
+            return new ResponseEntity<>(offerService.getOffersByName(name), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOfferById(@PathVariable("id") UUID id) {

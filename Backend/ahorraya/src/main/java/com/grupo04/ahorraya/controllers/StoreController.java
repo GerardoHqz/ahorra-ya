@@ -119,6 +119,34 @@ public class StoreController {
             return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    @GetMapping("/department/{department}")
+    public ResponseEntity<?> getByDepartment(@PathVariable("department") String department) {
+        User userFound = userService.findUserAuthenticated();
+        if (userFound == null)
+            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
+        try {
+            return new ResponseEntity<>(storeService.getStoreByDepartment(department), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @GetMapping("/municipality/{municipality}")
+    public ResponseEntity<?> getByMunicipality(@PathVariable("municipality") String municipality) {
+        User userFound = userService.findUserAuthenticated();
+        if (userFound == null)
+            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
+        try {
+            return new ResponseEntity<>(storeService.getStoreByMunicipality(municipality), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @GetMapping("/offers/{id}")
     public ResponseEntity<?> getOffersByStore(@PathVariable("id") UUID idStore) {
