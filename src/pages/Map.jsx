@@ -20,6 +20,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { getAllStoresService } from "../api/stores";
 import StoreOffers from "../components/StoreOffers";
 import { FaSearch } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
 
 const icon = new Icon({
   iconUrl: OrangePin,
@@ -62,6 +63,7 @@ const MapComponent = ({ position, zoom }) => {
 };
 
 const Map = () => {
+  const state = useLocation().state;
   const token = localStorage.getItem("token");
 
   const [position, setPosition] = useState([13.7035233, -89.2116845]);
@@ -89,9 +91,15 @@ const Map = () => {
   }, [updateStores]);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setPosition([position.coords.latitude, position.coords.longitude]);
-    });
+    if (state?.location) {
+      const [lat, lng] = state.location.split(",");
+      setPosition([lat, lng]);
+      setZoom(16);
+    } else {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setPosition([position.coords.latitude, position.coords.longitude]);
+      });
+    }
   }, []);
 
   const handleMarkerClick = (store) => {

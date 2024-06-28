@@ -9,59 +9,20 @@ const StoreCard = ({
   id,
   name,
   description,
-  latitude,
-  longitude,
   department,
   municipality,
   address,
-  ownerName,
-  website,
-  phone,
-  email,
 }) => {
-  const contact = [
-    {
-      key: id,
-      label: <h2 className="font-bold">Información de contacto</h2>,
-      children: (
-        <div className="flex flex-col gap-2 -mt-4">
-          {ownerName && (
-            <p className="flex items-center gap-2">
-              <FiUser size={20} color="#808080" />
-              {ownerName}
-            </p>
-          )}
-          {website && (
-            <p className="flex items-center gap-2">
-              <IoIosLink size={20} color="#808080" />
-              {website}
-            </p>
-          )}
-          {phone && (
-            <p className="flex items-center gap-2">
-              <FiPhone size={20} color="#808080" />
-              {phone}
-            </p>
-          )}
-          {email && (
-            <p className="flex items-center gap-2">
-              <AiOutlineMail size={20} color="#808080" />
-              {email}
-            </p>
-          )}
-        </div>
-      ),
-    },
-  ];
+  
   return (
     <Card
       id={id}
       hoverable
       style={{
-        width: 290,
-        height: "max-content",
+        width: 340,
+        height: 345,
       }}
-      className="shadow-md"
+      className="shadow-md flex flex-col justify-between"
       cover={
         <img className="object-scale-down h-48 w-24" alt={name} src={name} />
       }
@@ -75,9 +36,7 @@ const StoreCard = ({
             {address}, {municipality.name}, {department.name}
           </p>
         </div>
-        <div>
-          <Collapse defaultActiveKey={["1"]} ghost items={contact} />
-        </div>
+
       </div>
     </Card>
   );

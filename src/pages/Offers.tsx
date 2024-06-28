@@ -67,6 +67,7 @@ const Offers = () => {
                 storeName={offer.store.name}
                 actualPrice={offer.priceNow}
                 previousPrice={offer.priceBefore}
+                endDate={offer.endDate}
               />
             ))}
           </div>

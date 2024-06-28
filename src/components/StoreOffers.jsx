@@ -3,6 +3,7 @@ import { Button, Drawer, Space } from "antd";
 import { IoIosLink } from "react-icons/io";
 import { FiPhone, FiUser } from "react-icons/fi";
 import { AiOutlineMail } from "react-icons/ai";
+import { FaLocationArrow } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa";
 import { Collapse } from "antd";
 import logo from "../assets/img/logo.svg";
@@ -16,9 +17,12 @@ import {
   deleteFavoriteService,
   getOneFavoriteService,
 } from "../api/favorites";
+import { useNavigate } from "react-router-dom";
 
 const StoreOffers = ({ visible, onClose, store }) => {
   const token = localStorage.getItem("token");
+
+  const navigate = useNavigate();
 
   const [offersData, setOffersData] = useState([]);
   const [openOfferForm, setOpenOfferForm] = useState(false);
@@ -44,6 +48,12 @@ const StoreOffers = ({ visible, onClose, store }) => {
         setIsFavorite(true);
       } catch (error) {}
     }
+  };
+
+  const handleMapLocation = () => {
+    navigate("/map", {
+      state: { location: `${store.latitude}, ${store.longuitude}` },
+    });
   };
 
   const offers = [
@@ -113,10 +123,10 @@ const StoreOffers = ({ visible, onClose, store }) => {
         </span>
         <embed src={logo} className="size-12 mx-5" />
         <FaHeart
-          size={30}
-          color={isFavorite ? "red" : "gray"}
-          onClick={handleToggleFavorite}
-        />
+            size={30}
+            color={isFavorite ? "red" : "gray"}
+            onClick={handleToggleFavorite}
+          />
       </span>
     );
   };
@@ -136,17 +146,22 @@ const StoreOffers = ({ visible, onClose, store }) => {
         width={650}
         onClose={onClose}
         open={visible}
-        extra={
-          <Space>
-            <Button
-              className="bg-pink text-white"
-              onClick={() => setOpenOfferForm(true)}
-            >
-              Añadir oferta
-            </Button>
-          </Space>
-        }
       >
+        <div className="flex justify-between items-center gap-5 pb-5">
+          
+          <Button
+            onClick={handleMapLocation}
+            className="bg-pink text-white flex items-center gap-3"
+          >
+            <FaLocationArrow size={20} /> Ver en el mapa
+          </Button>
+          <Button
+            className="bg-pink text-white"
+            onClick={() => setOpenOfferForm(true)}
+          >
+            Añadir oferta
+          </Button>
+        </div>
         <hr />
         <Image
           className="w-full"

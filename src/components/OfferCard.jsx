@@ -7,15 +7,15 @@ const OfferCard = ({
   storeName,
   actualPrice,
   previousPrice,
+  endDate,
 }) => (
   <Card
     id={id}
-    hoverable
     style={{
       width: 240,
-      height: 315,
+      height: 325,
     }}
-    className="shadow-md"
+    className="shadow-md flex flex-col justify-between"
     cover={
       <img
         className="object-scale-down h-48 w-24"
@@ -30,6 +30,7 @@ const OfferCard = ({
       <p className="font-bold text-lg text-red-600">${actualPrice}</p>
       <p className="font-bold text-lg line-through">${previousPrice}</p>
     </div>
+    <p className="text-sm font-thin text-center">Válido hasta: {endDate}</p>
   </Card>
 );
 export default OfferCard;

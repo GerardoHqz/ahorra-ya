@@ -2,10 +2,16 @@ import { useEffect, useState } from "react";
 import { Input, Layout, Select } from "antd";
 import SideMenu from "../components/Menu";
 import { Content } from "antd/es/layout/layout";
-import { getAllStoresService, getStoresByDepartmentService, getStoresByMunicipalityService, getStoresByNameService } from "../api/stores";
+import {
+  getAllStoresService,
+  getStoresByDepartmentService,
+  getStoresByMunicipalityService,
+  getStoresByNameService,
+} from "../api/stores";
 import { Store } from "../interfaces/Stores";
 import StoreCard from "../components/StoreCard";
 import { FaSearch } from "react-icons/fa";
+import StoreOffers from "../components/StoreOffers";
 
 const items = [
   {
@@ -27,6 +33,19 @@ const Stores = () => {
   const [stores, setStores] = useState<Store[]>([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("1");
+
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const [selectedStore, setSelectedStore] = useState(null);
+
+  const handleMarkerClick = (store: any) => {
+    setSelectedStore(store);
+    setDrawerVisible(true);
+  };
+
+  const closeDrawer = () => {
+    setDrawerVisible(false);
+    setSelectedStore(null);
+  };
 
   const handleGetAllStores = async () => {
     try {
@@ -109,26 +128,27 @@ const Stores = () => {
           >
             Limpiar filtros
           </button>
-          <div className="flex gap-5">
+          <div className="flex gap-5 flex-wrap">
             {stores.map((store) => (
-              <StoreCard
-                key={store.idStore}
-                id={store.idStore}
-                name={store.name}
-                description={store.description}
-                latitude={store.latitude}
-                longitude={store.longitude}
-                department={store.departament}
-                municipality={store.municipality}
-                address={store.direction}
-                ownerName={store.ownerName}
-                website={store.website}
-                phone={store.phone}
-                email={store.email}
-              />
+              <div onClick={() => handleMarkerClick(store)}>
+                <StoreCard
+                  key={store.idStore}
+                  id={store.idStore}
+                  name={store.name}
+                  description={store.description}
+                  department={store.departament}
+                  municipality={store.municipality}
+                  address={store.direction}
+                />
+              </div>
             ))}
           </div>
         </Content>
+        <StoreOffers
+          visible={drawerVisible}
+          onClose={closeDrawer}
+          store={selectedStore}
+        />
       </Layout>
     </Layout>
   );

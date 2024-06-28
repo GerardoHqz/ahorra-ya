@@ -50,7 +50,7 @@ const SideMenu = () => {
           <Link to={"/offers"}>
             <div className="flex items-center p-4 gap-3 cursor-pointer hover:bg-orange-300 dark:hover:bg-gray-700">
               <BiSolidOffer size={20} />
-              Inicio
+              Ofertas
             </div>
           </Link>
           <Link to={"/stores"}>
