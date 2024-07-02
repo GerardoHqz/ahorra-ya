@@ -34,7 +34,7 @@ public class ImageServicesImpl implements ImageServices {
     @Autowired
     OfferRepository offerRepository;
 
-    @Value("$upload.directory")
+    @Value("${upload.directory}")
     private String uploadDirectory;
 
     @Override

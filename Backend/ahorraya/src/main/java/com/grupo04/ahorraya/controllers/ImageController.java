@@ -38,7 +38,7 @@ public class ImageController {
     private OfferServices offerServices;
 
     @PostMapping("/")
-    public ResponseEntity<?> saveImage(@RequestBody @Valid AddImageDTO info, BindingResult validations) throws Exception{
+    public ResponseEntity<?> saveImage(@ModelAttribute @Valid AddImageDTO info, BindingResult validations) throws Exception{
         User userFound = userServices.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
@@ -79,7 +79,7 @@ public class ImageController {
         }
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/name/{name}")
     public ResponseEntity<?> getImageByName(@PathVariable String name){
         User userFound = userServices.findUserAuthenticated();
         if (userFound == null)
