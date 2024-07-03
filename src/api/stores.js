@@ -99,4 +99,23 @@ const getStoresByMunicipalityService = (token, municipality) => {
   });
 };
 
-export { createStoreService, getAllStoresService, getStoresByNameService, getStoresByDepartmentService, getStoresByMunicipalityService };
+const deleteStore = (token, id) => {
+  return new Promise((resolve, reject) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios
+      .get(baseURL + `/store//${id}`, config)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error.response.data.message);
+        toast.error(error.response.data.message);
+      });
+  });
+};
+
+export { createStoreService, getAllStoresService, getStoresByNameService, getStoresByDepartmentService, getStoresByMunicipalityService  };

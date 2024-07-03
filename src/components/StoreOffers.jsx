@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Drawer, Space } from "antd";
+import { Button, Drawer, Space, Popover, Modal   } from "antd";
 import { IoIosLink } from "react-icons/io";
 import { FiPhone, FiUser } from "react-icons/fi";
 import { AiOutlineMail } from "react-icons/ai";
@@ -20,9 +20,11 @@ import {
 import { useNavigate } from "react-router-dom";
 import { getStoreImage } from "../api/images";
 
-const StoreOffers = ({ visible, onClose, store }) => {
-  const token = localStorage.getItem("token");
+import { SlOptions } from "react-icons/sl";
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 
+const StoreOffers = ({ visible, onClose, store, handleUpdateOffers }) => {
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
   const [offersData, setOffersData] = useState([]);
@@ -30,6 +32,7 @@ const StoreOffers = ({ visible, onClose, store }) => {
   const [updateOffers, setUpdateOffers] = useState();
   const [isFavorite, setIsFavorite] = useState(false);
   const [image, setImage] = useState();
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -67,6 +70,37 @@ const StoreOffers = ({ visible, onClose, store }) => {
       state: { location: `${store.latitude}, ${store.longuitude}` },
     });
   };
+
+  const showModal = () => {
+    setOpen(true);
+  };
+
+  const handleOk = async () => {
+    try {
+      // await deleteOffer(token, store.idStore);
+      handleUpdateOffers(true);
+    } catch (error) {
+      console.error('Error al eliminar el elemento:', error);
+    }
+  };
+
+  const handleCancel = () => {
+    console.log('Clicked cancel button');
+    setOpen(false);
+  };
+
+  const content = (
+    <div>
+      <span className="flex p-2 hover:bg-orange hover:bg-opacity-25 hover:cursor-pointer active:bg-opacity-50" onClick={showModal}>
+        <AiOutlineDelete size={20} />
+        <p className="pl-2">Eliminar</p>
+      </span>
+      <span className="flex p-2 hover:bg-orange hover:bg-opacity-25 hover:cursor-pointer active:bg-opacity-50">
+        <AiOutlineEdit size={20} />
+        <p className="pl-2">Editar</p>
+      </span>
+    </div>
+  );
 
   const offers = [
     {
@@ -126,20 +160,30 @@ const StoreOffers = ({ visible, onClose, store }) => {
 
   const DrawerTitle = () => {
     return (
-      <span className="flex items-center">
-        <span>
-          <h1 className="text-xl font-bold">{store?.name}</h1>
-          <h2 className="text-sm text-secondary-text">
-            {store?.departament.name}, {store?.municipality.name}
-          </h2>
+      <div className="flex justify-between items-center">
+        <span className="flex items-center">
+          <span className="pr-3">
+            <h1 className="text-xl font-bold">{store?.name}</h1>
+            <h2 className="text-sm text-secondary-text">
+              {store?.departament.name}, {store?.municipality.name}
+            </h2>
+          </span>
+          <FaHeart
+              size={30}
+              color={isFavorite ? "red" : "gray"}
+              onClick={handleToggleFavorite}
+            />
         </span>
-        <embed src={logo} className="size-12 mx-5" />
-        <FaHeart
-            size={30}
-            color={isFavorite ? "red" : "gray"}
-            onClick={handleToggleFavorite}
-          />
-      </span>
+        <Space wrap>
+            <Popover content={content} trigger="click"
+              style={{
+                width: "20%",
+                padding: "0px !important",
+              }}>
+              <SlOptions />
+            </Popover>
+          </Space>
+      </div>
     );
   };
 
@@ -199,9 +243,18 @@ const StoreOffers = ({ visible, onClose, store }) => {
             actualPrice={offer.priceNow}
             previousPrice={offer.priceBefore}
             duration={offer.endDate}
+            handleUpdateOffers={setUpdateOffers}
           />
         ))}
       </Drawer>
+      <Modal
+        title="Confirmación"
+        open={open}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <p>¿Esta seguro que desea eliminar esta oferta?</p>
+      </Modal>
     </>
   );
 };
