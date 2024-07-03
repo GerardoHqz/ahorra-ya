@@ -15,6 +15,6 @@ public interface ImageServices {
     Image findById(UUID id);
     Image findByName(String name);
     Resource getImage(String name);
-    List<Image> getImageByStore(Store store);
-    List<Image> getImageByOffer(Offer offer);
+    Resource getImageByStore(Store store);
+    Resource getImageByOffer(Offer offer);
 }
