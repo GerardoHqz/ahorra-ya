@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface OfferServices {
-    void createOffer(OfferDTO offer) throws Exception;
+    UUID createOffer(OfferDTO offer) throws Exception;
     void updateOffer(OfferUpdateDTO offer) throws Exception;
     void  deleteOffer(UUID idOffer) throws Exception;
     List<Offer> getAllOffers();

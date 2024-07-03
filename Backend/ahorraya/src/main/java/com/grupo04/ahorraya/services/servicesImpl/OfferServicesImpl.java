@@ -29,7 +29,7 @@ public class OfferServicesImpl implements OfferServices {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public void createOffer(OfferDTO offer) throws Exception {
+    public UUID createOffer(OfferDTO offer) throws Exception {
         try{
             Category category = categoryRepository.getByIdCategory(offer.getCategory());
             Store store = storeRepository.findByIdStore(offer.getStore());
@@ -42,6 +42,7 @@ public class OfferServicesImpl implements OfferServices {
             Offer newOffer = new Offer(offer.getName(), offer.getDescription(), offer.getPriceBefore(), offer.getPriceNow(),
                     offer.getInitDate(), offer.getEndDate(), offer.getActive(), store, category);
             offerRepository.save(newOffer);
+            return newOffer.getIdOffer();
         }
         catch (Exception e){
             throw new Exception("Error al crear la oferta");

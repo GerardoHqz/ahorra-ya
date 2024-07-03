@@ -34,7 +34,7 @@ public class StoreServicesImpl implements StoreServices {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public void saveStore(StoreDTO info) throws Exception {
+    public UUID saveStore(StoreDTO info) throws Exception {
         Departament departament = departamentRepository.findByName(info.getDepartament());
         if (departament == null) {
             throw new Exception("Departament not found");
@@ -49,6 +49,7 @@ public class StoreServicesImpl implements StoreServices {
                 info.getLongitude(), departament, municipality, info.getDirection(), info.getOwnerName(),
                 info.getWebSite(), info.getPhone(), info.getEmail());
         storeRepository.save(store);
+        return store.getIdStore();
     }
 
     @Override

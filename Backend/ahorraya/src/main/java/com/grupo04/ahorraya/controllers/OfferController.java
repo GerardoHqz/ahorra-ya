@@ -42,8 +42,8 @@ public class OfferController {
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
 
         try {
-            offerService.createOffer(info);
-            return new ResponseEntity<>(new MessageDTO("Offer Created!"), HttpStatus.OK);
+            UUID offerID = offerService.createOffer(info);
+            return new ResponseEntity<>(new MessageDTO(offerID.toString()), HttpStatus.OK);
         } catch (Exception e) {
            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
