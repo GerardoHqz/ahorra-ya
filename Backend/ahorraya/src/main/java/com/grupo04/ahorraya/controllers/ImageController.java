@@ -141,4 +141,24 @@ public class ImageController {
         }
     }
 
+    @DeleteMapping("/offer/{id}")
+    public ResponseEntity<?> deleteImagesByOffer(@PathVariable UUID id){
+        User userFound = userServices.findUserAuthenticated();
+        if (userFound == null)
+            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
+        Offer offer = offerServices.getOfferById(id);
+        if (offer == null){
+            return new ResponseEntity<>(new MessageDTO("Offer not found"), HttpStatus.NOT_FOUND);
+        }
+
+        try{
+            imageServices.deleteByOffer(offer);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

@@ -14,6 +14,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -62,6 +63,24 @@ public class ImageServicesImpl implements ImageServices {
     public void delete(UUID id) {
         Image image = imageRepository.findImageByidImage(id);
         imageRepository.delete(image);
+    }
+
+    @Override
+    public void deleteByOffer(Offer offer) {
+        List<Image> images = imageRepository.findAllByOffer(offer);
+
+        for (Image image : images) {
+            File file = new File(image.getUrl());
+            if (file.exists()) {
+                if (file.delete()) {
+                    System.out.println("Deleted file: " + image.getUrl());
+                } else {
+                    System.out.println("Failed to delete file: " + image.getUrl());
+                }
+            }
+        }
+
+        imageRepository.deleteAll(images);
     }
 
     @Override

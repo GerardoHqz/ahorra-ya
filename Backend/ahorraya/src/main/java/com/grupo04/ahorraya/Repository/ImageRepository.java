@@ -15,4 +15,6 @@ public interface ImageRepository extends JpaRepository<Image, UUID> {
 
     List<Image> findAllByStore(Store store);
     List<Image> findAllByOffer(Offer offer);
+
+    void deleteAllByOffer(Offer offer);
 }

@@ -12,6 +12,7 @@ import java.util.UUID;
 public interface ImageServices {
     void save(MultipartFile info, UUID store, UUID offer) throws Exception;
     void delete(UUID id);
+    void deleteByOffer(Offer offer);
     Image findById(UUID id);
     Image findByName(String name);
     Resource getImage(String name);
