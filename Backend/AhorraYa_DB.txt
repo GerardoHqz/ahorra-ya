@@ -62,7 +62,7 @@ CREATE TABLE Oferta (
     fecha_inicio VARCHAR NOT NULL,
     fecha_fin VARCHAR NOT NULL,
     activo BOOLEAN NOT NULL DEFAULT TRUE,
-    id_tienda UUID NOT NULL REFERENCES Tienda(id_tienda)
+    id_tienda UUID NOT NULL REFERENCES Tienda(id_tienda),
     id_categoria UUID NOT NULL REFERENCES Categoria(id_categoria)
 );
 
@@ -76,6 +76,7 @@ CREATE TABLE Favorito (
 -- Creación de la tabla Imagen
 CREATE TABLE Imagen (
     id_imagen UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    nombre VARCHAR NOT NULL,
     url VARCHAR NOT NULL,
     id_tienda UUID REFERENCES Tienda(id_tienda),
     id_oferta UUID REFERENCES Oferta(id_oferta)
