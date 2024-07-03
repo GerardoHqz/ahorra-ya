@@ -1,6 +1,7 @@
 package com.grupo04.ahorraya.services.servicesImpl;
 
 import com.grupo04.ahorraya.Repository.CategoryRepository;
+import com.grupo04.ahorraya.Repository.ImageRepository;
 import com.grupo04.ahorraya.Repository.OfferRepository;
 import com.grupo04.ahorraya.Repository.StoreRepository;
 import com.grupo04.ahorraya.models.dtos.OfferDTO;
@@ -8,6 +9,7 @@ import com.grupo04.ahorraya.models.dtos.OfferUpdateDTO;
 import com.grupo04.ahorraya.models.entities.Category;
 import com.grupo04.ahorraya.models.entities.Offer;
 import com.grupo04.ahorraya.models.entities.Store;
+import com.grupo04.ahorraya.services.ImageServices;
 import com.grupo04.ahorraya.services.OfferServices;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class OfferServicesImpl implements OfferServices {
 
     @Autowired
     private StoreRepository storeRepository;
+
+    @Autowired
+    private ImageServices imageServices;
 
     @Override
     @Transactional(rollbackOn = Exception.class)
@@ -83,10 +88,31 @@ public class OfferServicesImpl implements OfferServices {
     @Transactional(rollbackOn = Exception.class)
     public void deleteOffer(UUID idOffer) throws Exception {
         try{
+            Offer offer = offerRepository.getByIdOffer(idOffer);
+            if (offer == null)
+                throw new Exception("La oferta no existe");
+
+            imageServices.deleteByOffer(offer);
             offerRepository.deleteById(idOffer);
         }
         catch (Exception e){
             throw new Exception("Error al eliminar la oferta");
+        }
+    }
+
+    @Override
+    public void deleteOffersByStore(UUID idStore) throws Exception {
+        try {
+            List<Offer> offers = offerRepository.findOffersByStore_IdStore(idStore);
+            System.out.println("Number of Offers: " + offers.size());
+            for (Offer offer : offers) {
+                System.out.println("Deleting images for offer: " + offer.getIdOffer());
+                imageServices.deleteByOffer(offer);
+                System.out.println("Deleting offer: " + offer.getIdOffer());
+                offerRepository.deleteById(offer.getIdOffer());
+            }
+        } catch (Exception e) {
+            throw new Exception("Error al eliminar las ofertas");
         }
     }
 

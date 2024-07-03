@@ -4,6 +4,8 @@ import com.grupo04.ahorraya.models.dtos.MessageDTO;
 import com.grupo04.ahorraya.models.dtos.StoreDTO;
 import com.grupo04.ahorraya.models.dtos.StoreUpdateDTO;
 import com.grupo04.ahorraya.models.entities.User;
+import com.grupo04.ahorraya.services.ImageServices;
+import com.grupo04.ahorraya.services.OfferServices;
 import com.grupo04.ahorraya.services.StoreServices;
 import com.grupo04.ahorraya.services.UserServices;
 import com.grupo04.ahorraya.utils.RequestErrorHandler;
@@ -24,6 +26,12 @@ public class StoreController {
 
     @Autowired
     private UserServices userService;
+
+    @Autowired
+    private OfferServices offerServices;
+
+    @Autowired
+    private ImageServices imageServices;
 
     @Autowired
     private RequestErrorHandler errorHandler;
@@ -52,6 +60,10 @@ public class StoreController {
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
         try {
+            //Eliminar las ofertas de la tienda
+            offerServices.deleteOffersByStore(idStore);
+
+            //Se elimina la tienda
             storeService.deleteStore(idStore);
             return new ResponseEntity<>(new MessageDTO("Store deleted"), HttpStatus.OK);
         } catch (Exception e) {

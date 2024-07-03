@@ -11,6 +11,7 @@ public interface OfferServices {
     void createOffer(OfferDTO offer) throws Exception;
     void updateOffer(OfferUpdateDTO offer) throws Exception;
     void  deleteOffer(UUID idOffer) throws Exception;
+    void deleteOffersByStore(UUID idStore) throws Exception;
     List<Offer> getAllOffers();
     List<Offer> getOffersByName(String name);
     List<Offer> getOfferByActive(Boolean active);

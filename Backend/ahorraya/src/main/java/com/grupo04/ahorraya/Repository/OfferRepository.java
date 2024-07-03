@@ -11,4 +11,6 @@ public interface OfferRepository extends JpaRepository<Offer, UUID> {
     Offer getByIdOffer(UUID idOffer);
     Offer getByName(String name);
     List<Offer> findOfferByActive(Boolean active);
+    List<Offer> findOffersByStore_IdStore(UUID idStore);
+
 }
