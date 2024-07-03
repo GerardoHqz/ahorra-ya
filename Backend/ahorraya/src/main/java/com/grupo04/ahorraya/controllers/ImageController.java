@@ -108,7 +108,9 @@ public class ImageController {
 
         try{
         	Resource resource = imageServices.getImageByStore(store);
-        	return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
+        	if(resource != null)
+        		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
+            return new ResponseEntity<>(new MessageDTO("No image found"), HttpStatus.OK);
         	
         }catch (Exception e){
             e.printStackTrace();
@@ -129,7 +131,9 @@ public class ImageController {
 
         try{
         	Resource resource = imageServices.getImageByOffer(offer);
-        	return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
+        	if(resource != null)
+        		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
+            return new ResponseEntity<>(new MessageDTO("No image found"), HttpStatus.OK);
         	
         }catch (Exception e){
             e.printStackTrace();

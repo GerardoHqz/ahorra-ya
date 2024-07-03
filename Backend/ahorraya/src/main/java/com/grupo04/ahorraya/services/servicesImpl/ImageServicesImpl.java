@@ -93,13 +93,17 @@ public class ImageServicesImpl implements ImageServices {
 
     @Override
     public Resource getImageByStore(Store store) {
-    	String imageName =  imageRepository.findAllByStore(store).get(0).getName();
-        return getImage(imageName);
+    	List<Image> imageName =  imageRepository.findAllByStore(store);
+    	if(!imageName.isEmpty())
+    		return getImage(imageName.get(0).getName());
+    	return null;
     }
 
     @Override
     public Resource getImageByOffer(Offer offer) {
-    	String imageName =  imageRepository.findAllByOffer(offer).get(0).getName();
-        return getImage(imageName);
+    	List<Image> imageName =  imageRepository.findAllByOffer(offer);
+    	if(!imageName.isEmpty())
+    		return getImage(imageName.get(0).getName());
+    	return null;
     }
 }
