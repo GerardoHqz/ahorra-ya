@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { DatePicker, Form, Input, Modal, Select } from "antd";
+import { Button, DatePicker, Form, Input, Modal, Select, Upload } from "antd";
 import { getAllCategoriesService } from "../api/categories";
 import { Category } from "../interfaces/Categories";
 import { createOfferService } from "../api/offer";
+import { createImageService } from "../api/images";
+import { BsUpload } from "react-icons/bs";
 
 type AddOfferFormProps = {
   open: boolean;
@@ -18,8 +20,9 @@ const AddOfferForm = ({
   idStore,
 }: AddOfferFormProps) => {
   const token = localStorage.getItem("token");
-  
+
   const [categories, setCategories] = useState<Category[]>([]);
+  const [image, setImage] = useState<File | null>(null);
   const [form] = Form.useForm();
 
   const handleGetAllCategories = async () => {
@@ -47,19 +50,23 @@ const AddOfferForm = ({
     //Si se le pone de un solo "priceNow" en el form se buguea xd
     values.priceNow = values.priceAfter;
     delete values.priceAfter;
+
     try {
-      await createOfferService(token, values);
+      const offerID = await createOfferService(token, values);
+      if (image) {
+        await createImageService(token, { file: image, offer: offerID });
+      }
       setOpen(false);
       handleUpdateOffers(true);
       form.resetFields();
-    } catch (error) {
-    }
+      setImage(null);
+    } catch (error) {}
   };
 
   return (
     <Modal
       title="Agregar oferta"
-      style={{ top: 60 }}
+      style={{ top: 40 }}
       open={open}
       closable={false}
       footer={[]}
@@ -152,6 +159,17 @@ const AddOfferForm = ({
               }))}
             />
           </Form.Item>
+          <Upload
+              beforeUpload={(file) => {
+                setImage(file);
+                return false;
+              }}
+              listType="picture"
+              maxCount={1}
+              accept="image/*"
+            >
+              <Button icon={<BsUpload />}>Agregar imagen</Button>
+            </Upload>
         </div>
         <div className="flex justify-between">
           <button

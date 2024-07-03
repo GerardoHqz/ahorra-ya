@@ -18,6 +18,7 @@ import {
   getOneFavoriteService,
 } from "../api/favorites";
 import { useNavigate } from "react-router-dom";
+import { getStoreImage } from "../api/images";
 
 const StoreOffers = ({ visible, onClose, store }) => {
   const token = localStorage.getItem("token");
@@ -28,6 +29,17 @@ const StoreOffers = ({ visible, onClose, store }) => {
   const [openOfferForm, setOpenOfferForm] = useState(false);
   const [updateOffers, setUpdateOffers] = useState();
   const [isFavorite, setIsFavorite] = useState(false);
+  const [image, setImage] = useState();
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const imageURL = await getStoreImage(token, store.idStore);
+        setImage(imageURL);
+      } catch (error) {}
+    };
+    fetchImage();
+  }, [store, token]);
 
   const handleVerifyFavorite = async () => {
     try {
@@ -165,7 +177,8 @@ const StoreOffers = ({ visible, onClose, store }) => {
         <hr />
         <Image
           className="w-full"
-          src="https://erf.org.eg/app/themes/website2020/resources/assets/images/placeholder.jpg"
+          src={image}
+          alt={store?.name}
         />
         <p className="text-black py-5">{store?.description}</p>
         <p className="pb-5 flex items-center ">
@@ -182,7 +195,6 @@ const StoreOffers = ({ visible, onClose, store }) => {
             key={offer.idOffer}
             id={offer.idOffer}
             productName={offer.name}
-            image="https://erf.org.eg/app/themes/website2020/resources/assets/images/placeholder.jpg"
             description={offer.description}
             actualPrice={offer.priceNow}
             previousPrice={offer.priceBefore}

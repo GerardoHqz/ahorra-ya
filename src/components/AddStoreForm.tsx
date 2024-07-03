@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Store } from "../interfaces/Stores";
-import { Form, Input, Modal, Select } from "antd";
+import { Button, Form, Input, Modal, Select, Upload } from "antd";
 import { IoIosLink } from "react-icons/io";
 import { FiPhone, FiUser } from "react-icons/fi";
+import { BsUpload } from "react-icons/bs";
 import { AiOutlineMail } from "react-icons/ai";
 import { getAllDepartmentsService } from "../api/departments";
 import { getAllMunicipalitiesService } from "../api/municipalities";
 import { Department } from "../interfaces/Departments";
 import { Municipality } from "../interfaces/Municipalities";
 import { createStoreService } from "../api/stores";
+import { createImageService } from "../api/images";
 
 type AddStoreFormProps = {
   open: boolean;
@@ -29,22 +31,22 @@ const AddStoreForm = ({
 
   const [departments, setDepartments] = useState<Department[]>([]);
   const [municipalities, setMunicipalities] = useState<Municipality[]>([]);
+  const [image, setImage] = useState<File | null>(null);
+
   const [form] = Form.useForm();
 
   const handleGetAllDepartments = async () => {
     try {
       const data = await getAllDepartmentsService(token);
       setDepartments(data);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const handleGetAllMunicipalities = async () => {
     try {
       const data = await getAllMunicipalitiesService(token);
       setMunicipalities(data);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -62,12 +64,15 @@ const AddStoreForm = ({
     values.latitude = latitude;
     values.longitude = longitude;
     try {
-      await createStoreService(token);
+      const storeID = await createStoreService(token, values);
+      if(image) {
+        await createImageService(token, {file: image, store: storeID});
+      }
       setOpen(false);
       handleUpdateStores(true);
       form.resetFields();
-    } catch (error) {
-    }
+      setImage(null);
+    } catch (error) {}
   };
 
   return (
@@ -197,6 +202,17 @@ const AddStoreForm = ({
                 prefix={<IoIosLink size={20} color="#808080" />}
               />
             </Form.Item>
+            <Upload
+              beforeUpload={(file) => {
+                setImage(file);
+                return false;
+              }}
+              listType="picture"
+              maxCount={1}
+              accept="image/*"
+            >
+              <Button icon={<BsUpload />}>Agregar imagen</Button>
+            </Upload>
           </div>
         </div>
         <div className="flex justify-between">

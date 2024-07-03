@@ -1,9 +1,7 @@
-import React from "react";
-import { Card, Collapse } from "antd";
+import React, { useEffect, useState } from "react";
+import { Card } from "antd";
 import { TbMapPinFilled } from "react-icons/tb";
-import { FiPhone, FiUser } from "react-icons/fi";
-import { IoIosLink } from "react-icons/io";
-import { AiOutlineMail } from "react-icons/ai";
+import { getStoreImage } from "../api/images";
 
 const StoreCard = ({
   id,
@@ -13,7 +11,19 @@ const StoreCard = ({
   municipality,
   address,
 }) => {
-  
+  const token = localStorage.getItem("token");
+  const [image, setImage] = useState();
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const imageURL = await getStoreImage(token, id);
+        setImage(imageURL);
+      } catch (error) {}
+    };
+    fetchImage();
+  }, [id, token]);
+
   return (
     <Card
       id={id}
@@ -24,7 +34,7 @@ const StoreCard = ({
       }}
       className="shadow-md flex flex-col justify-between"
       cover={
-        <img className="object-scale-down h-48 w-24" alt={name} src={name} />
+        <img className="object-scale-down h-48 w-24" alt={name} src={image} />
       }
     >
       <p className="text-lg ">{name}</p>
@@ -36,7 +46,6 @@ const StoreCard = ({
             {address}, {municipality.name}, {department.name}
           </p>
         </div>
-
       </div>
     </Card>
   );

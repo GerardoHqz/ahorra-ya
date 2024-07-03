@@ -63,7 +63,6 @@ const Offers = () => {
                 key={offer.idOffer}
                 id={offer.idOffer}
                 productName={offer.name}
-                image={/*offer.images[0].url*/ ""}
                 storeName={offer.store.name}
                 actualPrice={offer.priceNow}
                 previousPrice={offer.priceBefore}
