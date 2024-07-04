@@ -22,8 +22,9 @@ import { getStoreImage } from "../api/images";
 
 import { SlOptions } from "react-icons/sl";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import { deleteStore } from "../api/stores";
 
-const StoreOffers = ({ visible, onClose, store, handleUpdateOffers }) => {
+const StoreOffers = ({ visible, onClose, store, handleUpdateStore }) => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
@@ -77,8 +78,8 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateOffers }) => {
 
   const handleOk = async () => {
     try {
-      // await deleteOffer(token, store.idStore);
-      handleUpdateOffers(true);
+      await deleteStore(token, store.idStore);
+      handleUpdateStore(true);
     } catch (error) {
       console.error('Error al eliminar el elemento:', error);
     }
@@ -95,7 +96,7 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateOffers }) => {
         <AiOutlineDelete size={20} />
         <p className="pl-2">Eliminar</p>
       </span>
-      <span className="flex p-2 hover:bg-orange hover:bg-opacity-25 hover:cursor-pointer active:bg-opacity-50">
+      <span className="flex p-2 hover:text-blue hover:cursor-pointer active:bg-opacity-50" >
         <AiOutlineEdit size={20} />
         <p className="pl-2">Editar</p>
       </span>
@@ -195,7 +196,7 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateOffers }) => {
         idStore={store?.idStore}
         handleUpdateOffers={setUpdateOffers}
       />
-
+      
       <Drawer
         title={<DrawerTitle />}
         placement="left"
@@ -243,7 +244,7 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateOffers }) => {
             actualPrice={offer.priceNow}
             previousPrice={offer.priceBefore}
             duration={offer.endDate}
-            handleUpdateOffers={setUpdateOffers}
+            handleUpdateOffers={setUpdateOffers}  
           />
         ))}
       </Drawer>

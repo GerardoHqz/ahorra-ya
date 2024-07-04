@@ -7,7 +7,10 @@ import { Button, Popover, Space, Modal } from 'antd';
 import { SlOptions } from "react-icons/sl";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 
-const OfferCardStore = ({
+import EditOfferForm from "../components/EditOfferForm"
+
+const OfferCardStore = (
+  {
   id,
   productName,
   description,
@@ -19,6 +22,16 @@ const OfferCardStore = ({
   const token = localStorage.getItem("token");
   const [image, setImage] = useState();
   const [open, setOpen] = useState(false);
+  const [store, setStore] = useState(
+    {id,
+    productName,
+    description,
+    duration,
+    actualPrice,
+    previousPrice,} )
+  
+  const [openEditForm, setOpenEditForm] = useState(false);  
+  const [updateOffers, setUpdateOffers] = useState();
 
   const showModal = () => {
     setOpen(true);
@@ -56,13 +69,24 @@ const OfferCardStore = ({
         <AiOutlineDelete size={20} />
         <p className="pl-2">Eliminar</p>
       </span>
-      <span className="flex p-2 hover:bg-orange hover:bg-opacity-25 hover:cursor-pointer active:bg-opacity-50">
+      <span className="flex p-2 hover:bg-orange hover:bg-opacity-25 hover:cursor-pointer active:bg-opacity-50" onClick={() => {
+        setOpenEditForm(true)
+        console.log("click")
+        }}>
         <AiOutlineEdit size={20} />
         <p className="pl-2">Editar</p>
       </span>
     </div>
   );
 
+  const offerData = {
+    id,
+    name: productName,
+    description: description,
+    priceBefore: previousPrice,
+    priceNow: actualPrice,
+    endDate: duration,
+  };
   return (
     <Card
       id={id}
@@ -115,6 +139,13 @@ const OfferCardStore = ({
       >
         <p>¿Esta seguro que desea eliminar esta oferta?</p>
       </Modal>
+      <EditOfferForm
+        open={openEditForm}
+        setOpen={setOpenEditForm}
+        idStore={store?.idStore}
+        handleUpdateOffers={setUpdateOffers}
+        offer={offerData}
+      />
     </Card>
   );
 };

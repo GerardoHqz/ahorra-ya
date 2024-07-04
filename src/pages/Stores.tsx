@@ -151,7 +151,7 @@ const Stores = () => {
           visible={drawerVisible}
           onClose={closeDrawer}
           store={selectedStore}
-          handleUpdateOffers={setUpdateStores}
+          handleUpdateStore={setUpdateStores}
         />
       </Layout>
     </Layout>

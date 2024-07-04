@@ -100,6 +100,7 @@ const getStoresByMunicipalityService = (token, municipality) => {
 };
 
 const deleteStore = (token, id) => {
+  console.log(id)
   return new Promise((resolve, reject) => {
     const config = {
       headers: {
@@ -107,7 +108,7 @@ const deleteStore = (token, id) => {
       },
     };
     axios
-      .get(baseURL + `/store//${id}`, config)
+      .delete(baseURL + `/store/${id}`, config)
       .then((response) => {
         resolve(response.data);
       })
@@ -118,4 +119,4 @@ const deleteStore = (token, id) => {
   });
 };
 
-export { createStoreService, getAllStoresService, getStoresByNameService, getStoresByDepartmentService, getStoresByMunicipalityService  };
+export { createStoreService, getAllStoresService, getStoresByNameService, getStoresByDepartmentService, getStoresByMunicipalityService, deleteStore  };

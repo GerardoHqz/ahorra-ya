@@ -101,4 +101,26 @@ const deleteOffer = (token, id) => {
   })
 }
 
-export { createOfferService, getOfferByStore, getOfferAll, getOffersByName, deleteOffer };
+const updateOffer = (token, data) => {
+  console.log(data)
+  return new Promise((resolve, reject) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios
+      .put(baseURL + "offer/", data, config)
+      .then((response) => {
+        resolve(response.data.message);
+        toast.success("Oferta agregada!");
+      })
+      .catch((error) => {
+        console.log(error)
+        reject(error.response.data.message);
+        toast.error(error.response.data.message);
+      });
+  });
+};
+
+export { createOfferService, getOfferByStore, getOfferAll, getOffersByName, deleteOffer, updateOffer };
