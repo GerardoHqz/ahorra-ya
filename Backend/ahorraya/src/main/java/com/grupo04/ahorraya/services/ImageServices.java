@@ -1,5 +1,6 @@
 package com.grupo04.ahorraya.services;
 
+import com.grupo04.ahorraya.models.dtos.ImageUpdateDTO;
 import com.grupo04.ahorraya.models.entities.Image;
 import com.grupo04.ahorraya.models.entities.Offer;
 import com.grupo04.ahorraya.models.entities.Store;
@@ -13,6 +14,7 @@ public interface ImageServices {
     void save(MultipartFile info, UUID store, UUID offer) throws Exception;
     void delete(UUID id);
     void deleteByOffer(Offer offer);
+    void updateImage(ImageUpdateDTO image);
     Image findById(UUID id);
     Image findByName(String name);
     Resource getImage(String name);

@@ -3,6 +3,7 @@ package com.grupo04.ahorraya.services.servicesImpl;
 import com.grupo04.ahorraya.Repository.ImageRepository;
 import com.grupo04.ahorraya.Repository.OfferRepository;
 import com.grupo04.ahorraya.Repository.StoreRepository;
+import com.grupo04.ahorraya.models.dtos.ImageUpdateDTO;
 import com.grupo04.ahorraya.models.entities.Image;
 import com.grupo04.ahorraya.models.entities.Offer;
 import com.grupo04.ahorraya.models.entities.Store;
@@ -74,6 +75,57 @@ public class ImageServicesImpl implements ImageServices {
 
         imageRepository.deleteAll(images);
     }
+
+    @Override
+    public void updateImage(ImageUpdateDTO image) {
+        Image imageFound = imageRepository.findImageByidImage(image.getIdImage());
+
+        if (imageFound == null) {
+            throw new RuntimeException("Image not found");
+        }
+
+        Store store = storeRepository.findByIdStore(image.getStore());
+        Offer offer = offerRepository.getByIdOffer(image.getOffer());
+
+        if (store == null) {
+            throw new RuntimeException("Store not found");
+        }
+
+        if (offer == null) {
+            throw new RuntimeException("Offer not found");
+        }
+
+        imageFound.setIdImage(image.getIdImage());
+        imageFound.setName(image.getName());
+
+        File file = new File(imageFound.getUrl());
+        if (file.exists()) {
+            // Cambiando el nombre del archivo por el nuevo
+            String newName = image.getName();
+            Path source = file.toPath();
+            Path target = source.resolveSibling(newName); // Resolviendo el nuevo nombre en el mismo directorio
+
+            // Verificar si el directorio padre es válido
+            File parentDir = target.getParent().toFile();
+            if (parentDir != null && !parentDir.exists()) {
+                parentDir.mkdirs();
+            }
+
+            try {
+                Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
+            } catch (Exception e) {
+                throw new RuntimeException("Error updating image", e);
+            }
+            imageFound.setUrl(target.toString());
+        }
+
+        imageFound.setStore(store);
+        imageFound.setOffer(offer);
+
+        imageRepository.save(imageFound);
+    }
+
+
 
     @Override
     public Image findById(UUID id) {
