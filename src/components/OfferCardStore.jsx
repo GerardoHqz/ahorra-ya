@@ -11,27 +11,34 @@ import EditOfferForm from "../components/EditOfferForm"
 
 const OfferCardStore = (
   {
-  id,
-  productName,
-  description,
-  duration,
-  actualPrice,
-  previousPrice,
-  handleUpdateOffers
-}) => {
+    id,
+    storeId,
+    category,
+    productName,
+    description,
+    duration,
+    initDate,
+    actualPrice,
+    previousPrice,
+    handleUpdateOffers
+  }) => {
+
   const token = localStorage.getItem("token");
   const [image, setImage] = useState();
   const [open, setOpen] = useState(false);
   const [store, setStore] = useState(
-    {id,
-    productName,
-    description,
-    duration,
-    actualPrice,
-    previousPrice,} )
-  
-  const [openEditForm, setOpenEditForm] = useState(false);  
-  const [updateOffers, setUpdateOffers] = useState();
+    {
+      id,
+      productName,
+      description,
+      category,
+      duration,
+      initDate,
+      actualPrice,
+      previousPrice,
+    })
+
+  const [openEditForm, setOpenEditForm] = useState(false);
 
   const showModal = () => {
     setOpen(true);
@@ -50,7 +57,6 @@ const OfferCardStore = (
     console.log('Clicked cancel button');
     setOpen(false);
   };
-
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -71,8 +77,7 @@ const OfferCardStore = (
       </span>
       <span className="flex p-2 hover:bg-orange hover:bg-opacity-25 hover:cursor-pointer active:bg-opacity-50" onClick={() => {
         setOpenEditForm(true)
-        console.log("click")
-        }}>
+      }}>
         <AiOutlineEdit size={20} />
         <p className="pl-2">Editar</p>
       </span>
@@ -86,6 +91,8 @@ const OfferCardStore = (
     priceBefore: previousPrice,
     priceNow: actualPrice,
     endDate: duration,
+    initDate: initDate,
+    category:category
   };
   return (
     <Card
@@ -142,8 +149,8 @@ const OfferCardStore = (
       <EditOfferForm
         open={openEditForm}
         setOpen={setOpenEditForm}
-        idStore={store?.idStore}
-        handleUpdateOffers={setUpdateOffers}
+        idStore={storeId}
+        handleUpdateOffers={handleUpdateOffers}
         offer={offerData}
       />
     </Card>

@@ -9,11 +9,13 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { offers } from "../mock_data/offers";
 
+dayjs.extend(customParseFormat);
+
 type EditOfferFormProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  idStore: any;
   handleUpdateOffers: React.Dispatch<React.SetStateAction<boolean>>;
-  idStore: string;
   offer: any;
 };
 
@@ -25,13 +27,11 @@ const EditOfferForm = ({
   offer
 }: EditOfferFormProps) => {
   const token = localStorage.getItem("token");
-  
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [image, setImage] = useState<File | null>(null);
   const [form] = Form.useForm();
-  dayjs.extend(customParseFormat);
-  const dateFormat = 'YYYY/MM/DD';
+  
 
   const handleGetAllCategories = async () => {
     try {
@@ -45,7 +45,6 @@ const EditOfferForm = ({
     // eslint-disable-next-line
   }, []);
 
-
   const filterOption = (
     input: string,
     option?: { label: string; value: string }
@@ -55,10 +54,10 @@ const EditOfferForm = ({
     values.idOffer = offer?.id;
     values.active = true;
     values.initDate = values.initDate.format("YYYY-MM-DD");
-    values.endDate = values.priceNow.format("YYYY-MM-DD");
+    values.endDate = values.endDate.format("YYYY-MM-DD");
     values.priceNow = values.priceAfter;
-    values.category= "efde7636-6f57-4611-9ff9-95d54cd8e6e8";
-	values.store = "647b67da-ae20-45c2-96cc-0a67afc0f4ee";
+    values.category = values.category; // Usar el valor de la categoría seleccionado en el formulario
+    values.store = idStore;
     delete values.priceAfter;
 
     try {
@@ -77,15 +76,16 @@ const EditOfferForm = ({
         description: offer.description,
         priceBefore: offer.priceBefore,
         priceAfter: offer.priceNow,
-        endDate: dayjs(offer.endDate, "YYYY-MM-DD").toDate(),
+        initDate: dayjs(offer.initDate, "YYYY-MM-DD"),
+        endDate: dayjs(offer.endDate, "YYYY-MM-DD"),
+        category: offer.category.idCategory, // Establecer el valor inicial del campo de categoría
       });
     }
   }, [offer, form]);
 
-
   return (
     <Modal
-      title="Agregar oferta"
+      title="Editar oferta"
       style={{ top: 40 }}
       open={open}
       closable={false}
@@ -96,14 +96,6 @@ const EditOfferForm = ({
         className="flex flex-col gap-3"
         layout="vertical"
         form={form}
-        initialValues={{
-            name: offer?.name,
-            description: offer?.description,
-            priceBefore: offer?.priceBefore,
-            priceAfter: offer?.priceNow,
-            endDate: dayjs(offer.endDate, "YYYY-MM-DD").toDate(),  // Aquí usamos endDateDayjs para el campo priceNow
-            category: offer?.category,  // Ajusta esto según corresponda al objeto offer
-          }}
       >
         <div className="flex flex-col justify-between">
           <Form.Item
@@ -156,12 +148,11 @@ const EditOfferForm = ({
               <DatePicker
                 style={{ width: "100%" }}
                 placeholder="Seleccione una fecha"
-                
               />
             </Form.Item>
             <Form.Item
               label="Fin de la oferta"
-              name="priceNow"
+              name="endDate"
               className="w-1/2"
               rules={[
                 {
@@ -179,9 +170,10 @@ const EditOfferForm = ({
           <Form.Item label="Categoría" name="category">
             <Select
               showSearch
-              placeholder="Seleccione un municipio"
+              placeholder="Seleccione una categoría"
               optionFilterProp="children"
               filterOption={filterOption}
+              defaultValue={offer?.category?.idCategory}
               options={categories.map((category) => ({
                 value: category.idCategory,
                 label: category.name,

@@ -119,4 +119,25 @@ const deleteStore = (token, id) => {
   });
 };
 
-export { createStoreService, getAllStoresService, getStoresByNameService, getStoresByDepartmentService, getStoresByMunicipalityService, deleteStore  };
+const updateStoreService = (token, data) => {
+  console.log("data store API", data)
+  return new Promise((resolve, reject) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios
+      .post(baseURL + "/store/", data, config)
+      .then((response) => {
+        resolve(response.data.message);
+        toast.success("Tienda agregada!");
+      })
+      .catch((error) => {
+        reject(error.response.data.message);
+        toast.error(error.response.data.message);
+      });
+  });
+};
+
+export { createStoreService, getAllStoresService, getStoresByNameService, getStoresByDepartmentService, getStoresByMunicipalityService, deleteStore, updateStoreService  };

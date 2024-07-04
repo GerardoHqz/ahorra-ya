@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Drawer, Space, Popover, Modal   } from "antd";
+import { Button, Drawer, Space, Popover, Modal } from "antd";
 import { IoIosLink } from "react-icons/io";
 import { FiPhone, FiUser } from "react-icons/fi";
 import { AiOutlineMail } from "react-icons/ai";
@@ -23,24 +23,25 @@ import { getStoreImage } from "../api/images";
 import { SlOptions } from "react-icons/sl";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { deleteStore } from "../api/stores";
+import EditStoreForm from "./EditStoreForm";
 
 const StoreOffers = ({ visible, onClose, store, handleUpdateStore }) => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-
   const [offersData, setOffersData] = useState([]);
   const [openOfferForm, setOpenOfferForm] = useState(false);
   const [updateOffers, setUpdateOffers] = useState();
   const [isFavorite, setIsFavorite] = useState(false);
   const [image, setImage] = useState();
   const [open, setOpen] = useState(false);
+  const [openEditForm, setOpenEditForm] = useState(false);
 
   useEffect(() => {
     const fetchImage = async () => {
       try {
         const imageURL = await getStoreImage(token, store.idStore);
         setImage(imageURL);
-      } catch (error) {}
+      } catch (error) { }
     };
     fetchImage();
   }, [store, token]);
@@ -49,7 +50,7 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStore }) => {
     try {
       const favorite = await getOneFavoriteService(token, store.idStore);
       setIsFavorite(favorite);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const handleToggleFavorite = async () => {
@@ -57,12 +58,12 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStore }) => {
       try {
         await deleteFavoriteService(token, store.idStore);
         setIsFavorite(false);
-      } catch (error) {}
+      } catch (error) { }
     } else {
       try {
         await addFavoriteService(token, { store: store.idStore });
         setIsFavorite(true);
-      } catch (error) {}
+      } catch (error) { }
     }
   };
 
@@ -92,11 +93,7 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStore }) => {
 
   const content = (
     <div>
-      <span className="flex p-2 hover:bg-orange hover:bg-opacity-25 hover:cursor-pointer active:bg-opacity-50" onClick={showModal}>
-        <AiOutlineDelete size={20} />
-        <p className="pl-2">Eliminar</p>
-      </span>
-      <span className="flex p-2 hover:text-blue hover:cursor-pointer active:bg-opacity-50" >
+      <span className="flex p-2 hover:text-blue hover:cursor-pointer active:bg-opacity-50" onClick={() => { setOpenEditForm(true) }}>
         <AiOutlineEdit size={20} />
         <p className="pl-2">Editar</p>
       </span>
@@ -170,20 +167,28 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStore }) => {
             </h2>
           </span>
           <FaHeart
-              size={30}
-              color={isFavorite ? "red" : "gray"}
-              onClick={handleToggleFavorite}
-            />
+            size={30}
+            color={isFavorite ? "red" : "gray"}
+            onClick={handleToggleFavorite}
+          />
         </span>
         <Space wrap>
-            <Popover content={content} trigger="click"
-              style={{
-                width: "20%",
-                padding: "0px !important",
-              }}>
-              <SlOptions />
-            </Popover>
-          </Space>
+          <Popover content={content} trigger="click"
+            style={{
+              width: "20%",
+              padding: "0px !important",
+            }}>
+            <SlOptions />
+          </Popover>
+        </Space>
+        <EditStoreForm
+          open={openEditForm}
+          setOpen={setOpenEditForm}
+          handleUpdateStore={handleUpdateStore}
+          store={store}
+          latitude={store?.latitude}
+          longitude={store?.longuitude}
+        />
       </div>
     );
   };
@@ -196,7 +201,7 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStore }) => {
         idStore={store?.idStore}
         handleUpdateOffers={setUpdateOffers}
       />
-      
+
       <Drawer
         title={<DrawerTitle />}
         placement="left"
@@ -205,7 +210,7 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStore }) => {
         open={visible}
       >
         <div className="flex justify-between items-center gap-5 pb-5">
-          
+
           <Button
             onClick={handleMapLocation}
             className="bg-pink text-white flex items-center gap-3"
@@ -239,12 +244,15 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStore }) => {
           <OfferCard
             key={offer.idOffer}
             id={offer.idOffer}
+            storeId={store?.idStore}
+            category={offer?.category}
             productName={offer.name}
             description={offer.description}
             actualPrice={offer.priceNow}
             previousPrice={offer.priceBefore}
             duration={offer.endDate}
-            handleUpdateOffers={setUpdateOffers}  
+            initDate={offer.initDate}
+            handleUpdateOffers={setUpdateOffers}
           />
         ))}
       </Drawer>
