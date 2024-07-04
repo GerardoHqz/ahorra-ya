@@ -1,6 +1,7 @@
 package com.grupo04.ahorraya.controllers;
 
 import com.grupo04.ahorraya.models.dtos.AddImageDTO;
+import com.grupo04.ahorraya.models.dtos.ImageUpdateDTO;
 import com.grupo04.ahorraya.models.dtos.MessageDTO;
 import com.grupo04.ahorraya.models.entities.Image;
 import com.grupo04.ahorraya.models.entities.Offer;
@@ -10,6 +11,8 @@ import com.grupo04.ahorraya.services.ImageServices;
 import com.grupo04.ahorraya.services.OfferServices;
 import com.grupo04.ahorraya.services.StoreServices;
 import com.grupo04.ahorraya.services.UserServices;
+import com.grupo04.ahorraya.utils.RequestErrorHandler;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -37,6 +40,9 @@ public class ImageController {
 
     @Autowired
     private OfferServices offerServices;
+
+    @Autowired
+    private RequestErrorHandler errorHandler;
 
     @PostMapping("/")
     public ResponseEntity<?> saveImage(@ModelAttribute @Valid AddImageDTO info, BindingResult validations) throws Exception{
@@ -92,6 +98,26 @@ public class ImageController {
             return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
         } else {
             return new ResponseEntity<>(new MessageDTO("image not found"), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/")
+    @Transactional(rollbackOn = Exception.class)
+    public ResponseEntity<?> updateImage(@RequestBody @Valid ImageUpdateDTO info, BindingResult validations) throws Exception{
+        if (validations.hasErrors()) {
+            return ResponseEntity.badRequest().body(errorHandler.mapErrors(validations.getFieldErrors()));
+        }
+
+        User userFound = userServices.findUserAuthenticated();
+        if (userFound == null)
+            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
+        try{
+            imageServices.updateImage(info);
+            return new ResponseEntity<>(new MessageDTO("Image Updated!"), HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
