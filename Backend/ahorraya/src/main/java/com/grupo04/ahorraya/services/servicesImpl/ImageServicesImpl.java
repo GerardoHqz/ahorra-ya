@@ -184,4 +184,20 @@ public class ImageServicesImpl implements ImageServices {
     		return getImage(imageName.get(0).getName());
     	return null;
     }
+
+    @Override
+    public List<Image> getImageInfoByStore(Store store) {
+        List<Image> imageName =  imageRepository.findAllByStore(store);
+        if(!imageName.isEmpty())
+            return imageName;
+        return null;
+    }
+
+    @Override
+    public List<Image> getImageInfoByOffer(Offer offer) {
+        List<Image> imageName =  imageRepository.findAllByOffer(offer);
+        if(!imageName.isEmpty())
+            return imageName;
+        return null;
+    }
 }

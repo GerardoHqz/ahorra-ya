@@ -20,4 +20,6 @@ public interface ImageServices {
     Resource getImage(String name);
     Resource getImageByStore(Store store);
     Resource getImageByOffer(Offer offer);
+    List<Image> getImageInfoByStore(Store store);
+    List<Image> getImageInfoByOffer(Offer offer);
 }

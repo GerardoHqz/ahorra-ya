@@ -116,6 +116,46 @@ public class ImageController {
         }
     }
 
+    @GetMapping("/info/store/{id}")
+    public ResponseEntity<?> getImageInfoByStore(@PathVariable UUID id){
+        User userFound = userServices.findUserAuthenticated();
+        if (userFound == null)
+            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
+        Store store = storeServices.getStoreById(id);
+        if (store == null){
+            return new ResponseEntity<>(new MessageDTO("Store not found"), HttpStatus.NOT_FOUND);
+        }
+
+        List<Image> imageList = imageServices.getImageInfoByStore(store);
+
+        if (imageList != null) {
+            return new ResponseEntity<>(imageList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new MessageDTO("Store dont have images"), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/info/offer/{id}")
+    public ResponseEntity<?> getImageInfoByOffer(@PathVariable UUID id){
+        User userFound = userServices.findUserAuthenticated();
+        if (userFound == null)
+            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
+        Offer offer = offerServices.getOfferById(id);
+        if (offer == null){
+            return new ResponseEntity<>(new MessageDTO("Offer not found"), HttpStatus.NOT_FOUND);
+        }
+
+        List<Image> imageList = imageServices.getImageInfoByOffer(offer);
+
+        if (imageList != null) {
+            return new ResponseEntity<>(imageList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new MessageDTO("Offer dont have images"), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/name/{name}")
     public ResponseEntity<?> getImageByName(@PathVariable("name") String name){
         User userFound = userServices.findUserAuthenticated();
