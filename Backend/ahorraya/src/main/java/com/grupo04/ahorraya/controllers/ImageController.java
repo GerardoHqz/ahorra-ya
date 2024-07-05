@@ -85,6 +85,36 @@ public class ImageController {
         }
     }
 
+    @GetMapping("/info/id/{id}")
+    public ResponseEntity<?> getImageInfoById(@PathVariable UUID id){
+        User userFound = userServices.findUserAuthenticated();
+        if (userFound == null)
+            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
+        Image image = imageServices.findById(id);
+
+        if (image != null) {
+            return new ResponseEntity<>(image, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new MessageDTO("image not found"), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/info/name/{name}")
+    public ResponseEntity<?> getImageInfoByName(@PathVariable String name){
+        User userFound = userServices.findUserAuthenticated();
+        if (userFound == null)
+            return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
+
+        Image image = imageServices.findByName(name);
+
+        if (image != null) {
+            return new ResponseEntity<>(image, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new MessageDTO("image not found"), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/name/{name}")
     public ResponseEntity<?> getImageByName(@PathVariable String name){
         User userFound = userServices.findUserAuthenticated();

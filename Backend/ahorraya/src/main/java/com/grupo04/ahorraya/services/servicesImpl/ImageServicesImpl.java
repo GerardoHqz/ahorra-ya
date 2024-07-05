@@ -84,43 +84,50 @@ public class ImageServicesImpl implements ImageServices {
             throw new RuntimeException("Image not found");
         }
 
-        Store store = storeRepository.findByIdStore(image.getStore());
-        Offer offer = offerRepository.getByIdOffer(image.getOffer());
-
-        if (store == null) {
-            throw new RuntimeException("Store not found");
+        if (image.getStore() != null) {
+            Store store = storeRepository.findByIdStore(image.getStore());
+            if (store == null) {
+                throw new RuntimeException("Store not found");
+            }
+            imageFound.setStore(store);
         }
 
-        if (offer == null) {
-            throw new RuntimeException("Offer not found");
+        if (image.getOffer() != null) {
+            Offer offer = offerRepository.getByIdOffer(image.getOffer());
+            if (offer == null) {
+                throw new RuntimeException("Offer not found");
+            }
+            imageFound.setOffer(offer);
         }
 
         imageFound.setIdImage(image.getIdImage());
-        imageFound.setName(image.getName());
 
-        File file = new File(imageFound.getUrl());
-        if (file.exists()) {
-            // Cambiando el nombre del archivo por el nuevo
-            String newName = image.getName();
-            Path source = file.toPath();
-            Path target = source.resolveSibling(newName); // Resolviendo el nuevo nombre en el mismo directorio
-
-            // Verificar si el directorio padre es válido
-            File parentDir = target.getParent().toFile();
-            if (parentDir != null && !parentDir.exists()) {
-                parentDir.mkdirs();
-            }
-
-            try {
-                Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
-            } catch (Exception e) {
-                throw new RuntimeException("Error updating image", e);
-            }
-            imageFound.setUrl(target.toString());
+        if (image.getName() != null) {
+            imageFound.setName(image.getName());
         }
 
-        imageFound.setStore(store);
-        imageFound.setOffer(offer);
+        if (image.getUrl() != null) {
+            File file = new File(imageFound.getUrl());
+            if (file.exists()) {
+                // Cambiando el nombre del archivo por el nuevo
+                String newName = image.getName();
+                Path source = file.toPath();
+                Path target = source.resolveSibling(newName); // Resolviendo el nuevo nombre en el mismo directorio
+
+                // Verificar si el directorio padre es válido
+                File parentDir = target.getParent().toFile();
+                if (parentDir != null && !parentDir.exists()) {
+                    parentDir.mkdirs();
+                }
+
+                try {
+                    Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
+                } catch (Exception e) {
+                    throw new RuntimeException("Error updating image", e);
+                }
+                imageFound.setUrl(target.toString());
+            }
+        }
 
         imageRepository.save(imageFound);
     }
