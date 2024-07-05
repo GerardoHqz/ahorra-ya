@@ -128,7 +128,7 @@ const updateStoreService = (token, data) => {
       },
     };
     axios
-      .post(baseURL + "/store/", data, config)
+      .put(baseURL + "/store/", data, config)
       .then((response) => {
         resolve(response.data.message);
         toast.success("Tienda agregada!");

@@ -66,6 +66,7 @@ const Favorites = () => {
           onClose={closeDrawer}
           store={selectedStore}
           handleUpdateStore={setUpdateStores}
+          showMapButton={true}
         />
       </Layout>
     </Layout>

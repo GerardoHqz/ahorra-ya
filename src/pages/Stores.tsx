@@ -152,6 +152,7 @@ const Stores = () => {
           onClose={closeDrawer}
           store={selectedStore}
           handleUpdateStore={setUpdateStores}
+          showMapButton={true}
         />
       </Layout>
     </Layout>

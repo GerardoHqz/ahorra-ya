@@ -173,6 +173,7 @@ const Map = () => {
             onClose={closeDrawer}
             store={selectedStore}
             handleUpdateStore={setUpdateStores}
+            showMapButton={false}
           />
         </MapContainer>
       </Layout>

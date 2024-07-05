@@ -25,9 +25,9 @@ const SideMenu = () => {
   };
 
   return (
-    <div className="w-max h-screen bg-gradient-to-br from-orange to-pink dark:from-gray-800 dark:to-gray-800 dark:text-white">
+    <div className="w-max h-screen bg-gradient-to-br from-orange to-pink dark:from-gray-800 dark:to-gray-800 text-white ">
       <div className="flex items-center p-4 gap-3">
-        <FaUserCircle size={30} />
+        <FaUserCircle size={30} color={"#FFFFFF"}/>
         <div>
           <p>{email}</p>
         </div>
@@ -37,25 +37,25 @@ const SideMenu = () => {
         <div>
           <Link to={"/map"}>
             <div className="flex items-center p-4 gap-3 cursor-pointer hover:bg-orange-300 dark:hover:bg-gray-700">
-              <FaMapMarkedAlt size={20} />
+              <FaMapMarkedAlt size={20} color={"#FFFFFF"}/>
               Mapa
             </div>
           </Link>
           <Link to={"/favorites"}>
             <div className="flex items-center p-4 gap-3 cursor-pointer hover:bg-orange-300 dark:hover:bg-gray-700">
-              <FaHeart size={20} />
+              <FaHeart size={20} color={"#FFFFFF"}/>
               Favoritos
             </div>
           </Link>
           <Link to={"/offers"}>
             <div className="flex items-center p-4 gap-3 cursor-pointer hover:bg-orange-300 dark:hover:bg-gray-700">
-              <BiSolidOffer size={20} />
+              <BiSolidOffer size={20} color={"#FFFFFF"}/>
               Ofertas
             </div>
           </Link>
           <Link to={"/stores"}>
             <div className="flex items-center p-4 gap-3 cursor-pointer hover:bg-orange-300 dark:hover:bg-gray-700">
-              <IoStorefront size={20} />
+              <IoStorefront size={20} color={"#FFFFFF"}/>
               Tiendas
             </div>
           </Link>
@@ -65,14 +65,14 @@ const SideMenu = () => {
             onClick={handleLogout}
             className="flex items-center p-4 gap-3 cursor-pointer hover:bg-pink-400 dark:hover:bg-gray-700"
           >
-            <MdOutlineLogout size={20} />
+            <MdOutlineLogout size={20} color={"#FFFFFF"}/>
             Cerrar sesión
           </div>
           <div
             className="flex items-center p-4 gap-3 cursor-pointer hover:bg-pink-400 dark:hover:bg-gray-700"
             onClick={darkModeHandler}
           >
-            <MdLightMode size={20} />
+            <MdLightMode size={20} color={"#FFFFFF"}/>
             Modo claro/oscuro
           </div>
         </div>

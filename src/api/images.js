@@ -33,6 +33,7 @@ const getStoreImage = (token, id) => {
           responseType: "arraybuffer",
         })
         .then((response) => {
+          console.log("response", response)
           const imageBlob = new Blob([response.data], { type: "image/jpeg" });
           const imageURL = URL.createObjectURL(imageBlob);
           resolve(imageURL);

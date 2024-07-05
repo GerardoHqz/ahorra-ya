@@ -19,13 +19,13 @@ import {
 } from "../api/favorites";
 import { useNavigate } from "react-router-dom";
 import { getStoreImage } from "../api/images";
-
+import "../assets/style/AntDesignCustom.css"
 import { SlOptions } from "react-icons/sl";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { deleteStore } from "../api/stores";
 import EditStoreForm from "./EditStoreForm";
 
-const StoreOffers = ({ visible, onClose, store, handleUpdateStore }) => {
+const StoreOffers = ({ visible, onClose, store, handleUpdateStore, showMapButton }) => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const [offersData, setOffersData] = useState([]);
@@ -45,6 +45,7 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStore }) => {
     };
     fetchImage();
   }, [store, token]);
+  console.log("image", image)
 
   const handleVerifyFavorite = async () => {
     try {
@@ -115,12 +116,12 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStore }) => {
               </span>
             </p>
           )}
-          {store?.website && (
+          {store?.webSite && (
             <p className="flex flex-col  pb-8">
               Sitio web:
               <span className="flex border border-secondary-text border-opacity-25 p-2 mt-2 rounded-md ">
                 <IoIosLink size={20} color="#808080" className="mr-2" />
-                {store?.website}
+                {store?.webSite}
               </span>
             </p>
           )}
@@ -209,14 +210,16 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStore }) => {
         onClose={onClose}
         open={visible}
       >
-        <div className="flex justify-between items-center gap-5 pb-5">
 
-          <Button
-            onClick={handleMapLocation}
-            className="bg-pink text-white flex items-center gap-3"
-          >
-            <FaLocationArrow size={20} /> Ver en el mapa
-          </Button>
+        <div className="flex justify-between items-center gap-5 pb-5">
+          {showMapButton &&
+            <Button
+              onClick={handleMapLocation}
+              className="bg-pink text-white flex items-center gap-3"
+            >
+              <FaLocationArrow size={20} /> Ver en el mapa
+            </Button>
+          }
           <Button
             className="bg-pink text-white"
             onClick={() => setOpenOfferForm(true)}
@@ -224,9 +227,10 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStore }) => {
             Añadir oferta
           </Button>
         </div>
+
         <hr />
         <Image
-          className="w-full"
+          className=""
           src={image}
           alt={store?.name}
         />
