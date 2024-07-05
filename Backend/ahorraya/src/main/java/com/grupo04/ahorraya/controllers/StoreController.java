@@ -46,8 +46,8 @@ public class StoreController {
             return new ResponseEntity<>(errorHandler.mapErrors(validations.getFieldErrors()), HttpStatus.BAD_REQUEST);
         }
         try {
-            storeService.saveStore(storeDTO);
-            return new ResponseEntity<>(new MessageDTO("Store created"), HttpStatus.OK);
+            UUID storeID = storeService.saveStore(storeDTO);
+            return new ResponseEntity<>(new MessageDTO(storeID.toString()), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);

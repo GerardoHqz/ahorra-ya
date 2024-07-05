@@ -46,8 +46,16 @@ public class ImageServicesImpl implements ImageServices {
         Path imagePath = Paths.get(uploadDirectory).resolve(imageName).normalize();
         Files.copy(info.getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
 
-        Store store = storeRepository.findByIdStore(idStore);
-        Offer offer = offerRepository.getByIdOffer(idOffer);
+        Store store = null;
+        Offer offer = null;
+        
+        if(idStore != null) {
+        	store = storeRepository.findByIdStore(idStore);
+        }
+        if(idOffer != null) {
+        	offer = offerRepository.getByIdOffer(idOffer);
+        }
+        
         Image image = new Image(imageName, imagePath.toString(), store, offer);
         imageRepository.save(image);
     }
@@ -162,12 +170,18 @@ public class ImageServicesImpl implements ImageServices {
     }
 
     @Override
-    public List<Image> getImageByStore(Store store) {
-        return imageRepository.findAllByStore(store);
+    public Resource getImageByStore(Store store) {
+    	List<Image> imageName =  imageRepository.findAllByStore(store);
+    	if(!imageName.isEmpty())
+    		return getImage(imageName.get(0).getName());
+    	return null;
     }
 
     @Override
-    public List<Image> getImageByOffer(Offer offer) {
-        return imageRepository.findAllByOffer(offer);
+    public Resource getImageByOffer(Offer offer) {
+    	List<Image> imageName =  imageRepository.findAllByOffer(offer);
+    	if(!imageName.isEmpty())
+    		return getImage(imageName.get(0).getName());
+    	return null;
     }
 }

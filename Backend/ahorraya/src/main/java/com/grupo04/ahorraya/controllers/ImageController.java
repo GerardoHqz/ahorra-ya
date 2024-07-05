@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -116,7 +117,7 @@ public class ImageController {
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<?> getImageByName(@PathVariable String name){
+    public ResponseEntity<?> getImageByName(@PathVariable("name") String name){
         User userFound = userServices.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
@@ -151,7 +152,7 @@ public class ImageController {
     }
 
     @GetMapping("/store/{id}")
-    public ResponseEntity<?> getAllImagesByStore(@PathVariable UUID id){
+    public ResponseEntity<?> getAllImagesByStore(@PathVariable("id") UUID id){
         User userFound = userServices.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
@@ -162,7 +163,11 @@ public class ImageController {
         }
 
         try{
-            return new ResponseEntity<>(imageServices.getImageByStore(store), HttpStatus.OK);
+        	Resource resource = imageServices.getImageByStore(store);
+        	if(resource != null)
+        		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
+            return new ResponseEntity<>(new MessageDTO("No image found"), HttpStatus.OK);
+        	
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -170,7 +175,7 @@ public class ImageController {
     }
 
     @GetMapping("/offer/{id}")
-    public ResponseEntity<?> getAllImagesByOffer(@PathVariable UUID id){
+    public ResponseEntity<?> getAllImagesByOffer(@PathVariable("id") UUID id){
         User userFound = userServices.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
@@ -181,7 +186,11 @@ public class ImageController {
         }
 
         try{
-            return new ResponseEntity<>(imageServices.getImageByOffer(offer), HttpStatus.OK);
+        	Resource resource = imageServices.getImageByOffer(offer);
+        	if(resource != null)
+        		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
+            return new ResponseEntity<>(new MessageDTO("No image found"), HttpStatus.OK);
+        	
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);

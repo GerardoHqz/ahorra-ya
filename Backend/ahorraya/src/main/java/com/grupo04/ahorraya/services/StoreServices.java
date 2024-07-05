@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface StoreServices {
 
-    void saveStore(StoreDTO store) throws Exception;
+    UUID saveStore(StoreDTO store) throws Exception;
 
     void deleteStore(UUID idStore) throws Exception;
     void updateStore(StoreUpdateDTO store) throws Exception;

@@ -16,8 +16,8 @@ import java.util.UUID;
 public class AddImageDTO {
     @NotNull(message = "File can't be empty")
     private MultipartFile file;
-    @NotNull(message = "Store can't be empty")
+    
     private UUID store;
-    @NotNull(message = "Offer can't be empty")
+    
     private UUID offer;
 }
