@@ -99,4 +99,45 @@ const getStoresByMunicipalityService = (token, municipality) => {
   });
 };
 
-export { createStoreService, getAllStoresService, getStoresByNameService, getStoresByDepartmentService, getStoresByMunicipalityService };
+const deleteStore = (token, id) => {
+  console.log(id)
+  return new Promise((resolve, reject) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios
+      .delete(baseURL + `/store/${id}`, config)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error.response.data.message);
+        toast.error(error.response.data.message);
+      });
+  });
+};
+
+const updateStoreService = (token, data) => {
+  console.log("data store API", data)
+  return new Promise((resolve, reject) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios
+      .put(baseURL + "/store/", data, config)
+      .then((response) => {
+        resolve(response.data.message);
+        toast.success("Tienda agregada!");
+      })
+      .catch((error) => {
+        reject(error.response.data.message);
+        toast.error(error.response.data.message);
+      });
+  });
+};
+
+export { createStoreService, getAllStoresService, getStoresByNameService, getStoresByDepartmentService, getStoresByMunicipalityService, deleteStore, updateStoreService  };

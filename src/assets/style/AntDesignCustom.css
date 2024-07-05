@@ -18,3 +18,13 @@
 .ant-card-cover img{
     border-radius: 5% !important;
 }
+
+.ant-popover-inner{
+    width: 150%;
+}
+
+.ant-image-img{
+    height: 40vh !important;
+    width: 70vw !important;
+    object-fit: cover;
+}

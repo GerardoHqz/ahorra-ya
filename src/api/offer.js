@@ -81,4 +81,46 @@ const getOffersByName = (token, name) => {
   });
 };
 
-export { createOfferService, getOfferByStore, getOfferAll, getOffersByName };
+const deleteOffer = (token, id) => {
+  console.log(id)
+  return new Promise((resolve, reject)=>{
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios
+      .delete(baseURL + `offer/${id}`, config)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error.response.data.message);
+        toast.error(error.response.data.message);
+      });
+  })
+}
+
+const updateOffer = (token, data) => {
+  console.log(data)
+  return new Promise((resolve, reject) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios
+      .put(baseURL + "offer/", data, config)
+      .then((response) => {
+        resolve(response.data.message);
+        toast.success("Oferta agregada!");
+      })
+      .catch((error) => {
+        console.log(error)
+        reject(error.response.data.message);
+        toast.error(error.response.data.message);
+      });
+  });
+};
+
+export { createOfferService, getOfferByStore, getOfferAll, getOffersByName, deleteOffer, updateOffer };

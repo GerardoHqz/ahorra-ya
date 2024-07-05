@@ -172,6 +172,8 @@ const Map = () => {
             visible={drawerVisible}
             onClose={closeDrawer}
             store={selectedStore}
+            handleUpdateStore={setUpdateStores}
+            showMapButton={false}
           />
         </MapContainer>
       </Layout>

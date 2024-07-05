@@ -13,6 +13,8 @@ const Favorites = () => {
 
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [selectedStore, setSelectedStore] = useState(null);
+  
+  const [updateStores, setUpdateStores] = useState(false);
 
   const handleMarkerClick = (store: any) => {
     setSelectedStore(store);
@@ -33,8 +35,9 @@ const Favorites = () => {
 
   useEffect(() => {
     handleGetAllStores();
+    setUpdateStores(false);
     // eslint-disable-next-line
-  }, []);
+  }, [updateStores]);
 
   return (
     <Layout className="min-h-screen flex flex-row text-bg-dark-blue dark:text-white">
@@ -62,6 +65,8 @@ const Favorites = () => {
           visible={drawerVisible}
           onClose={closeDrawer}
           store={selectedStore}
+          handleUpdateStore={setUpdateStores}
+          showMapButton={true}
         />
       </Layout>
     </Layout>
