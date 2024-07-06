@@ -57,7 +57,7 @@ const Offers = () => {
           >
             Limpiar filtros
           </button>
-          <div className="flex gap-5">
+          <div className="flex gap-5 flex-wrap">
             {recentOffers.map((offer) => (
               <OfferCard
                 key={offer.idOffer}
