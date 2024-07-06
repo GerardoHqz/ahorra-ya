@@ -28,7 +28,7 @@ const Login = () => {
       const token = await login(formData);
       localStorage.setItem("token", token);
       localStorage.setItem("email", formData.email);
-      navigate("/offers");
+      navigate("/map");
     } catch (error) {
     }
   };
@@ -49,7 +49,7 @@ const Login = () => {
         const token = await loginWithGoogle({ email: userData.email });
         localStorage.setItem("token", token);
         localStorage.setItem("email", userData.email);
-        navigate("/offers");
+        navigate("/map");
       } else {
         navigate("/signin", { state: { email: userData.email } });
       }

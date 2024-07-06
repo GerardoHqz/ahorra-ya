@@ -66,7 +66,7 @@ const AddOfferForm = ({
   return (
     <Modal
       title="Agregar oferta"
-      style={{ top: 40 }}
+      style={{ top: 5 }}
       open={open}
       closable={false}
       footer={[]}
@@ -150,7 +150,7 @@ const AddOfferForm = ({
           <Form.Item label="Categoría" name="category">
             <Select
               showSearch
-              placeholder="Seleccione un municipio"
+              placeholder="Seleccione una categoría"
               optionFilterProp="children"
               filterOption={filterOption}
               options={categories.map((category) => ({
