@@ -82,7 +82,6 @@ const getOffersByName = (token, name) => {
 };
 
 const deleteOffer = (token, id) => {
-  console.log(id)
   return new Promise((resolve, reject)=>{
     const config = {
       headers: {
@@ -102,7 +101,6 @@ const deleteOffer = (token, id) => {
 }
 
 const updateOffer = (token, data) => {
-  console.log(data)
   return new Promise((resolve, reject) => {
     const config = {
       headers: {
@@ -113,10 +111,9 @@ const updateOffer = (token, data) => {
       .put(baseURL + "offer/", data, config)
       .then((response) => {
         resolve(response.data.message);
-        toast.success("Oferta agregada!");
+        toast.success("Oferta actualizada");
       })
       .catch((error) => {
-        console.log(error)
         reject(error.response.data.message);
         toast.error(error.response.data.message);
       });

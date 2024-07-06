@@ -14,7 +14,6 @@ const getOneFavoriteService = (token, storeId) => {
       .get(baseURL + `/favorite/${storeId}`, config)
       .then((response) => {
         resolve(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         reject(error.response.data.message);
@@ -34,7 +33,6 @@ const getAllFavoritesService = (token) => {
       .get(baseURL + `/favorite/`, config)
       .then((response) => {
         resolve(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         reject(error.response.data.message);

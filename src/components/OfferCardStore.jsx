@@ -25,6 +25,7 @@ const OfferCardStore = (
 
   const token = localStorage.getItem("token");
   const [image, setImage] = useState();
+  const [updateImage, setUpdateImage] = useState(false)
   const [open, setOpen] = useState(false);
   const [store, setStore] = useState(
     {
@@ -49,12 +50,10 @@ const OfferCardStore = (
       await deleteOffer(token, id);
       handleUpdateOffers(true);
     } catch (error) {
-      console.error('Error al eliminar el elemento:', error);
     }
   };
 
   const handleCancel = () => {
-    console.log('Clicked cancel button');
     setOpen(false);
   };
 
@@ -66,7 +65,7 @@ const OfferCardStore = (
       } catch (error) { }
     };
     fetchImage();
-  }, [id, token]);
+  }, [id, updateImage]);
 
 
   const content = (
@@ -151,6 +150,7 @@ const OfferCardStore = (
         setOpen={setOpenEditForm}
         idStore={storeId}
         handleUpdateOffers={handleUpdateOffers}
+        handleUpdateImage={setUpdateImage}
         offer={offerData}
       />
     </Card>

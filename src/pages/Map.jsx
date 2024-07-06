@@ -74,9 +74,10 @@ const Map = () => {
   const [selectedStore, setSelectedStore] = useState(null);
   const [address, setAddress] = useState("");
   const [zoom, setZoom] = useState(13);
+  
 
   const [updateStores, setUpdateStores] = useState(false);
-
+  
   const handleGetAllStores = async () => {
     try {
       const data = await getAllStoresService(token);
@@ -84,13 +85,15 @@ const Map = () => {
     } catch (error) {}
   };
 
+
   useEffect(() => {
-    handleGetAllStores();
-    setUpdateStores(false);
+    if (stores) {
+      handleGetAllStores();
+      setUpdateStores(false);
+    }
     // eslint-disable-next-line
   }, [updateStores]);
 
-  console.log("update map", updateStores  )
   useEffect(() => {
     if (state?.location) {
       const [lat, lng] = state.location.split(",");

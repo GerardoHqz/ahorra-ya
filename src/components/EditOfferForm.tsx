@@ -3,7 +3,7 @@ import { Button, DatePicker, Form, Input, Modal, Select, Upload } from "antd";
 import { getAllCategoriesService } from "../api/categories";
 import { Category } from "../interfaces/Categories";
 import { createOfferService, updateOffer } from "../api/offer";
-import { createImageService } from "../api/images";
+import { createImageService, getInfoOfferImage, updateImageService } from "../api/images";
 import { BsUpload } from "react-icons/bs";
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -16,6 +16,7 @@ type EditOfferFormProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   idStore: any;
   handleUpdateOffers: React.Dispatch<React.SetStateAction<boolean>>;
+  handleUpdateImage: React.Dispatch<React.SetStateAction<boolean>>;
   offer: any;
 };
 
@@ -24,6 +25,7 @@ const EditOfferForm = ({
   setOpen,
   idStore,
   handleUpdateOffers,
+  handleUpdateImage,
   offer
 }: EditOfferFormProps) => {
   const token = localStorage.getItem("token");
@@ -31,13 +33,13 @@ const EditOfferForm = ({
   const [categories, setCategories] = useState<Category[]>([]);
   const [image, setImage] = useState<File | null>(null);
   const [form] = Form.useForm();
-  
+
 
   const handleGetAllCategories = async () => {
     try {
       const data = await getAllCategoriesService(token);
       setCategories(data);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   useEffect(() => {
@@ -62,11 +64,19 @@ const EditOfferForm = ({
 
     try {
       await updateOffer(token, values);
+
+      const imageId = await getInfoOfferImage(token, offer.id)
+
+      if (image) {
+        await updateImageService(token, { file: image, idImage: imageId });
+        handleUpdateImage(true);
+      }
+
       setOpen(false);
       handleUpdateOffers(true);
       form.resetFields();
       setImage(null);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   useEffect(() => {
@@ -181,16 +191,16 @@ const EditOfferForm = ({
             />
           </Form.Item>
           <Upload
-              beforeUpload={(file) => {
-                setImage(file);
-                return false;
-              }}
-              listType="picture"
-              maxCount={1}
-              accept="image/*"
-            >
-              <Button icon={<BsUpload />}>Agregar imagen</Button>
-            </Upload>
+            beforeUpload={(file) => {
+              setImage(file);
+              return false;
+            }}
+            listType="picture"
+            maxCount={1}
+            accept="image/*"
+          >
+            <Button icon={<BsUpload />}>Agregar imagen</Button>
+          </Upload>
         </div>
         <div className="flex justify-between">
           <button

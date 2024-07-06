@@ -86,8 +86,26 @@ const getInfoStoreImage = (token, id) => {
   });
 };
 
-const updateStoreImageService = (token, data) => {
-  console.log(data)
+const getInfoOfferImage = (token, id) => {
+  return new Promise((resolve, reject) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios
+      .get(baseURL + `image/info/offer/${id}`, config)
+      .then((response) => {
+        resolve(response.data[0].idImage);
+      })
+      .catch((error) => {
+        reject(error.response.data.message);
+        toast.error(error.response.data.message);
+      });
+  });
+};
+
+const updateImageService = (token, data) => {
   return new Promise((resolve, reject) => {
     const config = {
       headers: {
@@ -101,10 +119,11 @@ const updateStoreImageService = (token, data) => {
         resolve(response.data.message);
       })
       .catch((error) => {
-        console.log(error)
         reject(error.response.data.message);
         toast.error(error.response.data.message);
       });
   });
 };
-export { createImageService, getStoreImage, getOfferImage, getInfoStoreImage, updateStoreImageService };
+
+
+export { createImageService, getStoreImage, getOfferImage, getInfoStoreImage, getInfoOfferImage, updateImageService };

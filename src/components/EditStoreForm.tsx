@@ -10,7 +10,7 @@ import { getAllMunicipalitiesService } from "../api/municipalities";
 import { Department } from "../interfaces/Departments";
 import { Municipality } from "../interfaces/Municipalities";
 import { updateStoreService } from "../api/stores";
-import { getInfoStoreImage, updateStoreImageService } from "../api/images";
+import { getInfoStoreImage, updateImageService } from "../api/images";
 
 type EditStoreFormProps = {
     open: boolean;
@@ -84,15 +84,13 @@ const EditStoreForm = ({
         values.idStore = store.idStore; // Agregar idStore a los valores
         try {
             await updateStoreService(token, values);
-
             const imageId = await getInfoStoreImage(token,store.idStore)
 
             if(image) {
-                await updateStoreImageService(token, {file: image, idImage: imageId});
-              }
-
+                await updateImageService(token, {file: image, idImage: imageId});
+            }
             setOpen(false);
-            handleUpdateStores(true);
+            handleUpdateStores(true)
             form.resetFields();
             setImage(null);
         } catch (error) {}

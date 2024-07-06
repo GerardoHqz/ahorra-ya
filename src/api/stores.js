@@ -100,7 +100,6 @@ const getStoresByMunicipalityService = (token, municipality) => {
 };
 
 const deleteStore = (token, id) => {
-  console.log(id)
   return new Promise((resolve, reject) => {
     const config = {
       headers: {
@@ -120,7 +119,6 @@ const deleteStore = (token, id) => {
 };
 
 const updateStoreService = (token, data) => {
-  console.log("data store API", data)
   return new Promise((resolve, reject) => {
     const config = {
       headers: {
@@ -131,7 +129,7 @@ const updateStoreService = (token, data) => {
       .put(baseURL + "/store/", data, config)
       .then((response) => {
         resolve(response.data.message);
-        toast.success("Tienda agregada!");
+        toast.success("Tienda actualizada!");
       })
       .catch((error) => {
         reject(error.response.data.message);

@@ -44,8 +44,7 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStores, showMapButto
       } catch (error) { }
     };
     fetchImage();
-  }, [store, token]);
-  console.log("image", image)
+  }, [store, token, handleUpdateStores]);
 
   const handleVerifyFavorite = async () => {
     try {
@@ -83,12 +82,10 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStores, showMapButto
       await deleteStore(token, store.idStore);
       handleUpdateStores(true);
     } catch (error) {
-      console.error('Error al eliminar el elemento:', error);
     }
   };
 
   const handleCancel = () => {
-    console.log('Clicked cancel button');
     setOpen(false);
   };
 
@@ -156,6 +153,8 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStores, showMapButto
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateOffers, store]);
+
+
 
   const DrawerTitle = () => {
     return (
