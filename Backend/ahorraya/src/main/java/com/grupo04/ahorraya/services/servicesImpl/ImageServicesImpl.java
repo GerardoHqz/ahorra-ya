@@ -85,40 +85,40 @@ public class ImageServicesImpl implements ImageServices {
     }
 
     @Override
-    public void updateImage(ImageUpdateDTO image) {
-        Image imageFound = imageRepository.findImageByidImage(image.getIdImage());
+    public void updateImage(ImageUpdateDTO info) {
+        Image imageFound = imageRepository.findImageByidImage(info.getIdImage());
 
         if (imageFound == null) {
             throw new RuntimeException("Image not found");
         }
 
-        if (image.getStore() != null) {
-            Store store = storeRepository.findByIdStore(image.getStore());
+        if (info.getStore() != null) {
+            Store store = storeRepository.findByIdStore(info.getStore());
             if (store == null) {
                 throw new RuntimeException("Store not found");
             }
             imageFound.setStore(store);
         }
 
-        if (image.getOffer() != null) {
-            Offer offer = offerRepository.getByIdOffer(image.getOffer());
+        if (info.getOffer() != null) {
+            Offer offer = offerRepository.getByIdOffer(info.getOffer());
             if (offer == null) {
                 throw new RuntimeException("Offer not found");
             }
             imageFound.setOffer(offer);
         }
 
-        imageFound.setIdImage(image.getIdImage());
+        imageFound.setIdImage(info.getIdImage());
 
-        if (image.getName() != null) {
-            imageFound.setName(image.getName());
+        if (info.getName() != null) {
+            imageFound.setName(info.getName());
         }
 
-        if (image.getUrl() != null) {
+        if (info.getUrl() != null) {
             File file = new File(imageFound.getUrl());
             if (file.exists()) {
                 // Cambiando el nombre del archivo por el nuevo
-                String newName = image.getName();
+                String newName = info.getName();
                 Path source = file.toPath();
                 Path target = source.resolveSibling(newName); // Resolviendo el nuevo nombre en el mismo directorio
 
@@ -134,6 +134,17 @@ public class ImageServicesImpl implements ImageServices {
                     throw new RuntimeException("Error updating image", e);
                 }
                 imageFound.setUrl(target.toString());
+            }
+        }
+
+        if (info.getFile() != null) {
+            try {
+                Path imagePath = Paths.get(uploadDirectory).resolve(imageFound.getName()).normalize();
+                Files.copy(info.getFile().getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
+                imageFound.setUrl(imagePath.toString());
+
+            } catch (Exception e) {
+                throw new RuntimeException("Error updating image", e);
             }
         }
 
