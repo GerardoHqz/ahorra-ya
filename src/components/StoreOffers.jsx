@@ -25,7 +25,7 @@ import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { deleteStore } from "../api/stores";
 import EditStoreForm from "./EditStoreForm";
 
-const StoreOffers = ({ visible, onClose, store, handleUpdateStore, showMapButton }) => {
+const StoreOffers = ({ visible, onClose, store, handleUpdateStores, showMapButton }) => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const [offersData, setOffersData] = useState([]);
@@ -81,7 +81,7 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStore, showMapButton
   const handleOk = async () => {
     try {
       await deleteStore(token, store.idStore);
-      handleUpdateStore(true);
+      handleUpdateStores(true);
     } catch (error) {
       console.error('Error al eliminar el elemento:', error);
     }
@@ -185,7 +185,7 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStore, showMapButton
         <EditStoreForm
           open={openEditForm}
           setOpen={setOpenEditForm}
-          handleUpdateStore={handleUpdateStore}
+          handleUpdateStores={handleUpdateStores}
           store={store}
           latitude={store?.latitude}
           longitude={store?.longuitude}

@@ -151,7 +151,7 @@ const Stores = () => {
           visible={drawerVisible}
           onClose={closeDrawer}
           store={selectedStore}
-          handleUpdateStore={setUpdateStores}
+          handleUpdateStores={setUpdateStores}
           showMapButton={true}
         />
       </Layout>

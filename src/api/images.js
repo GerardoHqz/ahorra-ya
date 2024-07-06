@@ -33,7 +33,6 @@ const getStoreImage = (token, id) => {
           responseType: "arraybuffer",
         })
         .then((response) => {
-          console.log("response", response)
           const imageBlob = new Blob([response.data], { type: "image/jpeg" });
           const imageURL = URL.createObjectURL(imageBlob);
           resolve(imageURL);
@@ -68,4 +67,44 @@ const getOfferImage = (token, id) => {
   });
 };
 
-export { createImageService, getStoreImage, getOfferImage };
+const getInfoStoreImage = (token, id) => {
+  return new Promise((resolve, reject) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios
+      .get(baseURL + `image/info/store/${id}`, config)
+      .then((response) => {
+        resolve(response.data[0].idImage);
+      })
+      .catch((error) => {
+        reject(error.response.data.message);
+        toast.error(error.response.data.message);
+      });
+  });
+};
+
+const updateStoreImageService = (token, data) => {
+  console.log(data)
+  return new Promise((resolve, reject) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    axios
+      .put(baseURL + "image/", data, config)
+      .then((response) => {
+        resolve(response.data.message);
+      })
+      .catch((error) => {
+        console.log(error)
+        reject(error.response.data.message);
+        toast.error(error.response.data.message);
+      });
+  });
+};
+export { createImageService, getStoreImage, getOfferImage, getInfoStoreImage, updateStoreImageService };

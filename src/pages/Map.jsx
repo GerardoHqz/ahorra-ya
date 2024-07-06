@@ -90,6 +90,7 @@ const Map = () => {
     // eslint-disable-next-line
   }, [updateStores]);
 
+  console.log("update map", updateStores  )
   useEffect(() => {
     if (state?.location) {
       const [lat, lng] = state.location.split(",");
@@ -172,7 +173,7 @@ const Map = () => {
             visible={drawerVisible}
             onClose={closeDrawer}
             store={selectedStore}
-            handleUpdateStore={setUpdateStores}
+            handleUpdateStores={setUpdateStores}
             showMapButton={false}
           />
         </MapContainer>

@@ -9,14 +9,14 @@ import { getAllDepartmentsService } from "../api/departments";
 import { getAllMunicipalitiesService } from "../api/municipalities";
 import { Department } from "../interfaces/Departments";
 import { Municipality } from "../interfaces/Municipalities";
-import { createStoreService, updateStoreService } from "../api/stores";
-import { createImageService } from "../api/images";
+import { updateStoreService } from "../api/stores";
+import { getInfoStoreImage, updateStoreImageService } from "../api/images";
 
 type EditStoreFormProps = {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    handleUpdateStores: React.Dispatch<React.SetStateAction<boolean>>;
     store: any;
-    handleUpdateStore: any;
     latitude: number;
     longitude: number;
 };
@@ -24,14 +24,13 @@ type EditStoreFormProps = {
 const EditStoreForm = ({
     open,
     setOpen,
+    handleUpdateStores,
     store,
-    handleUpdateStore,
     latitude,
     longitude,
 }: EditStoreFormProps) => {
     const token = localStorage.getItem("token");
 
-    console.log(store);
     const [departments, setDepartments] = useState<Department[]>([]);
     const [municipalities, setMunicipalities] = useState<Municipality[]>([]);
     const [image, setImage] = useState<File | null>(null);
@@ -85,8 +84,15 @@ const EditStoreForm = ({
         values.idStore = store.idStore; // Agregar idStore a los valores
         try {
             await updateStoreService(token, values);
+
+            const imageId = await getInfoStoreImage(token,store.idStore)
+
+            if(image) {
+                await updateStoreImageService(token, {file: image, idImage: imageId});
+              }
+
             setOpen(false);
-            handleUpdateStore(true);
+            handleUpdateStores(true);
             form.resetFields();
             setImage(null);
         } catch (error) {}
