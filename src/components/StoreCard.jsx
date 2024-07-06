@@ -29,7 +29,7 @@ const StoreCard = ({
       id={id}
       hoverable
       style={{
-        width: 340,
+        width: 300,
         height: 345,
       }}
       className="shadow-md flex flex-col justify-between"

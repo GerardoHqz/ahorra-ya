@@ -42,7 +42,7 @@ const Favorites = () => {
   return (
     <Layout className="min-h-screen flex flex-row text-bg-dark-blue dark:text-white">
       <SideMenu />
-      <Layout>
+      <Layout className="ml-52">
         <div className="bg-white dark:bg-gray-800 p-6">
           <p className="text-xl">Tiendas favoritas</p>
         </div>
