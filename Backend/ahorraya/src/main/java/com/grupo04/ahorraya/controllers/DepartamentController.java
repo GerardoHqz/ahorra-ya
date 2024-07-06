@@ -114,7 +114,7 @@ public class DepartamentController {
     }
 
     @GetMapping("/municipalities/{name}")
-    public ResponseEntity<?> getMunicipalitiesByDepartament(@PathVariable String name){
+    public ResponseEntity<?> getMunicipalitiesByDepartament(@PathVariable("name") String name){
         User userFound = userServices.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
