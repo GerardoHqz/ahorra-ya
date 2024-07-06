@@ -173,7 +173,7 @@ public class ImageController {
 
     @PutMapping("/")
     @Transactional(rollbackOn = Exception.class)
-    public ResponseEntity<?> updateImage(@RequestBody @Valid ImageUpdateDTO info, BindingResult validations) throws Exception{
+    public ResponseEntity<?> updateImage(@ModelAttribute @Valid ImageUpdateDTO info, BindingResult validations) throws Exception{
         if (validations.hasErrors()) {
             return ResponseEntity.badRequest().body(errorHandler.mapErrors(validations.getFieldErrors()));
         }
