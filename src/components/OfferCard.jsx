@@ -26,7 +26,7 @@ const OfferCard = ({
     <Card
       id={id}
       style={{
-        width: 240,
+        width: 230,
         height: 325,
       }}
       className="shadow-md flex flex-col justify-between"

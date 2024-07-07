@@ -138,7 +138,7 @@ const Map = () => {
         longitude={selectedPosition.lng}
       />
       <SideMenu />
-      <Layout>
+      <Layout className="ml-52">
         <MapContainer center={position} zoom={zoom} style={{ height: "100vh" }}>
           <div className="absolute z-[500] mt-5 ml-20 w-10/12 flex gap-4">
             <Input
@@ -146,7 +146,7 @@ const Map = () => {
               onChange={(e) => setAddress(e.target.value)}
             />
             <button
-              className="rounded-full bg-gradient-to-br from-orange to-pink text-white p-2 shadow-md"
+              className="rounded-full dark:from-gray-800 dark:to-gray-800 bg-gradient-to-br from-orange to-pink text-white p-2 shadow-md"
               onClick={onSearch}
             >
               <FaSearch size={25} />

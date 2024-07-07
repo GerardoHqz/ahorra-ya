@@ -34,30 +34,30 @@ const Offers = () => {
   return (
     <Layout className="min-h-screen flex flex-row text-bg-dark-blue dark:text-white">
       <SideMenu />
-      <Layout>
+      <Layout className="ml-52">
         <div className="bg-white dark:bg-gray-800 p-6">
           <p className="text-xl">Ofertas</p>
         </div>
         <Content className="flex flex-col gap-4 p-8">
           <div className="flex items-center gap-4">
             <Input
-              placeholder="Ingrese una dirección"
+              placeholder="Ingrese un parámetro de búsqueda"
               onChange={(e) => setSearch(e.target.value)}
             />
             <button
-              className="rounded-full bg-gradient-to-br from-orange to-pink text-white p-2 shadow-md"
+              className="rounded-full dark:from-gray-800 dark:to-gray-800 bg-gradient-to-br from-orange to-pink text-white p-2 shadow-md"
               onClick={onSearch}
             >
               <FaSearch size={25} />
             </button>
           </div>
           <button
-            className="rounded-full w-max bg-gradient-to-br from-orange to-pink text-white p-2 shadow-md"
+            className="rounded-full dark:from-gray-800 dark:to-gray-800 w-max bg-gradient-to-br from-orange to-pink text-white p-2 shadow-md"
             onClick={handleGetAllOffers}
           >
             Limpiar filtros
           </button>
-          <div className="flex gap-5">
+          <div className="flex gap-5 flex-wrap">
             {recentOffers.map((offer) => (
               <OfferCard
                 key={offer.idOffer}
@@ -68,7 +68,7 @@ const Offers = () => {
                 previousPrice={offer.priceBefore}
                 endDate={offer.endDate}
               />
-            ))}
+            )).reverse()}
           </div>
         </Content>
       </Layout>

@@ -19,13 +19,19 @@ import {
 } from "../api/favorites";
 import { useNavigate } from "react-router-dom";
 import { getStoreImage } from "../api/images";
-import "../assets/style/AntDesignCustom.css"
+import "../assets/style/AntDesignCustom.css";
 import { SlOptions } from "react-icons/sl";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { deleteStore } from "../api/stores";
 import EditStoreForm from "./EditStoreForm";
 
-const StoreOffers = ({ visible, onClose, store, handleUpdateStores, showMapButton }) => {
+const StoreOffers = ({
+  visible,
+  onClose,
+  store,
+  handleUpdateStores,
+  showMapButton,
+}) => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const [offersData, setOffersData] = useState([]);
@@ -41,16 +47,16 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStores, showMapButto
       try {
         const imageURL = await getStoreImage(token, store.idStore);
         setImage(imageURL);
-      } catch (error) { }
+      } catch (error) {}
     };
     fetchImage();
-  }, [store, token, handleUpdateStores]);
+  }, [store, token, updateOffers]);
 
   const handleVerifyFavorite = async () => {
     try {
       const favorite = await getOneFavoriteService(token, store.idStore);
       setIsFavorite(favorite);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const handleToggleFavorite = async () => {
@@ -58,12 +64,12 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStores, showMapButto
       try {
         await deleteFavoriteService(token, store.idStore);
         setIsFavorite(false);
-      } catch (error) { }
+      } catch (error) {}
     } else {
       try {
         await addFavoriteService(token, { store: store.idStore });
         setIsFavorite(true);
-      } catch (error) { }
+      } catch (error) {}
     }
   };
 
@@ -91,7 +97,12 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStores, showMapButto
 
   const content = (
     <div>
-      <span className="flex p-2 hover:text-blue hover:cursor-pointer active:bg-opacity-50" onClick={() => { setOpenEditForm(true) }}>
+      <span
+        className="flex p-2 hover:text-blue hover:cursor-pointer active:bg-opacity-50"
+        onClick={() => {
+          setOpenEditForm(true);
+        }}
+      >
         <AiOutlineEdit size={20} />
         <p className="pl-2">Editar</p>
       </span>
@@ -167,17 +178,21 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStores, showMapButto
             </h2>
           </span>
           <FaHeart
+            className="cursor-pointer"
             size={30}
             color={isFavorite ? "red" : "gray"}
             onClick={handleToggleFavorite}
           />
         </span>
         <Space wrap>
-          <Popover content={content} trigger="click"
+          <Popover
+            content={content}
+            trigger="click"
             style={{
               width: "20%",
               padding: "0px !important",
-            }}>
+            }}
+          >
             <SlOptions />
           </Popover>
         </Space>
@@ -209,16 +224,15 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStores, showMapButto
         onClose={onClose}
         open={visible}
       >
-
         <div className="flex justify-between items-center gap-5 pb-5">
-          {showMapButton &&
+          {showMapButton && (
             <Button
               onClick={handleMapLocation}
               className="bg-pink text-white flex items-center gap-3"
             >
               <FaLocationArrow size={20} /> Ver en el mapa
             </Button>
-          }
+          )}
           <Button
             className="bg-pink text-white"
             onClick={() => setOpenOfferForm(true)}
@@ -228,11 +242,7 @@ const StoreOffers = ({ visible, onClose, store, handleUpdateStores, showMapButto
         </div>
 
         <hr />
-        <Image
-          className=""
-          src={image}
-          alt={store?.name}
-        />
+        <Image className="" src={image} alt={store?.name} />
         <p className="text-black py-5">{store?.description}</p>
         <p className="pb-5 flex items-center ">
           <LuMapPin className="mr-2" />

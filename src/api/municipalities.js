@@ -22,5 +22,24 @@ const getAllMunicipalitiesService = (token) => {
   });
 };
 
+const getAllMunicipalitiesByDepartmentService = (token, department) => {
+  return new Promise((resolve, reject) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios
+      .get(baseURL + `/departament/municipalities/${department}`, config)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error.response.data.message);
+        toast.error(error.response.data.message);
+      });
+  });
+};
 
-export { getAllMunicipalitiesService };
+
+export { getAllMunicipalitiesService, getAllMunicipalitiesByDepartmentService };

@@ -25,7 +25,7 @@ const SideMenu = () => {
   };
 
   return (
-    <div className="w-max h-screen bg-gradient-to-br from-orange to-pink dark:from-gray-800 dark:to-gray-800 text-white ">
+    <div className="w-max h-screen fixed bg-gradient-to-br from-orange to-pink dark:from-gray-800 dark:to-gray-800 text-white ">
       <div className="flex items-center p-4 gap-3">
         <FaUserCircle size={30} color={"#FFFFFF"}/>
         <div>

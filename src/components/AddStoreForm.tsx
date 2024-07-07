@@ -6,7 +6,7 @@ import { FiPhone, FiUser } from "react-icons/fi";
 import { BsUpload } from "react-icons/bs";
 import { AiOutlineMail } from "react-icons/ai";
 import { getAllDepartmentsService } from "../api/departments";
-import { getAllMunicipalitiesService } from "../api/municipalities";
+import { getAllMunicipalitiesByDepartmentService } from "../api/municipalities";
 import { Department } from "../interfaces/Departments";
 import { Municipality } from "../interfaces/Municipalities";
 import { createStoreService } from "../api/stores";
@@ -30,7 +30,8 @@ const AddStoreForm = ({
   const token = localStorage.getItem("token");
 
   const [departments, setDepartments] = useState<Department[]>([]);
-  const [municipalities, setMunicipalities] = useState<Municipality[]>([]);
+  const [selectedDepartment, setSelectedDepartment] = useState<String>("null");
+  const [municipalities, setMunicipalities] = useState<any[]>([]);
   const [image, setImage] = useState<File | null>(null);
 
   const [form] = Form.useForm();
@@ -44,16 +45,24 @@ const AddStoreForm = ({
 
   const handleGetAllMunicipalities = async () => {
     try {
-      const data = await getAllMunicipalitiesService(token);
+      const data = await getAllMunicipalitiesByDepartmentService(
+        token,
+        selectedDepartment
+      );
       setMunicipalities(data);
     } catch (error) {}
   };
 
   useEffect(() => {
     handleGetAllDepartments();
-    handleGetAllMunicipalities();
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    handleGetAllMunicipalities();
+
+    // eslint-disable-next-line
+  }, [selectedDepartment]);
 
   const filterOption = (
     input: string,
@@ -65,8 +74,8 @@ const AddStoreForm = ({
     values.longitude = longitude;
     try {
       const storeID = await createStoreService(token, values);
-      if(image) {
-        await createImageService(token, {file: image, store: storeID});
+      if (image) {
+        await createImageService(token, { file: image, store: storeID });
       }
       setOpen(false);
       handleUpdateStores(true);
@@ -78,7 +87,7 @@ const AddStoreForm = ({
   return (
     <Modal
       title="Agregar tienda"
-      style={{ top: 80 }}
+      style={{ top: 40 }}
       width={800}
       open={open}
       closable={false}
@@ -129,6 +138,9 @@ const AddStoreForm = ({
                   showSearch
                   placeholder="Seleccione un departamento"
                   optionFilterProp="children"
+                  onChange={(value) => {
+                    setSelectedDepartment(value);
+                  }}
                   filterOption={filterOption}
                   options={departments.map((department) => ({
                     value: department.name,
