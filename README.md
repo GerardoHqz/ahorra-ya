@@ -31,16 +31,16 @@ Sigue los pasos a continuación para clonar y ejecutar el proyecto localmente.
 
 3. **Configurar el archivo de propiedades**
 
-  Accede al proyecto y en la carpeta resources dentro de main encontrarás el archivo "application.properties". Reemplaza los valores de conexión con las credenciales de tu base de datos
+     Accede al proyecto y en la carpeta resources dentro de main encontrarás el archivo "application.properties". Reemplaza los valores de conexión con las credenciales de tu base de datos
     
-    spring.datasource.url=jdbc:postgresql://localhost:PUERTO/NOMBRE_BD
-    spring.datasource.username=USUARIO
-    spring.datasource.password=CONTRASEÑA
+       spring.datasource.url=jdbc:postgresql://localhost:PUERTO/NOMBRE_BD
+       spring.datasource.username=USUARIO
+       spring.datasource.password=CONTRASEÑA
 
 4. **Ejecutar el proyecto**
   
-  Abre la aplicación de SpringToolSuite4 e importa el proyecto y ejecutalo como Spring Boot App. La aplicación se habilitará en localhost:8080
+     Abre la aplicación de SpringToolSuite4 e importa el proyecto y ejecutalo como Spring Boot App. La aplicación se habilitará en localhost:8080
 
 5. **Probar rutas (opcional)**
 
-  Dentro de la carpeta "Backend" encontrarás el archivo "AhorraYa-API.json", importa la colección de rutas en Insomnia para ver y probar todas las rutas
+     Dentro de la carpeta "Backend" encontrarás el archivo "AhorraYa-API.json", importa la colección de rutas en Insomnia para ver y probar todas las rutas
