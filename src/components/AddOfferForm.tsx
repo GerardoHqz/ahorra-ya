@@ -37,6 +37,7 @@ const AddOfferForm = ({
     // eslint-disable-next-line
   }, []);
 
+  //Filter select options
   const filterOption = (
     input: string,
     option?: { label: string; value: string }
@@ -47,7 +48,6 @@ const AddOfferForm = ({
     values.active = true;
     values.initDate = values.initDate.format("YYYY-MM-DD");
     values.endDate = values.priceNow.format("YYYY-MM-DD");
-    //Si se le pone de un solo "priceNow" en el form se buguea xd
     values.priceNow = values.priceAfter;
     delete values.priceAfter;
 

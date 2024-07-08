@@ -8,7 +8,6 @@ import { AiOutlineMail } from "react-icons/ai";
 import { getAllDepartmentsService } from "../api/departments";
 import { getAllMunicipalitiesByDepartmentService } from "../api/municipalities";
 import { Department } from "../interfaces/Departments";
-import { Municipality } from "../interfaces/Municipalities";
 import { createStoreService } from "../api/stores";
 import { createImageService } from "../api/images";
 
@@ -43,6 +42,7 @@ const AddStoreForm = ({
     } catch (error) {}
   };
 
+  //Get municipalities by selected department
   const handleGetAllMunicipalities = async () => {
     try {
       const data = await getAllMunicipalitiesByDepartmentService(
@@ -64,12 +64,14 @@ const AddStoreForm = ({
     // eslint-disable-next-line
   }, [selectedDepartment]);
 
+  //Filter select options
   const filterOption = (
     input: string,
     option?: { label: string; value: string }
   ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
   const handleSubmit = async (values: Store) => {
+    //Add selected latitude and longitude
     values.latitude = latitude;
     values.longitude = longitude;
     try {

@@ -3,7 +3,7 @@ import { Card } from "antd";
 import "../assets/style/AntDesignCustom.css";
 import { getOfferImage } from "../api/images";
 import { deleteOffer } from "../api/offer";
-import { Button, Popover, Space, Modal } from 'antd';
+import { Popover, Space, Modal } from 'antd';
 import { SlOptions } from "react-icons/sl";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 
@@ -27,17 +27,6 @@ const OfferCardStore = (
   const [image, setImage] = useState();
   const [updateImage, setUpdateImage] = useState(false)
   const [open, setOpen] = useState(false);
-  const [store, setStore] = useState(
-    {
-      id,
-      productName,
-      description,
-      category,
-      duration,
-      initDate,
-      actualPrice,
-      previousPrice,
-    })
 
   const [openEditForm, setOpenEditForm] = useState(false);
 
@@ -45,6 +34,7 @@ const OfferCardStore = (
     setOpen(true);
   };
 
+  //Delete offer
   const handleOk = async () => {
     try {
       await deleteOffer(token, id);
@@ -65,6 +55,7 @@ const OfferCardStore = (
       } catch (error) { }
     };
     fetchImage();
+    // eslint-disable-next-line
   }, [id, updateImage]);
 
 

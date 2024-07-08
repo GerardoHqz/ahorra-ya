@@ -54,6 +54,7 @@ const StoreOffers = ({
   }, [store, token]);
   console.log("image", image);
 
+  // Verify if the store is favorite
   const handleVerifyFavorite = async () => {
     try {
       const favorite = await getOneFavoriteService(token, store.idStore);
@@ -61,6 +62,7 @@ const StoreOffers = ({
     } catch (error) {}
   };
 
+  //Add or remove favorite
   const handleToggleFavorite = async () => {
     if (isFavorite) {
       try {
@@ -75,12 +77,14 @@ const StoreOffers = ({
     }
   };
 
+  //Open map with store location
   const handleMapLocation = () => {
     navigate("/map", {
       state: { location: `${store.latitude}, ${store.longuitude}` },
     });
   };
 
+  //Delete store
   const handleOk = async () => {
     try {
       await deleteStore(token, store.idStore);

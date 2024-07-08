@@ -39,6 +39,7 @@ const Stores = () => {
   
   const [updateStores, setUpdateStores] = useState(false);
 
+  //Select store and open drawer
   const handleMarkerClick = (store: any) => {
     setSelectedStore(store);
     setDrawerVisible(true);
@@ -56,10 +57,12 @@ const Stores = () => {
     } catch (error) {}
   };
 
+  //Change filter type by name, department or municipality
   const handleChangeFilter = (key: string) => {
     setFilter(key);
   };
 
+  //Search by name, department or municipality
   const onSearch = async () => {
     if (search === "") {
       return;

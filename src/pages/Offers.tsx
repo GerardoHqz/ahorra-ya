@@ -19,6 +19,7 @@ const Offers = () => {
     } catch (error) {}
   };
 
+  //Search offers by name
   const onSearch = async () => {
     try {
       const response = await getOffersByName(token, search);

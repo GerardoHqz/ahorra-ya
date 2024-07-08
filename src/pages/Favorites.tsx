@@ -16,6 +16,7 @@ const Favorites = () => {
   
   const [updateStores, setUpdateStores] = useState(false);
 
+  //Set selected store and open drawer
   const handleMarkerClick = (store: any) => {
     setSelectedStore(store);
     setDrawerVisible(true);

@@ -46,6 +46,7 @@ const EditOfferForm = ({
     // eslint-disable-next-line
   }, []);
 
+  //Filter select options
   const filterOption = (
     input: string,
     option?: { label: string; value: string }
@@ -57,7 +58,8 @@ const EditOfferForm = ({
     values.initDate = values.initDate.format("YYYY-MM-DD");
     values.endDate = values.endDate.format("YYYY-MM-DD");
     values.priceNow = values.priceAfter;
-    values.category = values.category; // Usar el valor de la categoría seleccionado en el formulario
+    //Value of the category selected in the form
+    values.category = values.category; 
     values.store = idStore;
     delete values.priceAfter;
 
@@ -87,7 +89,7 @@ const EditOfferForm = ({
         priceAfter: offer.priceNow,
         initDate: dayjs(offer.initDate, "YYYY-MM-DD"),
         endDate: dayjs(offer.endDate, "YYYY-MM-DD"),
-        category: offer.category.idCategory, // Establecer el valor inicial del campo de categoría
+        category: offer.category.idCategory, //Set initial value of the category
       });
     }
   }, [offer, form]);

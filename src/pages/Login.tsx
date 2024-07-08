@@ -14,6 +14,7 @@ const Login = () => {
     password: "",
   });
 
+  //Handle email and password input
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -22,6 +23,7 @@ const Login = () => {
     }));
   };
 
+  //Login with email and password
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
@@ -33,8 +35,10 @@ const Login = () => {
     }
   };
 
+  //Login with Google
   const loginGoogle = useGoogleLogin({
     onSuccess: async (accessToken) => {
+      //Get user data from Google account
       const userData = await fetch(
         "https://www.googleapis.com/oauth2/v1/userinfo?alt=json",
         {
@@ -45,6 +49,7 @@ const Login = () => {
       ).then((res) => res.json());
 
       const user = await getUserByEmail(userData.email);
+      //If user exists, login with Google. If not, redirect to sign in page
       if (user) {
         const token = await loginWithGoogle({ email: userData.email });
         localStorage.setItem("token", token);

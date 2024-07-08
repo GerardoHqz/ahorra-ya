@@ -22,16 +22,19 @@ import StoreOffers from "../components/StoreOffers";
 import { FaSearch } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 
+//Selected location icon
 const icon = new Icon({
   iconUrl: OrangePin,
   iconSize: [30, 41],
 });
 
+//Store icon
 const storeIcon = new Icon({
   iconUrl: BluePin,
   iconSize: [30, 41],
 });
 
+//Select spot in map to add store
 function AddStore({ setOpen, position, setPosition }) {
   useMapEvents({
     click(e) {
@@ -74,17 +77,15 @@ const Map = () => {
   const [selectedStore, setSelectedStore] = useState(null);
   const [address, setAddress] = useState("");
   const [zoom, setZoom] = useState(13);
-  
 
   const [updateStores, setUpdateStores] = useState(false);
-  
+
   const handleGetAllStores = async () => {
     try {
       const data = await getAllStoresService(token);
       setStores(data);
     } catch (error) {}
   };
-
 
   useEffect(() => {
     if (stores) {
@@ -94,6 +95,7 @@ const Map = () => {
     // eslint-disable-next-line
   }, [updateStores]);
 
+  //Get store location from url or user location
   useEffect(() => {
     if (state?.location) {
       const [lat, lng] = state.location.split(",");
@@ -104,8 +106,10 @@ const Map = () => {
         setPosition([position.coords.latitude, position.coords.longitude]);
       });
     }
+    // eslint-disable-next-line
   }, []);
 
+  //Select store and open drawer
   const handleMarkerClick = (store) => {
     setSelectedStore(store);
     setDrawerVisible(true);
@@ -116,6 +120,7 @@ const Map = () => {
     setSelectedStore(null);
   };
 
+  //Search address in map
   const onSearch = async () => {
     const result = await fetch(
       `https://nominatim.openstreetmap.org/search?q=${address}&format=json&limit=1`

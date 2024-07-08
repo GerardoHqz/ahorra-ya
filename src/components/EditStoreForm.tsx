@@ -73,6 +73,7 @@ const EditStoreForm = ({
         }
     }, [store, form]);
 
+    //Value of the category selected in the form
     const filterOption = (
         input: string,
         option?: { label: string; value: string }
@@ -81,7 +82,7 @@ const EditStoreForm = ({
     const handleSubmit = async (values: Store) => {
         values.latitude = latitude;
         values.longitude = longitude;
-        values.idStore = store.idStore; // Agregar idStore a los valores
+        values.idStore = store.idStore;
         try {
             await updateStoreService(token, values);
             const imageId = await getInfoStoreImage(token,store.idStore)
