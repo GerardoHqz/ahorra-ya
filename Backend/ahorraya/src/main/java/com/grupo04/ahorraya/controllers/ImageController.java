@@ -60,7 +60,7 @@ public class ImageController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteImage(@PathVariable UUID id){
+    public ResponseEntity<?> deleteImage(@PathVariable("id") UUID id){
 
         User userFound = userServices.findUserAuthenticated();
         if (userFound == null)
@@ -75,7 +75,7 @@ public class ImageController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getImageById(@PathVariable UUID id){
+    public ResponseEntity<?> getImageById(@PathVariable("id") UUID id){
         Image image = imageServices.findById(id);
 
         if (image != null) {
@@ -87,7 +87,7 @@ public class ImageController {
     }
 
     @GetMapping("/info/id/{id}")
-    public ResponseEntity<?> getImageInfoById(@PathVariable UUID id){
+    public ResponseEntity<?> getImageInfoById(@PathVariable("id") UUID id){
         User userFound = userServices.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
@@ -102,7 +102,7 @@ public class ImageController {
     }
 
     @GetMapping("/info/name/{name}")
-    public ResponseEntity<?> getImageInfoByName(@PathVariable String name){
+    public ResponseEntity<?> getImageInfoByName(@PathVariable("name") String name){
         User userFound = userServices.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
@@ -117,7 +117,7 @@ public class ImageController {
     }
 
     @GetMapping("/info/store/{id}")
-    public ResponseEntity<?> getImageInfoByStore(@PathVariable UUID id){
+    public ResponseEntity<?> getImageInfoByStore(@PathVariable("id") UUID id){
         User userFound = userServices.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
@@ -137,7 +137,7 @@ public class ImageController {
     }
 
     @GetMapping("/info/offer/{id}")
-    public ResponseEntity<?> getImageInfoByOffer(@PathVariable UUID id){
+    public ResponseEntity<?> getImageInfoByOffer(@PathVariable("id") UUID id){
         User userFound = userServices.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
@@ -238,7 +238,7 @@ public class ImageController {
     }
 
     @DeleteMapping("/offer/{id}")
-    public ResponseEntity<?> deleteImagesByOffer(@PathVariable UUID id){
+    public ResponseEntity<?> deleteImagesByOffer(@PathVariable("id") UUID id){
         User userFound = userServices.findUserAuthenticated();
         if (userFound == null)
             return new ResponseEntity<>(new MessageDTO("User not authenticated"), HttpStatus.NOT_FOUND);
