@@ -90,7 +90,7 @@ const EditStoreForm = ({
                 await updateImageService(token, {file: image, idImage: imageId});
             }
             setOpen(false);
-            handleUpdateStores(true)
+            window.location.reload();
             form.resetFields();
             setImage(null);
         } catch (error) {}
@@ -99,7 +99,7 @@ const EditStoreForm = ({
     return (
         <Modal
             title="Agregar tienda"
-            style={{ top: 80 }}
+            style={{ top: 40 }}
             width={800}
             open={open}
             closable={false}

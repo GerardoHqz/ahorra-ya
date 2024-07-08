@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Drawer, Space, Popover, Modal } from "antd";
 import { IoIosLink } from "react-icons/io";
 import { FiPhone, FiUser } from "react-icons/fi";
@@ -6,7 +6,6 @@ import { AiOutlineMail } from "react-icons/ai";
 import { FaLocationArrow } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa";
 import { Collapse } from "antd";
-import logo from "../assets/img/logo.svg";
 import { Image } from "antd";
 import OfferCard from "./OfferCardStore";
 import { LuMapPin } from "react-icons/lu";
@@ -21,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { getStoreImage } from "../api/images";
 import "../assets/style/AntDesignCustom.css";
 import { SlOptions } from "react-icons/sl";
-import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import { AiOutlineEdit } from "react-icons/ai";
 import { deleteStore } from "../api/stores";
 import EditStoreForm from "./EditStoreForm";
 
@@ -42,15 +41,18 @@ const StoreOffers = ({
   const [open, setOpen] = useState(false);
   const [openEditForm, setOpenEditForm] = useState(false);
 
+  const fetchImage = async () => {
+    try {
+      const imageURL = await getStoreImage(token, store.idStore);
+      setImage(imageURL);
+    } catch (error) {}
+  };
+
   useEffect(() => {
-    const fetchImage = async () => {
-      try {
-        const imageURL = await getStoreImage(token, store.idStore);
-        setImage(imageURL);
-      } catch (error) {}
-    };
     fetchImage();
-  }, [store, token, updateOffers]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [store, token]);
+  console.log("image", image);
 
   const handleVerifyFavorite = async () => {
     try {
@@ -79,19 +81,17 @@ const StoreOffers = ({
     });
   };
 
-  const showModal = () => {
-    setOpen(true);
-  };
-
   const handleOk = async () => {
     try {
       await deleteStore(token, store.idStore);
       handleUpdateStores(true);
     } catch (error) {
+      console.error("Error al eliminar el elemento:", error);
     }
   };
 
   const handleCancel = () => {
+    console.log("Clicked cancel button");
     setOpen(false);
   };
 
@@ -165,8 +165,6 @@ const StoreOffers = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateOffers, store]);
 
-
-
   const DrawerTitle = () => {
     return (
       <div className="flex justify-between items-center">
@@ -174,7 +172,7 @@ const StoreOffers = ({
           <span className="pr-3">
             <h1 className="text-xl font-bold">{store?.name}</h1>
             <h2 className="text-sm text-secondary-text">
-              {store?.departament.name}, {store?.municipality.name}
+              {store?.departament?.name}, {store?.municipality?.name}
             </h2>
           </span>
           <FaHeart

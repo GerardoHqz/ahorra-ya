@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Button, DatePicker, Form, Input, Modal, Select, Upload } from "antd";
 import { getAllCategoriesService } from "../api/categories";
 import { Category } from "../interfaces/Categories";
-import { createOfferService, updateOffer } from "../api/offer";
-import { createImageService, getInfoOfferImage, updateImageService } from "../api/images";
+import { updateOffer } from "../api/offer";
+import { getInfoOfferImage, updateImageService } from "../api/images";
 import { BsUpload } from "react-icons/bs";
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { offers } from "../mock_data/offers";
 
 dayjs.extend(customParseFormat);
 
@@ -96,7 +95,7 @@ const EditOfferForm = ({
   return (
     <Modal
       title="Editar oferta"
-      style={{ top: 40 }}
+      style={{ top: 5 }}
       open={open}
       closable={false}
       footer={[]}
